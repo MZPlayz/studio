@@ -2,7 +2,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Map, Marker, Source, Layer, useMap, LngLatBounds } from 'react-map-gl';
+import { Map, Marker, Source, Layer, useMap } from 'react-map-gl';
+import { LngLatBounds } from 'mapbox-gl';
 import type { MapRef } from 'react-map-gl';
 import { MapPin, Phone, MessageSquare, Star } from 'lucide-react';
 import type { TripDetails } from '@/app/find-trip/page';
@@ -190,3 +191,5 @@ const TripMap = ({ children, pickupCoords, dropoffCoords }: { children: React.Re
         </Map>
     )
 }
+
+  
