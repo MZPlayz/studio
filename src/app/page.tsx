@@ -53,12 +53,14 @@ export default function LoginPage() {
                 <a href="#" className="text-sm text-purple-600 hover:underline">পিন ভুলে গেছেন?</a>
             </div>
 
-            <button
-              type="submit"
-              className="w-full rounded-md bg-[#8A2BE2] py-3 font-semibold text-white transition-colors hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-            >
-              লগইন করুন
-            </button>
+            <Link href="/home" passHref>
+                <button
+                type="submit"
+                className="w-full rounded-md bg-[#8A2BE2] py-3 font-semibold text-white transition-colors hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                >
+                লগইন করুন
+                </button>
+            </Link>
           </form>
 
           <div className="mt-8 text-center">
