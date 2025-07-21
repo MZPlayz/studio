@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const features = [
   { icon: Car, label: 'গাড়ি বুকিং', href: '/trip-details' },
-  { icon: Clock, label: 'বুকিং হিস্ট্রি', href: '#' },
+  { icon: Clock, label: 'বুকিং হিস্ট্রি', href: '/booking-history' },
   { icon: List, label: 'রাইডার লিস্ট', href: '#' },
   { icon: Plus, label: 'অ্যাড মানি', href: '#' },
   { icon: Send, label: 'সেন্ড মানি', href: '#' },
