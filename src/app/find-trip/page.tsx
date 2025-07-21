@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import TripDetailsPage from '@/components/TripDetailsPage';
 import BookingInProgressView from '@/components/BookingInProgressView';
-import PickupView from '@/components/PickupView';
+import DriverAssignedView from '@/components/DriverAssignedView';
 import InProgressView from '@/components/InProgressView';
 import TripCompletedView from '@/components/TripCompletedView';
 
@@ -23,7 +23,11 @@ export type TripDetails = {
     numTravelers: string;
     driverMode: string;
     selectedDriver: any;
-    driverStartLocation: { lat: number; lng: number };
+    driver: {
+        name: string;
+        rating: number;
+        startLocation: { lat: number; lng: number; };
+    };
     vehicle: { type: 'sedan' | 'suv' | 'bike'; model: string; };
 };
 
@@ -31,10 +35,14 @@ export default function FindTripPage() {
     const [tripState, setTripState] = useState<'idle' | 'booking' | 'pickup' | 'in_progress' | 'completed'>('idle');
     const [tripDetails, setTripDetails] = useState<TripDetails | null>(null);
 
-    const handleRequestTrip = (details: Omit<TripDetails, 'driverStartLocation' | 'vehicle'>) => {
+    const handleRequestTrip = (details: Omit<TripDetails, 'driver' | 'vehicle'>) => {
         const fullTripDetails: TripDetails = {
             ...details,
-            driverStartLocation: { lat: 23.795, lng: 90.385 }, // Simulated driver start
+            driver: {
+                name: 'Rubel Mia',
+                rating: 4.8,
+                startLocation: { lat: 23.795, lng: 90.385 } // A simulated starting point for the driver
+            },
             vehicle: {
               type: 'sedan', // or 'suv', 'bike'
               model: 'Toyota Prius'
@@ -89,7 +97,7 @@ export default function FindTripPage() {
         <div>
             {tripState === 'idle' && <TripDetailsPage onRequestTrip={handleRequestTrip} />}
             {tripState === 'booking' && tripDetails && <BookingInProgressView tripDetails={tripDetails} onCancel={handleCancelBooking}/>}
-            {tripState === 'pickup' && tripDetails && <PickupView tripDetails={tripDetails} />}
+            {tripState === 'pickup' && tripDetails && <DriverAssignedView tripDetails={tripDetails} />}
             {tripState === 'in_progress' && tripDetails && <InProgressView tripDetails={tripDetails} />}
             {tripState === 'completed' && tripDetails && <TripCompletedView tripDetails={tripDetails} onNextRide={handleNextRide} />}
         </div>
