@@ -1,4 +1,7 @@
+"use client";
+
 import { Lock, Smartphone, Leaf } from 'lucide-react';
+import Link from 'next/link';
 
 export default function LoginPage() {
   return (
@@ -61,9 +64,9 @@ export default function LoginPage() {
           <div className="mt-8 text-center">
             <p className="text-sm text-gray-500">এখানে নতুন? একটি অ্যাকাউন্ট তৈরি করুন</p>
             <div className="mt-4 space-y-3">
-              <button className="w-full rounded-md border border-purple-600 py-3 font-semibold text-purple-600 transition-colors hover:bg-purple-50">
+              <Link href="/register" className="block w-full rounded-md border border-purple-600 py-3 font-semibold text-purple-600 transition-colors hover:bg-purple-50">
                 গ্রাহক নিবন্ধন
-              </button>
+              </Link>
               <button className="w-full rounded-md border border-purple-600 py-3 font-semibold text-purple-600 transition-colors hover:bg-purple-50">
                 ড্রাইভার নিবন্ধন
               </button>
