@@ -4,19 +4,21 @@ import MyRides from '@/components/MyRides';
 import SavingsBanner from '@/components/SavingsBanner';
 import Suggestions from '@/components/Suggestions';
 import BottomNav from '@/components/BottomNav';
+import BalanceCard from '@/components/BalanceCard';
 
 export default function HomePage() {
   return (
     <div className="bg-gray-100 min-h-screen font-sans">
-      <div className="relative pb-24">
-        <HomeHeader />
-        <main className="px-4 space-y-4">
+      <HomeHeader />
+      <main className="-mt-16 px-6 relative z-10 pb-24">
+        <BalanceCard />
+        <div className="space-y-6 mt-6">
           <FeaturesGrid />
           <MyRides />
           <SavingsBanner />
           <Suggestions />
-        </main>
-      </div>
+        </div>
+      </main>
       <BottomNav />
     </div>
   );

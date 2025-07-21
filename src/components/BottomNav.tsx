@@ -17,19 +17,19 @@ export default function BottomNav() {
 
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-t">
-      <div className="flex justify-around items-center h-16">
-        <Link href={homeLink} className={`flex flex-col items-center ${isHomeActive ? 'text-purple-600' : 'text-gray-500'}`}>
+    <div className="fixed bottom-0 left-0 w-full bg-gray-900 border-t border-gray-700 shadow-lg">
+      <div className="grid grid-cols-3 items-center h-16 max-w-md mx-auto">
+        <Link href={homeLink} className={`flex flex-col items-center ${isHomeActive ? 'text-purple-500' : 'text-gray-400'}`}>
           <Home size={24} />
           <span className="text-xs font-medium">হোম</span>
         </Link>
-        <Button variant="ghost" className="flex flex-col items-center text-gray-500 h-auto">
+        <Link href="#" className="flex flex-col items-center text-gray-400">
           <Inbox size={24} />
-          <span className="text-xs">ইনবক্স</span>
-        </Button>
-        <Link href={menuLink} className={`flex flex-col items-center ${isMenuActive ? 'text-purple-600' : 'text-gray-500'}`}>
+          <span className="text-xs font-medium">ইনবক্স</span>
+        </Link>
+        <Link href={menuLink} className={`flex flex-col items-center ${isMenuActive ? 'text-purple-500' : 'text-gray-400'}`}>
           <Menu size={24} />
-          <span className="text-xs">মেনু</span>
+          <span className="text-xs font-medium">মেনু</span>
         </Link>
       </div>
     </div>
