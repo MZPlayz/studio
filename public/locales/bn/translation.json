@@ -1,0 +1,14 @@
+
+{
+  "language_toggle": "English",
+  "welcome_back": "আবারও স্বাগতম",
+  "login_prompt": "লগইন করতে আপনার বিবরণ লিখুন।",
+  "phone_placeholder": "+৮৮০XXXXXXXXXX",
+  "pin_placeholder": "৬ সংখ্যার পিন",
+  "forgot_pin": "পিন ভুলে গেছেন?",
+  "login_button": "লগইন করুন",
+  "new_here": "এখানে নতুন? একটি অ্যাকাউন্ট তৈরি করুন",
+  "customer_registration": "গ্রাহক নিবন্ধন",
+  "driver_registration": "ড্রাইভার নিবন্ধন",
+  "agent_registration": "এজেন্ট নিবন্ধন"
+}

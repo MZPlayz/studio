@@ -6,49 +6,22 @@ import { Phone, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
-import { useLanguage } from '@/context/LanguageContext';
-
-const content = {
-  bn: {
-    welcome: "আবারও স্বাগতম",
-    description: "লগইন করতে আপনার বিবরণ লিখুন।",
-    phonePlaceholder: "+৮৮০XXXXXXXXXX",
-    pinPlaceholder: "৬ সংখ্যার পিন",
-    forgotPin: "পিন ভুলে গেছেন?",
-    login: "লগইন করুন",
-    newUser: "এখানে নতুন? একটি অ্যাকাউন্ট তৈরি করুন",
-    customerRegister: "গ্রাহক নিবন্ধন",
-    driverRegister: "ড্রাইভার নিবন্ধন",
-    agentRegister: "এজেন্ট নিবন্ধন",
-    footer: "ডাক বিভাগের ডিজিটাল লেনদেন",
-    languageButton: "English"
-  },
-  en: {
-    welcome: "Welcome Back",
-    description: "Enter your details to login.",
-    phonePlaceholder: "+880XXXXXXXXXX",
-    pinPlaceholder: "6-digit PIN",
-    forgotPin: "Forgot PIN?",
-    login: "Login",
-    newUser: "New here? Create an account",
-    customerRegister: "Customer Registration",
-    driverRegister: "Driver Registration",
-    agentRegister: "Agent Registration",
-    footer: "Digital Transactions of the Postal Department",
-    languageButton: "বাংলা"
-  }
-};
-
+import { useTranslation } from 'react-i18next';
+import '../lib/i18n';
 
 export default function LoginPage() {
-  const { language, toggleLanguage } = useLanguage();
-  const currentContent = content[language];
+  const { t, i18n } = useTranslation();
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'bn' ? 'en' : 'bn';
+    i18n.changeLanguage(newLang);
+  };
 
   return (
     <div className="flex min-h-screen flex-col items-center bg-gray-50 px-4 pt-8 font-sans">
       <div className="absolute top-4 right-4">
         <Button variant="outline" className="rounded-full border-gray-300 bg-white" onClick={toggleLanguage}>
-          {currentContent.languageButton}
+          {t('language_toggle')}
         </Button>
       </div>
 
@@ -64,15 +37,15 @@ export default function LoginPage() {
           />
         </div>
 
-        <h1 className="text-2xl font-bold text-gray-800">{currentContent.welcome}</h1>
-        <p className="text-gray-600">{currentContent.description}</p>
+        <h1 className="text-2xl font-bold text-gray-800">{t('welcome_back')}</h1>
+        <p className="text-gray-600">{t('login_prompt')}</p>
 
         <form className="mt-8 w-full space-y-4">
           <div className="relative">
             <Phone className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
             <Input
               type="tel"
-              placeholder={currentContent.phonePlaceholder}
+              placeholder={t('phone_placeholder')}
               className="w-full rounded-lg border-gray-300 bg-white py-6 pl-10"
             />
           </div>
@@ -80,47 +53,47 @@ export default function LoginPage() {
             <Lock className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
             <Input
               type="password"
-              placeholder={currentContent.pinPlaceholder}
+              placeholder={t('pin_placeholder')}
               maxLength={6}
               className="w-full rounded-lg border-gray-300 bg-white py-6 pl-10"
             />
           </div>
           <div className="text-right">
             <Link href="#" className="text-sm font-medium text-purple-600 hover:underline">
-              {currentContent.forgotPin}
+              {t('forgot_pin')}
             </Link>
           </div>
           
           <Link href="/home" passHref>
             <Button className="w-full h-14 bg-purple-600 text-lg font-bold text-white hover:bg-purple-700">
-                {currentContent.login}
+                {t('login_button')}
             </Button>
           </Link>
 
         </form>
 
         <div className="mt-8 text-center">
-          <p className="text-gray-600">{currentContent.newUser}</p>
+          <p className="text-gray-600">{t('new_here')}</p>
           <div className="mt-4 w-full space-y-3">
              <Link href="/register" passHref>
                 <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-purple-700">
-                    {currentContent.customerRegister}
+                    {t('customer_registration')}
                 </Button>
              </Link>
              <Link href="/register" passHref>
                 <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-purple-700">
-                    {currentContent.driverRegister}
+                    {t('driver_registration')}
                 </Button>
              </Link>
               <Link href="/agent-home" passHref>
                 <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-purple-700">
-                    {currentContent.agentRegister}
+                    {t('agent_registration')}
                 </Button>
               </Link>
           </div>
         </div>
 
-        <p className="mt-12 text-sm text-gray-500">{currentContent.footer}</p>
+        <p className="mt-12 text-sm text-gray-500">ডাক বিভাগের ডিজিটাল লেনদেন</p>
       </div>
     </div>
   );

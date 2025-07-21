@@ -1,0 +1,14 @@
+
+{
+  "language_toggle": "বাংলা",
+  "welcome_back": "Welcome Back",
+  "login_prompt": "Enter your details to log in.",
+  "phone_placeholder": "+880XXXXXXXXXX",
+  "pin_placeholder": "6-digit PIN",
+  "forgot_pin": "Forgot PIN?",
+  "login_button": "Log In",
+  "new_here": "New here? Create an account",
+  "customer_registration": "Customer Registration",
+  "driver_registration": "Driver Registration",
+  "agent_registration": "Agent Registration"
+}
