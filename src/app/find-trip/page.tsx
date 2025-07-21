@@ -64,6 +64,17 @@ export default function FindTripPage() {
         setTripState('idle');
         setTripDetails(null);
     };
+    
+    const handlePickupComplete = () => {
+      console.log("DRIVER HAS ARRIVED. Transitioning to 'in_progress' state.");
+      setTripState('in_progress');
+    };
+    
+    const handleTripComplete = () => {
+        console.log("DESTINATION REACHED. Transitioning to 'completed' state.");
+        setTripState('completed');
+    };
+
 
     useEffect(() => {
         if (tripState === 'idle') return;
@@ -73,22 +84,6 @@ export default function FindTripPage() {
                 console.log("Mock System: Cab Booked! Transitioning to PICKUP state.");
                 setTripState('pickup');
             }, 4000); 
-            return () => clearTimeout(timer);
-        }
-
-        if (tripState === 'pickup') {
-            const timer = setTimeout(() => {
-                console.log("Mock System: Driver has arrived! Transitioning to IN_PROGRESS state.");
-                setTripState('in_progress');
-            }, 12000); // Increased duration to allow for animation
-            return () => clearTimeout(timer);
-        }
-        
-        if (tripState === 'in_progress') {
-            const timer = setTimeout(() => {
-                console.log("Mock System: Destination reached! Transitioning to COMPLETED state.");
-                setTripState('completed');
-            }, 12000); // Increased duration to allow for animation
             return () => clearTimeout(timer);
         }
     }, [tripState]);
@@ -101,9 +96,9 @@ export default function FindTripPage() {
             case 'booking':
                 return tripDetails ? <BookingInProgressView tripDetails={tripDetails} onCancel={handleCancelBooking}/> : null;
             case 'pickup':
-                return tripDetails ? <DriverAssignedView tripDetails={tripDetails} /> : null;
+                return tripDetails ? <DriverAssignedView tripDetails={tripDetails} onPickupComplete={handlePickupComplete} /> : null;
             case 'in_progress':
-                return tripDetails ? <InProgressView tripDetails={tripDetails} /> : null;
+                return tripDetails ? <InProgressView tripDetails={tripDetails} onTripComplete={handleTripComplete} /> : null;
             case 'completed':
                 return tripDetails ? <TripCompletedView tripDetails={tripDetails} onNextRide={handleNextRide} /> : null;
             default:

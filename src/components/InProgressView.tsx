@@ -1,8 +1,8 @@
 
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { useMap, Source, Layer, Marker } from 'react-map-gl';
+import { useState, useEffect } from 'react';
+import { useMap, Source, Layer } from 'react-map-gl';
 import * as turf from '@turf/turf';
 import type { TripDetails } from '@/app/find-trip/page';
 import TripMap from './TripMap';
@@ -11,7 +11,7 @@ import { VehicleAnimator } from '@/lib/Animator';
 const carIcon =
   'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jYXIiPjxwYXRoIGQ9Ik0xNCAxNmwtNC00IDQtNE00IDE2YTggOCAwIDAgMCAxNiAwWiIvPjxwYXRoIGQ9Ik0xMiA0djhhNCA0IDAgMCAwIDQtNEg4Ii8+PC9zdmc+';
 
-export default function InProgressView({ tripDetails }: { tripDetails: TripDetails }) {
+export default function InProgressView({ tripDetails, onTripComplete }: { tripDetails: TripDetails, onTripComplete: () => void }) {
   const [route, setRoute] = useState<any>(null);
   const { current: map } = useMap();
 
@@ -42,30 +42,29 @@ export default function InProgressView({ tripDetails }: { tripDetails: TripDetai
   }, [tripDetails]);
 
   useEffect(() => {
-    if (!map || !route) return;
+    if (!map || !route || !map.isStyleLoaded()) return;
+    if (map.getSource('vehicle')) return; // Avoid re-adding if already present
 
-    const vehicleSource = map.getSource('vehicle');
-    if (!vehicleSource) {
-      map.addSource('vehicle', {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: tripDetails.currentLocation.coords ? [tripDetails.currentLocation.coords.lng, tripDetails.currentLocation.coords.lat] : []
-          },
-          properties: {}
-        }
-      });
-    }
-
-    if (!map.getLayer('vehicle-layer')) {
-        map.loadImage(carIcon, (error, image) => {
-            if (error) throw error;
-            if (!image) return;
-            if (!map.hasImage('car-icon')) {
-                map.addImage('car-icon', image, { sdf: true });
+    map.loadImage(carIcon, (error, image) => {
+        if (error) { console.error('Error loading car icon:', error); return; }
+        if (!image) { console.error('Image data is null'); return; }
+        if (!map.hasImage('car-icon')) { map.addImage('car-icon', image, { sdf: true }); }
+        
+        if (!map.getSource('vehicle')) {
+          map.addSource('vehicle', {
+            type: 'geojson',
+            data: {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: tripDetails.currentLocation.coords ? [tripDetails.currentLocation.coords.lng, tripDetails.currentLocation.coords.lat] : []
+              },
+              properties: {}
             }
+          });
+        }
+
+        if (!map.getLayer('vehicle-layer')) {
             map.addLayer({
                 id: 'vehicle-layer',
                 type: 'symbol',
@@ -82,14 +81,20 @@ export default function InProgressView({ tripDetails }: { tripDetails: TripDetai
                     'icon-color': '#2962FF'
                 }
             });
-        });
-    }
+        }
+    });
 
-    const animator = new VehicleAnimator(map, route.geometry, 10000);
+    const animator = new VehicleAnimator(map, route.geometry, 10000, onTripComplete);
     animator.start();
 
-    return () => animator.stop();
-  }, [route, map, tripDetails.currentLocation.coords]);
+    return () => {
+      animator.stop();
+      if (map && map.isStyleLoaded()) {
+        if (map.getLayer('vehicle-layer')) map.removeLayer('vehicle-layer');
+        if (map.getSource('vehicle')) map.removeSource('vehicle');
+      }
+    };
+  }, [route, map, tripDetails.currentLocation.coords, onTripComplete]);
 
   return (
     <div className="relative h-screen w-screen">
