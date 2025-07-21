@@ -6,13 +6,13 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Passenger } from '@/app/favorite-passengers/page';
+import { Person } from '@/app/favorite-passengers/page';
 
 interface AddFavoriteModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddFavorite: (passenger: Passenger) => void;
-  existingPassengers: Passenger[];
+  onAddFavorite: (passenger: Person) => void;
+  existingPassengers: Person[];
 }
 
 export default function AddFavoriteModal({
@@ -24,7 +24,7 @@ export default function AddFavoriteModal({
   const [step, setStep] = useState<'search' | 'confirm'>('search');
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
-  const [foundPassenger, setFoundPassenger] = useState<Passenger | null>(null);
+  const [foundPassenger, setFoundPassenger] = useState<Person | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleFindPassenger = (e: React.FormEvent) => {
@@ -83,7 +83,7 @@ export default function AddFavoriteModal({
                 id="phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="+1 (555) 123-4567"
+                placeholder="+8801XXXXXXXXX"
                 className="bg-gray-100 border-none mt-1"
                 type="tel"
                 required

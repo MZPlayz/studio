@@ -1,5 +1,5 @@
 
-import { Car, Clock, List, Plus, Send, Headphones, Wrench, Gift, History, CalendarCheck, TrendingUp, UserPlus, Clipboard, Youtube } from 'lucide-react';
+import { Car, Clock, List, Plus, Send, Headphones, Wrench, Gift, History, CalendarCheck, TrendingUp, UserPlus, Clipboard, Youtube, Star, Users } from 'lucide-react';
 import Link from 'next/link';
 
 const baseFeatures = [
@@ -14,11 +14,13 @@ const baseFeatures = [
 ];
 
 const agentFeatures = [
-    ...baseFeatures,
     { icon: TrendingUp, label: 'ইনকাম হিস্ট্রি', href: '/income-history' },
     { icon: UserPlus, label: 'অ্যাকাউন্ট তৈরি', href: '/create-account' },
+    { icon: Users, label: 'প্রিয় কাস্টমার', href: '/favorite-passengers' },
+    { icon: Star, label: 'প্রিয় রাইডার', href: '/favorite-riders' },
     { icon: Clipboard, label: 'তৈরি রেকর্ড', href: '#' },
-    { icon: Youtube, label: 'ট্রেনিং/গাইড', href: '/training-guide' }
+    { icon: Youtube, label: 'ট্রেনিং/গাইড', href: '/training-guide' },
+    ...baseFeatures.slice(0, 6)
 ];
 
 
@@ -28,10 +30,10 @@ interface FeaturesGridProps {
 
 export default function FeaturesGrid({ userType = 'customer' }: FeaturesGridProps) {
   const features = userType === 'agent' ? agentFeatures : baseFeatures;
-  const gridClasses = userType === 'agent' ? 'grid-cols-4 grid-rows-3' : 'grid-cols-4';
+  const gridClasses = userType === 'agent' ? 'grid-cols-4 gap-y-4 gap-x-2' : 'grid-cols-4';
 
   return (
-    <div className={`grid ${gridClasses} gap-4 text-center`}>
+    <div className={`grid ${gridClasses} text-center`}>
       {features.map((feature, index) => (
         <div key={index} className="flex flex-col items-center space-y-2">
           <Link href={feature.href} passHref>

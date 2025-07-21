@@ -8,35 +8,26 @@ import { ArrowLeft, Plus, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AddByPhoneModal from '@/components/AddByPhoneModal';
+import { Person } from '@/app/favorite-passengers/page'; // Reusing the interface
 
-export interface Person {
-  id: number;
-  name: string;
-  phone: string;
-  avatarUrl: string;
-  avatarHint: string;
-  tripCount: number;
-  type: 'customer' | 'rider';
-}
-
-const mockCustomers: Person[] = [
+const mockRiders: Person[] = [
   {
     id: 1,
-    name: 'Sophia Carter',
-    phone: '01712345678',
+    name: 'Liam Parker',
+    phone: '01912345678',
     avatarUrl: 'https://placehold.co/48x48.png',
-    avatarHint: 'woman portrait',
-    tripCount: 4,
-    type: 'customer',
+    avatarHint: 'man portrait',
+    tripCount: 15,
+    type: 'rider',
   },
   {
     id: 2,
-    name: 'Ethan Bennett',
-    phone: '01812345678',
+    name: 'Noah King',
+    phone: '01612345678',
     avatarUrl: 'https://placehold.co/48x48.png',
-    avatarHint: 'man portrait',
-    tripCount: 2,
-    type: 'customer',
+    avatarHint: 'man sunglasses',
+    tripCount: 8,
+    type: 'rider',
   },
 ];
 
@@ -53,27 +44,30 @@ const FavoritePersonItem = ({ person }: { person: Person }) => (
     <div className="flex-1">
       <p className="font-semibold text-gray-800">{person.name}</p>
       <p className="text-sm text-gray-500">{person.phone}</p>
-      <p className="text-sm text-gray-500">{person.tripCount} Total Bookings</p>
+      <p className="text-sm text-gray-500">{person.tripCount} Total Trips</p>
     </div>
+    <Button size="sm" variant="outline" className="bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200">
+        Book Now
+    </Button>
   </div>
 );
 
-export default function FavoriteCustomersPage() {
-  const [customers, setCustomers] = useState<Person[]>(mockCustomers);
+export default function FavoriteRidersPage() {
+  const [riders, setRiders] = useState<Person[]>(mockRiders);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleAddFavorite = (newPerson: Omit<Person, 'id'>) => {
-    setCustomers((prev) => [
+    setRiders((prev) => [
         ...prev, 
         { ...newPerson, id: Date.now() }
     ]);
     setIsModalOpen(false);
   };
 
-  const filteredCustomers = customers.filter(c => 
-    c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    c.phone.includes(searchTerm)
+  const filteredRiders = riders.filter(r => 
+    r.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    r.phone.includes(searchTerm)
   );
 
   return (
@@ -84,7 +78,7 @@ export default function FavoriteCustomersPage() {
             <ArrowLeft className="h-6 w-6" />
           </Button>
         </Link>
-        <h1 className="flex-1 text-center text-xl font-bold text-gray-800">Favorite Customers</h1>
+        <h1 className="flex-1 text-center text-xl font-bold text-gray-800">Favorite Riders</h1>
         <div className="w-10" />
       </header>
 
@@ -101,7 +95,7 @@ export default function FavoriteCustomersPage() {
         </div>
 
         <div className="space-y-2">
-            {filteredCustomers.map((person) => (
+            {filteredRiders.map((person) => (
                 <FavoritePersonItem key={person.id} person={person} />
             ))}
         </div>
@@ -119,7 +113,7 @@ export default function FavoriteCustomersPage() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAdd={handleAddFavorite}
-        personType="customer"
+        personType="rider"
       />
     </div>
   );
