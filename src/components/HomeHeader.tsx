@@ -1,11 +1,24 @@
+
 "use client";
 
 import { useState } from 'react';
 import Image from 'next/image';
 import { Bell, Eye, EyeOff } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
+
+const content = {
+    bn: {
+        balance: "ব্যালেন্স"
+    },
+    en: {
+        balance: "Balance"
+    }
+}
 
 export default function HomeHeader() {
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
+  const { language } = useLanguage();
+  const currentContent = content[language];
 
   const toggleBalanceVisibility = () => {
     setIsBalanceVisible(!isBalanceVisible);
@@ -37,7 +50,7 @@ export default function HomeHeader() {
       <div className="absolute top-28 left-0 right-0 px-4">
         <div className="bg-white rounded-lg shadow-md p-4 flex justify-between items-center">
           <div>
-            <p className="text-gray-500 text-sm">ব্যালেন্স</p>
+            <p className="text-gray-500 text-sm">{currentContent.balance}</p>
             {isBalanceVisible ? (
               <p className="text-2xl font-bold">৳7.00</p>
             ) : (

@@ -1,52 +1,47 @@
 
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { Phone, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { useLanguage } from '@/context/LanguageContext';
+
+const content = {
+  bn: {
+    welcome: "আবারও স্বাগতম",
+    description: "লগইন করতে আপনার বিবরণ লিখুন।",
+    phonePlaceholder: "+৮৮০XXXXXXXXXX",
+    pinPlaceholder: "৬ সংখ্যার পিন",
+    forgotPin: "পিন ভুলে গেছেন?",
+    login: "লগইন করুন",
+    newUser: "এখানে নতুন? একটি অ্যাকাউন্ট তৈরি করুন",
+    customerRegister: "গ্রাহক নিবন্ধন",
+    driverRegister: "ড্রাইভার নিবন্ধন",
+    agentRegister: "এজেন্ট নিবন্ধন",
+    footer: "ডাক বিভাগের ডিজিটাল লেনদেন",
+    languageButton: "English"
+  },
+  en: {
+    welcome: "Welcome Back",
+    description: "Enter your details to login.",
+    phonePlaceholder: "+880XXXXXXXXXX",
+    pinPlaceholder: "6-digit PIN",
+    forgotPin: "Forgot PIN?",
+    login: "Login",
+    newUser: "New here? Create an account",
+    customerRegister: "Customer Registration",
+    driverRegister: "Driver Registration",
+    agentRegister: "Agent Registration",
+    footer: "Digital Transactions of the Postal Department",
+    languageButton: "বাংলা"
+  }
+};
+
 
 export default function LoginPage() {
-  const [language, setLanguage] = useState('bn');
-
-  const toggleLanguage = () => {
-    setLanguage(prev => prev === 'bn' ? 'en' : 'bn');
-  };
-
-  const content = {
-    bn: {
-      welcome: "আবারও স্বাগতম",
-      description: "লগইন করতে আপনার বিবরণ লিখুন।",
-      phonePlaceholder: "+৮৮০XXXXXXXXXX",
-      pinPlaceholder: "৬ সংখ্যার পিন",
-      forgotPin: "পিন ভুলে গেছেন?",
-      login: "লগইন করুন",
-      newUser: "এখানে নতুন? একটি অ্যাকাউন্ট তৈরি করুন",
-      customerRegister: "গ্রাহক নিবন্ধন",
-      driverRegister: "ড্রাইভার নিবন্ধন",
-      agentRegister: "এজেন্ট নিবন্ধন",
-      footer: "ডাক বিভাগের ডিজিটাল লেনদেন",
-      languageButton: "English"
-    },
-    en: {
-      welcome: "Welcome Back",
-      description: "Enter your details to login.",
-      phonePlaceholder: "+880XXXXXXXXXX",
-      pinPlaceholder: "6-digit PIN",
-      forgotPin: "Forgot PIN?",
-      login: "Login",
-      newUser: "New here? Create an account",
-      customerRegister: "Customer Registration",
-      driverRegister: "Driver Registration",
-      agentRegister: "Agent Registration",
-      footer: "Digital Transactions of the Postal Department",
-      languageButton: "বাংলা"
-    }
-  };
-
+  const { language, toggleLanguage } = useLanguage();
   const currentContent = content[language];
 
   return (

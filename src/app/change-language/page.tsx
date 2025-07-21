@@ -9,14 +9,15 @@ import { cn } from '@/lib/utils';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function ChangeLanguagePage() {
-  const [selectedLanguage, setSelectedLanguage] = useState('bn');
+  const { language, setLanguage } = useLanguage();
+  const [selectedLanguage, setSelectedLanguage] = useState(language);
   const { toast } = useToast();
 
   const handleSaveChanges = () => {
-    // In a real app, this would persist the language preference globally.
-    console.log(`Language preference saved: ${selectedLanguage}`);
+    setLanguage(selectedLanguage);
     toast({
       title: "Language preference saved!",
       description: `The language has been set to ${selectedLanguage === 'bn' ? 'Bangla' : 'English'}.`,
@@ -32,7 +33,7 @@ export default function ChangeLanguagePage() {
               <ArrowLeft className="h-6 w-6" />
             </Button>
           </Link>
-          <h1 className="flex-1 text-center text-xl font-bold text-gray-800">ভাষা পরিবর্তন</h1>
+          <h1 className="flex-1 text-center text-xl font-bold text-gray-800">{language === 'bn' ? 'ভাষা পরিবর্তন' : 'Change Language'}</h1>
           <div className="w-10" />
         </header>
 

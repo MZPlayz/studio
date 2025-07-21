@@ -1,13 +1,11 @@
-import type {Metadata} from 'next';
+
+'use client'
+
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { LanguageProvider } from '@/context/LanguageContext';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-
-export const metadata: Metadata = {
-  title: 'Ridemap',
-  description: 'Your trusted ridesharing partner in Dhaka.',
-};
 
 export default function RootLayout({
   children,
@@ -15,8 +13,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} font-sans`}>{children}</body>
-    </html>
+    <LanguageProvider>
+      <html lang="en">
+        <body className={`${inter.variable} font-sans`}>{children}</body>
+      </html>
+    </LanguageProvider>
   );
 }
