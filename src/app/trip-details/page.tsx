@@ -1,9 +1,10 @@
 
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ArrowLeft, ChevronDown, MapPin, Calendar, Clock, User, Search, Plus, Minus, Send } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
+import { ArrowLeft, ChevronDown, MapPin, Calendar, Clock, User, Search, Plus, Minus, Send, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -11,11 +12,26 @@ import { Card, CardContent } from "@/components/ui/card";
 import Link from 'next/link';
 
 export default function TripDetailsPage() {
+  const searchParams = useSearchParams();
   const [vehicleType, setVehicleType] = useState('road');
   const [vehicleClass, setVehicleClass] = useState('');
   const [hasLuggage, setHasLuggage] = useState(false);
   const [driverMode, setDriverMode] = useState('auto');
   const [dayOrNight, setDayOrNight] = useState('day');
+  const [selectedDriver, setSelectedDriver] = useState<any>(null);
+
+  useEffect(() => {
+    const driverParam = searchParams.get('driver');
+    if (driverParam) {
+      try {
+        const driverData = JSON.parse(decodeURIComponent(driverParam));
+        setSelectedDriver(driverData);
+        setDriverMode('manual');
+      } catch (error) {
+        console.error("Failed to parse driver data:", error);
+      }
+    }
+  }, [searchParams]);
 
   const vehicleClasses = {
     road: [
@@ -38,17 +54,13 @@ export default function TripDetailsPage() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           console.log('Lat:', position.coords.latitude, 'Lng:', position.coords.longitude);
-          // Here you would set the state for the current location input
-          // e.g., setCurrentLocation(`${position.coords.latitude}, ${position.coords.longitude}`);
         },
         (error) => {
           console.error("Error getting location:", error);
-          // Handle error (e.g., show a toast to the user)
         }
       );
     }
   };
-
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
@@ -64,7 +76,6 @@ export default function TripDetailsPage() {
         </header>
 
         <main className="flex-1 space-y-4 p-4">
-          {/* Vehicle Type */}
           <div className="space-y-1">
             <label className="text-sm font-medium text-gray-700">Select Vehicle Type</label>
             <Select onValueChange={setVehicleType} defaultValue="road">
@@ -94,7 +105,6 @@ export default function TripDetailsPage() {
             </Select>
           </div>
           
-          {/* Vehicle Class */}
           <div className="space-y-1">
             <label className="text-sm font-medium text-gray-700">Select Vehicle Class</label>
             <Select onValueChange={setVehicleClass}>
@@ -114,7 +124,6 @@ export default function TripDetailsPage() {
             </Select>
           </div>
 
-          {/* Form Fields */}
           <div className="space-y-1">
             <label htmlFor="name" className="text-sm font-medium text-gray-700">Name</label>
             <Input id="name" placeholder="" className="bg-gray-100 border-none" />
@@ -155,7 +164,6 @@ export default function TripDetailsPage() {
             </div>
           </div>
           
-          {/* Day/Night Toggle */}
           <div className="flex rounded-md bg-gray-200 p-1">
             <Button
               onClick={() => setDayOrNight('day')}
@@ -171,7 +179,6 @@ export default function TripDetailsPage() {
             </Button>
           </div>
           
-          {/* Luggage Toggle */}
           <div className="flex items-center space-x-2">
             <span className="text-sm font-medium text-gray-700">Luggage:</span>
             <Button onClick={() => setHasLuggage(true)} variant={hasLuggage ? "secondary" : "ghost"} className={`rounded-full ${hasLuggage ? 'bg-white text-black shadow' : 'bg-gray-200 text-gray-500'}`}>Yes</Button>
@@ -190,15 +197,27 @@ export default function TripDetailsPage() {
             </div>
           )}
 
-          {/* Driver Mode */}
           <div className="space-y-2">
-             <Select onValueChange={setDriverMode} defaultValue="auto">
+             <Select onValueChange={setDriverMode} value={driverMode}>
                 <SelectTrigger className="w-full bg-gray-100 border-none h-14">
                     <SelectValue>
-                      <div className="flex items-center gap-3">
-                        <Image src="https://placehold.co/40x40.png" data-ai-hint="auto rickshaw" alt="Auto" width={40} height={40} className="rounded-md" />
-                        <span>Auto</span>
-                      </div>
+                      {driverMode === 'manual' && selectedDriver ? (
+                         <div className="flex items-center gap-3">
+                           <Image src={selectedDriver.avatar} data-ai-hint={selectedDriver.hint} alt={selectedDriver.name} width={40} height={40} className="rounded-full" />
+                           <div>
+                              <div className="flex items-center">
+                                <span className="font-semibold">{selectedDriver.name}</span>
+                                <CheckCircle className="h-4 w-4 text-green-500 ml-1" />
+                              </div>
+                              <span className="text-xs text-gray-500">{selectedDriver.car}</span>
+                           </div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-3">
+                          <Image src="https://placehold.co/40x40.png" data-ai-hint="auto rickshaw" alt="Auto" width={40} height={40} className="rounded-md" />
+                          <span>Auto</span>
+                        </div>
+                      )}
                     </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
@@ -208,24 +227,40 @@ export default function TripDetailsPage() {
                            <span>Auto</span>
                         </div>
                     </SelectItem>
-                    <SelectItem value="manual">
+                    <SelectItem value="manual" disabled={!selectedDriver}>
                         <div className="flex items-center gap-3">
-                           <User className="h-10 w-10 text-gray-500 p-2 bg-gray-200 rounded-md" />
-                           <span>Select Driver</span>
+                           {selectedDriver ? (
+                              <>
+                                <Image src={selectedDriver.avatar} data-ai-hint={selectedDriver.hint} alt={selectedDriver.name} width={40} height={40} className="rounded-full" />
+                                <div>
+                                    <div className="flex items-center">
+                                      <span className="font-semibold">{selectedDriver.name}</span>
+                                      <CheckCircle className="h-4 w-4 text-green-500 ml-1" />
+                                    </div>
+                                    <span className="text-xs text-gray-500">{selectedDriver.car}</span>
+                                </div>
+                              </>
+                           ) : (
+                              <>
+                                <User className="h-10 w-10 text-gray-500 p-2 bg-gray-200 rounded-md" />
+                                <span>Select Driver</span>
+                              </>
+                           )}
                         </div>
                     </SelectItem>
                 </SelectContent>
              </Select>
           </div>
           
-          {/* Map Section */}
           <div className="relative">
             {driverMode === 'manual' && (
                 <div className="absolute top-2 left-2 right-2 z-10">
+                  <Link href="/find-driver" className="w-full">
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                         <Input placeholder="Search by mobile number" className="pl-10 bg-white shadow-md border-none" />
                     </div>
+                  </Link>
                 </div>
             )}
             <Card className="overflow-hidden">
