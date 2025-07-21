@@ -1,4 +1,4 @@
-import { Clock, Heart, MapPin, ChevronUp, Users } from 'lucide-react';
+import { Clock, Heart, Users } from 'lucide-react';
 import Link from 'next/link';
 
 export default function MyRides() {
@@ -7,7 +7,7 @@ export default function MyRides() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="font-bold text-gray-800">আমার রাইড</h2>
         <button>
-          <ChevronUp className="text-gray-500" />
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7" /></svg>
         </button>
       </div>
       <div className="flex justify-around items-center text-center">
@@ -23,12 +23,12 @@ export default function MyRides() {
           </div>
           <p className="text-xs text-gray-600">রাইডার হিস্টোরি</p>
         </Link>
-        <div className="flex flex-col items-center space-y-2">
+        <Link href="/favorites" className="flex flex-col items-center space-y-2">
           <div className="bg-pink-100 rounded-lg w-20 h-16 flex items-center justify-center">
             <Heart className="h-8 w-8 text-pink-500" />
           </div>
           <p className="text-xs text-gray-600">প্রিয় স্থান</p>
-        </div>
+        </Link>
       </div>
     </div>
   );
