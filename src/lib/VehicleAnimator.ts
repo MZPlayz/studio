@@ -8,7 +8,7 @@ export class VehicleAnimator {
   private route: turf.helpers.Feature<turf.helpers.LineString>;
   private duration: number;
   private startTime: number;
-  private onComplete: () => void; // A callback for when the animation finishes
+  private onComplete: () => void;
 
   constructor(mapInstance: Map, routeGeoJSON: any, durationMs: number, onCompleteCallback: () => void) {
     this.map = mapInstance;

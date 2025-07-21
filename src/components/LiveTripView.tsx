@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Map, Marker, Source, Layer, useMap } from 'react-map-gl';
-import { LngLatBounds } from 'mapbox-gl';
+import mapboxgl, { LngLatBounds } from 'mapbox-gl';
 import type { MapRef } from 'react-map-gl';
 import { MapPin, Phone, MessageSquare, Star } from 'lucide-react';
 import type { TripDetails } from '@/app/find-trip/page';
@@ -25,9 +25,11 @@ const StatusBar = ({ text }: { text: string }) => (
 interface DriverInfoCardProps {
   driver: TripDetails['driver'];
   vehicle: TripDetails['vehicle'];
+  tripPhase: 'pickup' | 'arrived' | 'trip';
+  onStartMainTrip?: () => void;
 }
 
-const DriverInfoCard = ({ driver, vehicle }: DriverInfoCardProps) => {
+const DriverInfoCard = ({ driver, vehicle, tripPhase, onStartMainTrip }: DriverInfoCardProps) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white p-4 rounded-t-2xl shadow-2xl z-10">
       <div className="flex items-center space-x-4">
@@ -60,6 +62,11 @@ const DriverInfoCard = ({ driver, vehicle }: DriverInfoCardProps) => {
             </Link>
         </div>
       </div>
+      {tripPhase === 'arrived' && (
+          <Button onClick={onStartMainTrip} className="w-full h-14 mt-4 text-lg font-bold bg-green-500 hover:bg-green-600">
+            Start Trip
+          </Button>
+      )}
     </div>
   );
 };
@@ -67,20 +74,24 @@ const DriverInfoCard = ({ driver, vehicle }: DriverInfoCardProps) => {
 
 interface LiveTripViewProps {
     tripDetails: TripDetails;
-    onPickupComplete?: () => void;
-    onTripComplete?: () => void;
-    tripPhase: 'pickup' | 'trip';
+    onAnimationComplete?: () => void;
+    onStartMainTrip?: () => void;
+    tripPhase: 'pickup' | 'arrived' | 'trip';
 }
 
-export default function LiveTripView({ tripDetails, onPickupComplete, onTripComplete, tripPhase }: LiveTripViewProps) {
+export default function LiveTripView({ tripDetails, onAnimationComplete, onStartMainTrip, tripPhase }: LiveTripViewProps) {
   const [route, setRoute] = useState<any>(null);
   const { current: map } = useMap();
   
-  const startCoords = tripPhase === 'pickup' ? tripDetails.driver.startLocation : tripDetails.currentLocation.coords;
-  const endCoords = tripPhase === 'pickup' ? tripDetails.currentLocation.coords : tripDetails.destination.coords;
-  const routeColor = tripPhase === 'pickup' ? '#FF6B35' : '#8A2BE2';
-  const statusBarText = tripPhase === 'pickup' ? "Your driver is on the way!" : `Heading to ${tripDetails.destination.address}`;
-  const onComplete = tripPhase === 'pickup' ? onPickupComplete : onTripComplete;
+  const startCoords = tripPhase === 'pickup' || tripPhase === 'arrived' ? tripDetails.driver.startLocation : tripDetails.currentLocation.coords;
+  const endCoords = tripPhase === 'pickup' || tripPhase === 'arrived' ? tripDetails.currentLocation.coords : tripDetails.destination.coords;
+  const routeColor = tripPhase === 'trip' ? '#8A2BE2' : '#FF6B35';
+  
+  let statusBarText = "Trip in progress...";
+  if(tripPhase === 'pickup') statusBarText = "Your driver is on the way!";
+  if(tripPhase === 'arrived') statusBarText = "Your driver has arrived!";
+  if(tripPhase === 'trip') statusBarText = `Heading to ${tripDetails.destination.address}`;
+
   const carIconUrl = '/car-icon.svg';
 
   useEffect(() => {
@@ -104,64 +115,76 @@ export default function LiveTripView({ tripDetails, onPickupComplete, onTripComp
   }, [startCoords, endCoords]);
 
   useEffect(() => {
-    if (!route || !map?.isStyleLoaded() || !onComplete) return;
+    if (!route || !map?.isStyleLoaded() || !onAnimationComplete || tripPhase === 'arrived') return;
 
-    if (map.getSource('vehicle')) return;
+    if (map.getSource('vehicle')) { // Don't re-add if source exists
+        // Potentially restart animation if route changes for the same view
+        return;
+    }
 
     const carIconId = 'car-icon-image';
 
-    map.loadImage(carIconUrl, (error, image) => {
-        if (error) { console.error('Error loading car icon:', error); return; }
-        if (!image) { console.error('Image could not be loaded.'); return; }
-        if (!map.hasImage(carIconId)) {
-            map.addImage(carIconId, image, { sdf: true });
+    const setupAndRunAnimation = () => {
+        if (!map.getSource('vehicle')) {
+            map.addSource('vehicle', {
+                type: 'geojson',
+                data: {
+                    type: 'Feature',
+                    geometry: { type: 'Point', coordinates: route.coordinates[0] },
+                    properties: {}
+                }
+            });
+        }
+
+        if (!map.getLayer('vehicle-layer')) {
+            map.addLayer({
+                id: 'vehicle-layer',
+                type: 'symbol',
+                source: 'vehicle',
+                layout: {
+                    'icon-image': carIconId,
+                    'icon-size': 1.5,
+                    'icon-rotation-alignment': 'map',
+                    'icon-allow-overlap': true,
+                    'icon-ignore-placement': true,
+                    'icon-rotate': ['get', 'bearing']
+                },
+                paint: {
+                    'icon-color': '#FFFFFF',
+                    'icon-halo-color': '#000000',
+                    'icon-halo-width': 1
+                }
+            });
         }
         
-        map.addSource('vehicle', {
-            type: 'geojson',
-            data: {
-                type: 'Feature',
-                geometry: {
-                    type: 'Point',
-                    coordinates: route.coordinates[0]
-                },
-                properties: {}
-            }
-        });
-
-        map.addLayer({
-            id: 'vehicle-layer',
-            type: 'symbol',
-            source: 'vehicle',
-            layout: {
-                'icon-image': carIconId,
-                'icon-size': 1.5,
-                'icon-rotation-alignment': 'map',
-                'icon-allow-overlap': true,
-                'icon-ignore-placement': true,
-                'icon-rotate': ['get', 'bearing']
-            },
-            paint: {
-                'icon-color': '#FFFFFF',
-                'icon-halo-color': '#000000',
-                'icon-halo-width': 1
-            }
-        });
-
-        const animator = new VehicleAnimator(map, route, 15000, onComplete);
+        const animator = new VehicleAnimator(map, route, 15000, onAnimationComplete);
         animator.start();
 
         return () => {
             animator.stop();
-            if(map.isStyleLoaded()){
+            if (map.isStyleLoaded()) {
                 if (map.getLayer('vehicle-layer')) map.removeLayer('vehicle-layer');
                 if (map.getSource('vehicle')) map.removeSource('vehicle');
-                if (map.hasImage(carIconId)) map.removeImage(carIconId);
             }
         };
-    });
+    };
 
-  }, [route, map, onComplete, carIconUrl]);
+
+    if (!map.hasImage(carIconId)) {
+        map.loadImage(carIconUrl, (error, image) => {
+            if (error) { console.error('Error loading car icon:', error); return; }
+            if (!image) { console.error('Image could not be loaded.'); return; }
+            if (!map.hasImage(carIconId)) {
+                map.addImage(carIconId, image, { sdf: true });
+            }
+            setupAndRunAnimation();
+        });
+    } else {
+        setupAndRunAnimation();
+    }
+    
+    // Cleanup is implicitly handled by the return function from setupAndRunAnimation
+  }, [route, map, onAnimationComplete, tripPhase, carIconUrl]);
 
 
   return (
@@ -174,7 +197,7 @@ export default function LiveTripView({ tripDetails, onPickupComplete, onTripComp
         )}
       </TripMap>
       <StatusBar text={statusBarText} />
-      <DriverInfoCard driver={tripDetails.driver} vehicle={tripDetails.vehicle} />
+      <DriverInfoCard driver={tripDetails.driver} vehicle={tripDetails.vehicle} tripPhase={tripPhase} onStartMainTrip={onStartMainTrip} />
     </div>
   );
 }

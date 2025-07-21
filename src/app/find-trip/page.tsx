@@ -32,7 +32,7 @@ export type TripDetails = {
 };
 
 export default function FindTripPage() {
-    const [tripState, setTripState] = useState<'idle' | 'booking' | 'pickup' | 'in_progress' | 'completed'>('idle');
+    const [tripState, setTripState] = useState<'idle' | 'booking' | 'pickup' | 'arrived' | 'in_progress' | 'completed'>('idle');
     const [tripDetails, setTripDetails] = useState<TripDetails | null>(null);
 
     const handleRequestTrip = (details: Omit<TripDetails, 'driver' | 'vehicle'>) => {
@@ -59,21 +59,25 @@ export default function FindTripPage() {
         setTripDetails(null);
     };
 
-    const handleNextRide = () => {
-        setTripState('idle');
-        setTripDetails(null);
+    const handleDriverArrived = () => {
+        console.log("DRIVER HAS ARRIVED. Transitioning to 'arrived' state.");
+        setTripState('arrived');
     };
     
-    const handlePickupComplete = () => {
-      console.log("DRIVER HAS ARRIVED. Transitioning to 'in_progress' state.");
-      setTripState('in_progress');
+    const handleStartMainTrip = () => {
+        console.log("USER CONFIRMED. Transitioning to 'in_progress' state.");
+        setTripState('in_progress');
     };
-    
+
     const handleTripComplete = () => {
         console.log("DESTINATION REACHED. Transitioning to 'completed' state.");
         setTripState('completed');
     };
-
+    
+    const handleNextRide = () => {
+        setTripState('idle');
+        setTripDetails(null);
+    };
 
     useEffect(() => {
         if (tripState === 'idle') return;
@@ -95,9 +99,11 @@ export default function FindTripPage() {
             case 'booking':
                 return tripDetails ? <BookingInProgressView tripDetails={tripDetails} onCancel={handleCancelBooking}/> : null;
             case 'pickup':
-                 return tripDetails ? <LiveTripView tripDetails={tripDetails} onPickupComplete={handlePickupComplete} tripPhase="pickup" /> : null;
+                 return tripDetails ? <LiveTripView tripDetails={tripDetails} onAnimationComplete={handleDriverArrived} tripPhase="pickup" /> : null;
+            case 'arrived':
+                 return tripDetails ? <LiveTripView tripDetails={tripDetails} tripPhase="arrived" onStartMainTrip={handleStartMainTrip} /> : null;
             case 'in_progress':
-                return tripDetails ? <LiveTripView tripDetails={tripDetails} onTripComplete={handleTripComplete} tripPhase="trip" /> : null;
+                return tripDetails ? <LiveTripView tripDetails={tripDetails} onAnimationComplete={handleTripComplete} tripPhase="trip" /> : null;
             case 'completed':
                 return tripDetails ? <TripCompletedView tripDetails={tripDetails} onNextRide={handleNextRide} /> : null;
             default:
