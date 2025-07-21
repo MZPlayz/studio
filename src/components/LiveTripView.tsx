@@ -9,7 +9,7 @@ import type { TripDetails } from '@/app/find-trip/page';
 import Image from 'next/image';
 import { Button } from './ui/button';
 import Link from 'next/link';
-import { VehicleAnimator } from '@/lib/VehicleAnimator';
+import * as turf from '@turf/turf';
 
 const carIcon =
   'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jYXIiPjxwYXRoIGQ9Ik0xNCAxNmwtNC00IDQtNE00IDE2YTggOCAwIDAgMCAxNiAwWiIvPjxwYXRoIGQ9Ik0xMiA0djhhNCA0IDAgMCAwIDQtNEg4Ii8+PC9zdmc+';
@@ -50,12 +50,16 @@ const DriverInfoCard = ({ driver, vehicle }: DriverInfoCardProps) => {
           </div>
         </div>
         <div className="flex space-x-2">
-          <Button size="icon" variant="outline" className="rounded-full h-12 w-12">
-            <MessageSquare className="h-6 w-6 text-gray-700" />
-          </Button>
-          <Button size="icon" variant="outline" className="rounded-full h-12 w-12">
-            <Phone className="h-6 w-6 text-gray-700" />
-          </Button>
+          <Link href="/support" passHref>
+            <Button size="icon" variant="outline" className="rounded-full h-12 w-12">
+              <MessageSquare className="h-6 w-6 text-gray-700" />
+            </Button>
+          </Link>
+          <a href={`tel:${driver.phone || ''}`}>
+            <Button size="icon" variant="outline" className="rounded-full h-12 w-12">
+              <Phone className="h-6 w-6 text-gray-700" />
+            </Button>
+          </a>
         </div>
       </div>
     </div>
@@ -73,8 +77,7 @@ interface LiveTripViewProps {
 export default function LiveTripView({ tripDetails, onPickupComplete, onTripComplete, tripPhase }: LiveTripViewProps) {
   const [route, setRoute] = useState<any>(null);
   const { current: map } = useMap();
-  const animatorRef = useRef<VehicleAnimator | null>(null);
-
+  
   const startCoords = tripPhase === 'pickup' ? tripDetails.driver.startLocation : tripDetails.currentLocation.coords;
   const endCoords = tripPhase === 'pickup' ? tripDetails.currentLocation.coords : tripDetails.destination.coords;
   const routeColor = tripPhase === 'pickup' ? '#FF6B35' : '#8A2BE2';
@@ -102,49 +105,47 @@ export default function LiveTripView({ tripDetails, onPickupComplete, onTripComp
   }, [startCoords, endCoords]);
 
   useEffect(() => {
-    if (!map || !route || !map.isStyleLoaded() || !onComplete) return;
+    if (!route || !onComplete) return;
 
-    // Clean up previous animation if it exists
-    if(animatorRef.current) {
-        animatorRef.current.stop();
-    }
-    if (map.getLayer('vehicle-layer')) map.removeLayer('vehicle-layer');
-    if (map.getSource('vehicle')) map.removeSource('vehicle');
-    
-    // Load car icon
-    map.loadImage(carIcon, (error, image) => {
-        if (error) { console.error('Error loading car icon:', error); return; }
-        if (!image) { console.error('Image data is null'); return; }
-        if (!map.hasImage('car-icon')) { map.addImage('car-icon', image, { sdf: true }); }
-        
-        // Add source and layer for the vehicle
-        if (!map.getSource('vehicle')) {
-            map.addSource('vehicle', {
-                type: 'geojson',
-                data: { type: 'Feature', geometry: { type: 'Point', coordinates: [] }, properties: {} }
-            });
+    const DURATION_MS = 15000;
+    let startTime: number | null = null;
+    let animationFrameId: number;
+
+    const routeLine = turf.lineString(route.coordinates);
+    const routeDistance = turf.length(routeLine, { units: 'kilometers' });
+
+    const frame = (currentTime: number) => {
+        if (!startTime) {
+            startTime = currentTime;
         }
-        if (!map.getLayer('vehicle-layer')) {
-            map.addLayer({
-                id: 'vehicle-layer', type: 'symbol', source: 'vehicle',
-                layout: {
-                    'icon-image': 'car-icon', 'icon-size': 1.5, 'icon-rotation-alignment': 'map',
-                    'icon-allow-overlap': true, 'icon-ignore-placement': true, 'icon-rotate': ['get', 'bearing']
-                },
-                paint: { 'icon-color': '#2962FF' }
-            });
+
+        const elapsedTime = currentTime - startTime;
+        let animationPhase = elapsedTime / DURATION_MS;
+
+        if (animationPhase > 1) {
+            onComplete();
+            return;
         }
+
+        const easedPhase = (1 - Math.cos(animationPhase * Math.PI)) / 2;
+        const pointOnLine = turf.along(routeLine, routeDistance * easedPhase, { units: 'kilometers' });
+        const currentCoords = pointOnLine.geometry.coordinates;
+
+        const lookAheadPoint = turf.along(routeLine, routeDistance * (easedPhase + 0.0001), { units: 'kilometers' });
+        const currentBearing = turf.bearing(pointOnLine, lookAheadPoint);
         
-        animatorRef.current = new VehicleAnimator(map, route, 15000, onComplete);
-        animatorRef.current.start();
-    });
+        console.log(`Frame: lat=${currentCoords[1]}, lng=${currentCoords[0]}, bearing=${currentBearing}`);
+
+        animationFrameId = requestAnimationFrame(frame);
+    };
+
+    animationFrameId = requestAnimationFrame(frame);
 
     return () => {
-        if (animatorRef.current) {
-          animatorRef.current.stop();
-        }
+        cancelAnimationFrame(animationFrameId);
     };
-  }, [route, map, onComplete]);
+
+  }, [route, onComplete]);
 
 
   return (
