@@ -6,7 +6,7 @@ const features = [
   { icon: Clock, label: 'বুকিং হিস্ট্রি', href: '/booking-history' },
   { icon: List, label: 'রাইডার লিস্ট', href: '/find-driver' },
   { icon: Plus, label: 'অ্যাড মানি', href: '/add-money' },
-  { icon: Send, label: 'সেন্ড মানি', href: '#' },
+  { icon: Send, label: 'সেন্ড মানি', href: '/send-money' },
   { icon: Headphones, label: 'সাপোর্ট', href: '#' },
   { icon: Wrench, label: 'রুলস', href: '#' },
   { icon: Gift, label: 'রেফারেল', href: '#' },
