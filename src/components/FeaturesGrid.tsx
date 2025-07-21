@@ -1,7 +1,7 @@
-import { Car, Clock, List, Plus, Send, Headphones, Wrench, Gift, History, CalendarCheck } from 'lucide-react';
+import { Car, Clock, List, Plus, Send, Headphones, Wrench, Gift, History, CalendarCheck, TrendingUp, UserPlus, Clipboard, Youtube } from 'lucide-react';
 import Link from 'next/link';
 
-const features = [
+const baseFeatures = [
   { icon: Car, label: 'গাড়ি বুকিং', href: '/trip-details' },
   { icon: Clock, label: 'বুকিং হিস্ট্রি', href: '/booking-history' },
   { icon: History, label: 'লেনদেন', href: '/transaction-history' },
@@ -12,9 +12,25 @@ const features = [
   { icon: Gift, label: 'রেফারেল', href: '/referrals' },
 ];
 
-export default function FeaturesGrid() {
+const agentFeatures = [
+    ...baseFeatures,
+    { icon: TrendingUp, label: 'ইনকাম হিস্ট্রি', href: '#' },
+    { icon: UserPlus, label: 'অ্যাকাউন্ট তৈরি', href: '#' },
+    { icon: Clipboard, label: 'তৈরি রেকর্ড', href: '#' },
+    { icon: Youtube, label: 'ট্রেনিং/গাইড', href: '#' }
+];
+
+
+interface FeaturesGridProps {
+    userType?: 'customer' | 'agent';
+}
+
+export default function FeaturesGrid({ userType = 'customer' }: FeaturesGridProps) {
+  const features = userType === 'agent' ? agentFeatures : baseFeatures;
+  const gridClasses = userType === 'agent' ? 'grid-cols-4 grid-rows-3' : 'grid-cols-4';
+
   return (
-    <div className="grid grid-cols-4 gap-4 text-center">
+    <div className={`grid ${gridClasses} gap-4 text-center`}>
       {features.map((feature, index) => (
         <div key={index} className="flex flex-col items-center space-y-2">
           <Link href={feature.href} passHref>
