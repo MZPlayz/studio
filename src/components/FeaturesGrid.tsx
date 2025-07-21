@@ -7,7 +7,7 @@ const features = [
   { icon: List, label: 'রাইডার লিস্ট', href: '/find-driver' },
   { icon: Plus, label: 'অ্যাড মানি', href: '/add-money' },
   { icon: Send, label: 'সেন্ড মানি', href: '/send-money' },
-  { icon: Headphones, label: 'সাপোর্ট', href: '#' },
+  { icon: Headphones, label: 'সাপোর্ট', href: '/support' },
   { icon: Wrench, label: 'রুলস', href: '#' },
   { icon: Gift, label: 'রেফারেল', href: '#' },
 ];
