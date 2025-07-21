@@ -4,12 +4,14 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-import { ArrowLeft, ChevronDown, MapPin, Calendar, Clock, User, Search, Plus, Minus, Send, CheckCircle } from 'lucide-react';
+import { ArrowLeft, MapPin, Calendar, Clock, User, Search, Plus, Minus, Send, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from 'next/link';
+import TripMap from '@/components/TripMap';
+
 
 export default function TripDetailsPage() {
   const searchParams = useSearchParams();
@@ -19,6 +21,11 @@ export default function TripDetailsPage() {
   const [driverMode, setDriverMode] = useState('auto');
   const [dayOrNight, setDayOrNight] = useState('day');
   const [selectedDriver, setSelectedDriver] = useState<any>(null);
+
+  // Hardcoded coordinates for Dhaka to Chittagong for testing
+  const [pickupCoords, setPickupCoords] = useState({ lng: 90.4125, lat: 23.8103 });
+  const [dropoffCoords, setDropoffCoords] = useState({ lng: 91.8123, lat: 22.3569 });
+
 
   useEffect(() => {
     const driverParam = searchParams.get('driver');
@@ -53,7 +60,7 @@ export default function TripDetailsPage() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          console.log('Lat:', position.coords.latitude, 'Lng:', position.coords.longitude);
+          setPickupCoords({lng: position.coords.longitude, lat: position.coords.latitude})
         },
         (error) => {
           console.error("Error getting location:", error);
@@ -263,15 +270,10 @@ export default function TripDetailsPage() {
                   </Link>
                 </div>
             )}
-            <Card className="overflow-hidden">
+            <Card className="overflow-hidden rounded-xl">
               <CardContent className="p-0">
                 <div className="relative aspect-[4/5] w-full bg-gray-200">
-                    <Image src="https://placehold.co/600x800.png" layout="fill" objectFit="cover" alt="Map placeholder" data-ai-hint="city map" />
-                    <div className="absolute right-4 bottom-4 flex flex-col space-y-2 z-10">
-                        <Button size="icon" className="bg-white text-black shadow-md hover:bg-gray-100 rounded-full h-10 w-10"><Plus/></Button>
-                        <Button size="icon" className="bg-white text-black shadow-md hover:bg-gray-100 rounded-full h-10 w-10"><Minus/></Button>
-                        <Button size="icon" className="bg-white text-black shadow-md hover:bg-gray-100 rounded-full h-10 w-10"><Send/></Button>
-                    </div>
+                  <TripMap pickupCoords={pickupCoords} dropoffCoords={dropoffCoords} />
                 </div>
               </CardContent>
             </Card>
@@ -287,3 +289,4 @@ export default function TripDetailsPage() {
     </div>
   );
 }
+
