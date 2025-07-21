@@ -11,10 +11,7 @@ import Image from 'next/image';
 import { Button } from './ui/button';
 import Link from 'next/link';
 import * as turf from '@turf/turf';
-
-const carIcon =
-  'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jYXIiPjxwYXRoIGQ9Ik0xNCAxNmwtNC00IDQtNE00IDE2YTggOCAwIDAgMCAxNiAwWiIvPjxwYXRoIGQ9Ik0xMiA0djhhNCA0IDAgMCAwIDQtNEg4Ii8+PC9zdmc+';
-
+import { VehicleAnimator } from '@/lib/VehicleAnimator';
 
 const StatusBar = ({ text }: { text: string }) => (
     <div className="absolute top-0 left-0 right-0 p-4 z-10">
@@ -51,16 +48,16 @@ const DriverInfoCard = ({ driver, vehicle }: DriverInfoCardProps) => {
           </div>
         </div>
         <div className="flex space-x-2">
-          <Link href="/support" passHref>
-            <Button size="icon" variant="outline" className="rounded-full h-12 w-12">
-              <MessageSquare className="h-6 w-6 text-gray-700" />
-            </Button>
-          </Link>
-          <a href={`tel:${driver.phone || ''}`}>
-            <Button size="icon" variant="outline" className="rounded-full h-12 w-12">
-              <Phone className="h-6 w-6 text-gray-700" />
-            </Button>
-          </a>
+            <a href={`tel:${driver.phone || ''}`}>
+                <Button size="icon" variant="outline" className="rounded-full h-12 w-12">
+                    <Phone className="h-6 w-6 text-gray-700" />
+                </Button>
+            </a>
+            <Link href="/support" passHref>
+                <Button size="icon" variant="outline" className="rounded-full h-12 w-12">
+                    <MessageSquare className="h-6 w-6 text-gray-700" />
+                </Button>
+            </Link>
         </div>
       </div>
     </div>
@@ -84,6 +81,7 @@ export default function LiveTripView({ tripDetails, onPickupComplete, onTripComp
   const routeColor = tripPhase === 'pickup' ? '#FF6B35' : '#8A2BE2';
   const statusBarText = tripPhase === 'pickup' ? "Your driver is on the way!" : `Heading to ${tripDetails.destination.address}`;
   const onComplete = tripPhase === 'pickup' ? onPickupComplete : onTripComplete;
+  const carIconUrl = '/car-icon.svg';
 
   useEffect(() => {
     async function fetchTripPath() {
@@ -106,47 +104,64 @@ export default function LiveTripView({ tripDetails, onPickupComplete, onTripComp
   }, [startCoords, endCoords]);
 
   useEffect(() => {
-    if (!route || !onComplete) return;
+    if (!route || !map?.isStyleLoaded() || !onComplete) return;
 
-    const DURATION_MS = 15000;
-    let startTime: number | null = null;
-    let animationFrameId: number;
+    if (map.getSource('vehicle')) return;
 
-    const routeLine = turf.lineString(route.coordinates);
-    const routeDistance = turf.length(routeLine, { units: 'kilometers' });
+    const carIconId = 'car-icon-image';
 
-    const frame = (currentTime: number) => {
-        if (!startTime) {
-            startTime = currentTime;
+    map.loadImage(carIconUrl, (error, image) => {
+        if (error) { console.error('Error loading car icon:', error); return; }
+        if (!image) { console.error('Image could not be loaded.'); return; }
+        if (!map.hasImage(carIconId)) {
+            map.addImage(carIconId, image, { sdf: true });
         }
-
-        const elapsedTime = currentTime - startTime;
-        let animationPhase = elapsedTime / DURATION_MS;
-
-        if (animationPhase > 1) {
-            onComplete();
-            return;
-        }
-
-        const easedPhase = (1 - Math.cos(animationPhase * Math.PI)) / 2;
-        const pointOnLine = turf.along(routeLine, routeDistance * easedPhase, { units: 'kilometers' });
-        const currentCoords = pointOnLine.geometry.coordinates;
-
-        const lookAheadPoint = turf.along(routeLine, routeDistance * (easedPhase + 0.0001), { units: 'kilometers' });
-        const currentBearing = turf.bearing(pointOnLine, lookAheadPoint);
         
-        console.log(`Frame: lat=${currentCoords[1]}, lng=${currentCoords[0]}, bearing=${currentBearing}`);
+        map.addSource('vehicle', {
+            type: 'geojson',
+            data: {
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: route.coordinates[0]
+                },
+                properties: {}
+            }
+        });
 
-        animationFrameId = requestAnimationFrame(frame);
-    };
+        map.addLayer({
+            id: 'vehicle-layer',
+            type: 'symbol',
+            source: 'vehicle',
+            layout: {
+                'icon-image': carIconId,
+                'icon-size': 1.5,
+                'icon-rotation-alignment': 'map',
+                'icon-allow-overlap': true,
+                'icon-ignore-placement': true,
+                'icon-rotate': ['get', 'bearing']
+            },
+            paint: {
+                'icon-color': '#FFFFFF',
+                'icon-halo-color': '#000000',
+                'icon-halo-width': 1
+            }
+        });
 
-    animationFrameId = requestAnimationFrame(frame);
+        const animator = new VehicleAnimator(map, route, 15000, onComplete);
+        animator.start();
 
-    return () => {
-        cancelAnimationFrame(animationFrameId);
-    };
+        return () => {
+            animator.stop();
+            if(map.isStyleLoaded()){
+                if (map.getLayer('vehicle-layer')) map.removeLayer('vehicle-layer');
+                if (map.getSource('vehicle')) map.removeSource('vehicle');
+                if (map.hasImage(carIconId)) map.removeImage(carIconId);
+            }
+        };
+    });
 
-  }, [route, onComplete]);
+  }, [route, map, onComplete, carIconUrl]);
 
 
   return (
@@ -164,7 +179,6 @@ export default function LiveTripView({ tripDetails, onPickupComplete, onTripComp
   );
 }
 
-// Minimal map component to provide context
 const TripMap = ({ children, pickupCoords, dropoffCoords }: { children: React.ReactNode, pickupCoords: any, dropoffCoords: any }) => {
     const mapRef = useRef<MapRef>(null);
 
@@ -191,5 +205,3 @@ const TripMap = ({ children, pickupCoords, dropoffCoords }: { children: React.Re
         </Map>
     )
 }
-
-  
