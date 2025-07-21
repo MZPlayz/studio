@@ -1,9 +1,12 @@
 import type {Metadata} from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
 
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+
 export const metadata: Metadata = {
-  title: 'RideGo',
-  description: 'RideGo - Your trusted ridesharing partner in Dhaka.',
+  title: 'Ridemap',
+  description: 'Your trusted ridesharing partner in Dhaka.',
 };
 
 export default function RootLayout({
@@ -13,12 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
-      </head>
-      <body>{children}</body>
+      <body className={`${inter.variable}`}>{children}</body>
     </html>
   );
 }
+
+    
