@@ -3,10 +3,9 @@
 
 import { useState, useEffect } from 'react';
 import { useMap, Source, Layer } from 'react-map-gl';
-import * as turf from '@turf/turf';
 import type { TripDetails } from '@/app/find-trip/page';
 import TripMap from './TripMap';
-import { VehicleAnimator } from '@/lib/Animator';
+import { VehicleAnimator } from '@/lib/VehicleAnimator';
 
 const carIcon =
   'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jYXIiPjxwYXRoIGQ9Ik0xNCAxNmwtNC00IDQtNE00IDE2YTggOCAwIDAgMCAxNiAwWiIvPjxwYXRoIGQ9Ik0xMiA0djhhNCA0IDAgMCAwIDQtNEg4Ii8+PC9zdmc+';
@@ -43,7 +42,7 @@ export default function InProgressView({ tripDetails, onTripComplete }: { tripDe
 
   useEffect(() => {
     if (!map || !route || !map.isStyleLoaded()) return;
-    if (map.getSource('vehicle')) return; // Avoid re-adding if already present
+    if (map.getSource('vehicle')) return;
 
     map.loadImage(carIcon, (error, image) => {
         if (error) { console.error('Error loading car icon:', error); return; }
@@ -82,18 +81,19 @@ export default function InProgressView({ tripDetails, onTripComplete }: { tripDe
                 }
             });
         }
+    
+        const animator = new VehicleAnimator(map, route.geometry, 15000, onTripComplete);
+        animator.start();
+
+        return () => {
+          animator.stop();
+          if (map && map.isStyleLoaded()) {
+            if (map.getLayer('vehicle-layer')) map.removeLayer('vehicle-layer');
+            if (map.getSource('vehicle')) map.removeSource('vehicle');
+          }
+        };
     });
 
-    const animator = new VehicleAnimator(map, route.geometry, 10000, onTripComplete);
-    animator.start();
-
-    return () => {
-      animator.stop();
-      if (map && map.isStyleLoaded()) {
-        if (map.getLayer('vehicle-layer')) map.removeLayer('vehicle-layer');
-        if (map.getSource('vehicle')) map.removeSource('vehicle');
-      }
-    };
   }, [route, map, tripDetails.currentLocation.coords, onTripComplete]);
 
   return (
