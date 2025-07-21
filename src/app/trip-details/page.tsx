@@ -54,8 +54,7 @@ export default function TripDetailsPage() {
   useEffect(() => {
     // Set initial coordinates for map demonstration
     setCurrentLocation({ address: 'Dhaka', coords: { lng: 90.4125, lat: 23.8103 } });
-    setDestination({ address: 'Chittagong', coords: { lng: 91.8123, lat: 22.3569 } });
-
+    
     const driverParam = searchParams.get('driver');
     if (driverParam) {
       try {
@@ -77,7 +76,7 @@ export default function TripDetailsPage() {
           
           // Reverse Geocoding
           const accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
-          const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${accessToken}`;
+          const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${accessToken}&country=BD&language=en`;
           
           try {
             const response = await fetch(url);
@@ -101,7 +100,8 @@ export default function TripDetailsPage() {
     setDestination({ ...destination, address: query });
     if (query.length > 2) {
       const accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
-      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${accessToken}&autocomplete=true`;
+      const dhakaCoords = '90.4125,23.8103';
+      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${accessToken}&country=BD&proximity=${dhakaCoords}&language=en&autocomplete=true`;
       try {
         const response = await fetch(url);
         const data = await response.json();
