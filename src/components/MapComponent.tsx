@@ -1,32 +1,30 @@
+// /src/components/MapComponent.tsx
 
 'use client';
 
-import { APIProvider, Map } from '@vis.gl/react-google-maps';
+import { Map } from 'react-map-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
-export default function MapComponent() {
-    const position = { lat: 23.8103, lng: 90.4125 };
+// Define the props interface for type safety
+interface MapComponentProps {
+    cabs?: { id: number; lat: number; lng: number }[]; // Make it ready for our next task
+}
 
-    if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) {
-        return (
-            <div className="flex h-screen items-center justify-center bg-gray-100">
-                <div className="text-center p-8 bg-white rounded-lg shadow-md">
-                    <h2 className="text-2xl font-bold text-red-600 mb-4">Configuration Error</h2>
-                    <p className="text-gray-700">Google Maps API key is missing.</p>
-                    <p className="text-sm text-gray-500 mt-2">Please add NEXT_PUBLIC_GOOGLE_MAPS_API_KEY to your environment variables.</p>
-                </div>
-            </div>
-        );
-    }
+export default function MapComponent({ cabs }: MapComponentProps) {
+    const initialViewState = {
+        longitude: 90.4125, // Centered on Dhaka
+        latitude: 23.8103,
+        zoom: 12,
+    };
 
     return (
-        <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
-            <Map
-                style={{width: '100vw', height: '100vh'}}
-                defaultCenter={position}
-                defaultZoom={12}
-                gestureHandling={'greedy'}
-                disableDefaultUI={true}
-            />
-        </APIProvider>
+        <Map
+            mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+            initialViewState={initialViewState}
+            style={{ width: '100vw', height: '100vh' }}
+            mapStyle="mapbox://styles/mapbox/streets-v11"
+        >
+            {/* We will add our <Marker> components here in the next step */}
+        </Map>
     );
 }
