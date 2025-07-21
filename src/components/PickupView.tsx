@@ -90,7 +90,7 @@ export default function PickupView({ tripDetails }: PickupViewProps) {
     return () => {
         if(animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
     }
-  }, [pickupPath]);
+  }, [pickupPath, animatedProps.bearing]);
 
   return (
     <div className="relative h-screen w-screen">

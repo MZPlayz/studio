@@ -42,7 +42,6 @@ export default function InProgressView({ tripDetails, onTripComplete }: { tripDe
 
   useEffect(() => {
     if (!map || !route || !map.isStyleLoaded()) return;
-    if (map.getSource('vehicle')) return;
 
     map.loadImage(carIcon, (error, image) => {
         if (error) { console.error('Error loading car icon:', error); return; }
@@ -87,10 +86,8 @@ export default function InProgressView({ tripDetails, onTripComplete }: { tripDe
 
         return () => {
           animator.stop();
-          if (map && map.isStyleLoaded()) {
-            if (map.getLayer('vehicle-layer')) map.removeLayer('vehicle-layer');
-            if (map.getSource('vehicle')) map.removeSource('vehicle');
-          }
+          if (map.getLayer('vehicle-layer')) map.removeLayer('vehicle-layer');
+          if (map.getSource('vehicle')) map.removeSource('vehicle');
         };
     });
 
@@ -127,3 +124,4 @@ export default function InProgressView({ tripDetails, onTripComplete }: { tripDe
     </div>
   );
 }
+

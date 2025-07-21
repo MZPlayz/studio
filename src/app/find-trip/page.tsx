@@ -5,8 +5,7 @@ import { useState, useEffect } from 'react';
 import { MapProvider } from 'react-map-gl';
 import TripDetailsPage from '@/components/TripDetailsPage';
 import BookingInProgressView from '@/components/BookingInProgressView';
-import DriverAssignedView from '@/components/DriverAssignedView';
-import InProgressView from '@/components/InProgressView';
+import LiveTripView from '@/components/LiveTripView';
 import TripCompletedView from '@/components/TripCompletedView';
 
 export type TripDetails = {
@@ -96,9 +95,9 @@ export default function FindTripPage() {
             case 'booking':
                 return tripDetails ? <BookingInProgressView tripDetails={tripDetails} onCancel={handleCancelBooking}/> : null;
             case 'pickup':
-                return tripDetails ? <DriverAssignedView tripDetails={tripDetails} onPickupComplete={handlePickupComplete} /> : null;
+                 return tripDetails ? <LiveTripView tripDetails={tripDetails} onPickupComplete={handlePickupComplete} tripPhase="pickup" /> : null;
             case 'in_progress':
-                return tripDetails ? <InProgressView tripDetails={tripDetails} onTripComplete={handleTripComplete} /> : null;
+                return tripDetails ? <LiveTripView tripDetails={tripDetails} onTripComplete={handleTripComplete} tripPhase="trip" /> : null;
             case 'completed':
                 return tripDetails ? <TripCompletedView tripDetails={tripDetails} onNextRide={handleNextRide} /> : null;
             default:

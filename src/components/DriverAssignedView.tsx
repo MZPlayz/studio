@@ -44,7 +44,6 @@ export default function DriverAssignedView({ tripDetails, onPickupComplete }: { 
 
   useEffect(() => {
     if (!map || !route || !map.isStyleLoaded()) return;
-    if (map.getSource('vehicle')) return;
 
     map.loadImage(carIcon, (error, image) => {
         if (error) { console.error('Error loading car icon:', error); return; }
@@ -128,3 +127,4 @@ export default function DriverAssignedView({ tripDetails, onPickupComplete }: { 
     </div>
   );
 }
+
