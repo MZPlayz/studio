@@ -5,18 +5,20 @@ import { ArrowLeft } from 'lucide-react';
 
 interface RegistrationFormProps {
   onSuccess: () => void;
+  onBack: () => void;
+  referralCode?: string;
 }
 
-export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
+export default function RegistrationForm({ onSuccess, onBack, referralCode }: RegistrationFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSuccess();
   };
 
   return (
-    <div className="flex h-screen flex-col p-4">
+    <div className="flex h-screen flex-col p-4 bg-white">
       <header className="relative flex items-center justify-center py-4">
-        <button className="absolute left-0">
+        <button className="absolute left-0" onClick={onBack}>
           <ArrowLeft className="h-6 w-6" />
         </button>
         <h1 className="text-xl font-bold">Register</h1>
@@ -89,7 +91,9 @@ export default function RegistrationForm({ onSuccess }: RegistrationFormProps) {
                 type="text"
                 id="referral"
                 placeholder="Enter referral code"
-                className="mt-1 block w-full rounded-md border-none bg-gray-100 p-3 shadow-sm focus:ring-purple-500"
+                value={referralCode}
+                disabled={!!referralCode}
+                className="mt-1 block w-full rounded-md border-none bg-gray-100 p-3 shadow-sm focus:ring-purple-500 disabled:bg-gray-200 disabled:text-gray-500"
               />
             </div>
           </div>

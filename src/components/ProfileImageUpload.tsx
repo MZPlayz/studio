@@ -7,13 +7,14 @@ import Image from 'next/image';
 interface ProfileImageUploadProps {
   onNext: () => void;
   onSkip: () => void;
+  onBack: () => void;
 }
 
-export default function ProfileImageUpload({ onNext, onSkip }: ProfileImageUploadProps) {
+export default function ProfileImageUpload({ onNext, onSkip, onBack }: ProfileImageUploadProps) {
   return (
     <div className="flex h-screen flex-col p-4">
       <header className="relative flex items-center justify-center py-4">
-        <button className="absolute left-0">
+        <button className="absolute left-0" onClick={onBack}>
           <ArrowLeft className="h-6 w-6" />
         </button>
         <h1 className="text-xl font-bold">Profile Image</h1>

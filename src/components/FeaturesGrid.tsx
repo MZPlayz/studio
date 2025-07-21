@@ -16,7 +16,7 @@ const baseFeatures = [
 const agentFeatures = [
     ...baseFeatures,
     { icon: TrendingUp, label: 'ইনকাম হিস্ট্রি', href: '/income-history' },
-    { icon: UserPlus, label: 'অ্যাকাউন্ট তৈরি', href: '#' },
+    { icon: UserPlus, label: 'অ্যাকাউন্ট তৈরি', href: '/create-account' },
     { icon: Clipboard, label: 'তৈরি রেকর্ড', href: '#' },
     { icon: Youtube, label: 'ট্রেনিং/গাইড', href: '#' }
 ];
