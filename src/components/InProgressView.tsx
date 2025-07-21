@@ -7,12 +7,9 @@ import type { TripDetails } from '@/app/find-trip/page';
 import { Marker } from 'react-map-gl';
 import * as turf from '@turf/turf';
 import VehicleMarker from './VehicleMarker';
+import { MapPin } from 'lucide-react';
 
-interface InProgressViewProps {
-  tripDetails: TripDetails;
-}
-
-const ANIMATION_DURATION = 10000; // 10 seconds
+const TRIP_ANIMATION_DURATION = 10000; // 10 seconds
 
 export default function InProgressView({ tripDetails }: InProgressViewProps) {
   const [tripPath, setTripPath] = useState<any>(null);
@@ -56,7 +53,9 @@ export default function InProgressView({ tripDetails }: InProgressViewProps) {
 
     const frame = (currentTime: number) => {
         if (!startTime) startTime = currentTime;
-        const animationPhase = (currentTime - startTime) / ANIMATION_DURATION;
+        const elapsedTime = currentTime - startTime;
+        const animationPhase = elapsedTime / TRIP_ANIMATION_DURATION;
+        const easedPhase = (1 - Math.cos(animationPhase * Math.PI)) / 2;
 
         if (animationPhase > 1) {
             const finalPosition = tripPath.geometry.coordinates[tripPath.geometry.coordinates.length - 1];
@@ -64,12 +63,12 @@ export default function InProgressView({ tripDetails }: InProgressViewProps) {
             return;
         }
 
-        const pointOnLine = turf.along(routeLine, totalDistance * animationPhase, { units: 'kilometers' });
+        const pointOnLine = turf.along(routeLine, totalDistance * easedPhase, { units: 'kilometers' });
         const currentPosition = pointOnLine.geometry.coordinates;
 
         let bearing = animatedProps.bearing;
-        if (animationPhase < 1) {
-            const nextPoint = turf.along(routeLine, totalDistance * (animationPhase + 0.001), { units: 'kilometers' });
+        if (easedPhase < 1) {
+            const nextPoint = turf.along(routeLine, totalDistance * (easedPhase + 0.0001), { units: 'kilometers' });
             bearing = turf.bearing(pointOnLine, nextPoint);
         }
 
@@ -86,7 +85,7 @@ export default function InProgressView({ tripDetails }: InProgressViewProps) {
     return () => {
         if(animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
     }
-}, [tripPath]);
+  }, [tripPath]);
 
 
   return (
@@ -102,10 +101,16 @@ export default function InProgressView({ tripDetails }: InProgressViewProps) {
               longitude={animatedProps.position.lng}
               latitude={animatedProps.position.lat}
               anchor="center"
+              rotationAlignment="map"
               rotation={animatedProps.bearing}
           >
               <VehicleMarker type={tripDetails.vehicle.type} />
           </Marker>
+        )}
+        {tripDetails.destination.coords && (
+             <Marker longitude={tripDetails.destination.coords.lng} latitude={tripDetails.destination.coords.lat} anchor="bottom">
+                <MapPin className="h-10 w-10 text-red-500 fill-current" />
+            </Marker>
         )}
       </TripMap>
       <div className="absolute bottom-0 left-0 right-0 bg-white p-6 rounded-t-2xl shadow-2xl">
