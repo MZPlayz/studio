@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Phone, MessageSquare, Star } from 'lucide-react';
 import { Button } from './ui/button';
 import type { TripDetails } from '@/app/find-trip/page';
+import Link from 'next/link';
 
 interface DriverInfoCardProps {
   driver: TripDetails['driver'];
@@ -32,12 +33,16 @@ export default function DriverInfoCard({ driver, vehicle }: DriverInfoCardProps)
           </div>
         </div>
         <div className="flex space-x-2">
-          <Button size="icon" variant="outline" className="rounded-full h-12 w-12">
-            <MessageSquare className="h-6 w-6 text-gray-700" />
-          </Button>
-          <Button size="icon" variant="outline" className="rounded-full h-12 w-12">
-            <Phone className="h-6 w-6 text-gray-700" />
-          </Button>
+          <Link href="/support" passHref>
+            <Button size="icon" variant="outline" className="rounded-full h-12 w-12">
+              <MessageSquare className="h-6 w-6 text-gray-700" />
+            </Button>
+          </Link>
+          <a href={`tel:${driver.phone || ''}`}>
+            <Button size="icon" variant="outline" className="rounded-full h-12 w-12">
+              <Phone className="h-6 w-6 text-gray-700" />
+            </Button>
+          </a>
         </div>
       </div>
     </div>
