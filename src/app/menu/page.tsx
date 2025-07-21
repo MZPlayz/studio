@@ -40,7 +40,7 @@ export default function MenuPage() {
     { icon: Globe, text: 'ভাষা পরিবর্তন', href: '#' },
     { icon: FileText, text: 'রুলস ও নির্দেশনা', href: '#' },
     { icon: HelpCircle, text: 'FAQ সাধারণ প্রশ্নের উত্তর', href: '#' },
-    { icon: Shield, text: 'আইডেন্টি ভেরিফিকেশন', href: '#' },
+    { icon: Shield, text: 'আইডেন্টি ভেরিফিকেশন', href: '/identity-verification' },
     { icon: Award, text: 'মনিটাইজেশন', href: '#' },
     { icon: LogOut, text: 'লগ আউট', href: '#' },
   ];
