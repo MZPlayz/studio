@@ -4,6 +4,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Map, Marker, Source, Layer, NavigationControl } from 'react-map-gl';
 import type { MapRef } from 'react-map-gl';
+import mapboxgl from 'mapbox-gl';
 import { MapPin } from 'lucide-react';
 
 interface Coords {
@@ -32,15 +33,21 @@ export default function TripMap({ pickupCoords, dropoffCoords }: TripMapProps) {
           if (data.routes && data.routes.length > 0) {
             const routeData = data.routes[0];
             const routeGeoJSON = {
-                type: 'Feature',
+                type: 'Feature' as const,
                 properties: {},
                 geometry: routeData.geometry
             };
             setRoute(routeGeoJSON);
 
-            const bounds = routeData.geometry.coordinates.reduce((bounds, coord) => {
-              return bounds.extend(coord);
-            }, new mapboxgl.LngLatBounds(routeData.geometry.coordinates[0], routeData.geometry.coordinates[0]));
+            const coordinates = routeData.geometry.coordinates;
+            const bounds = new mapboxgl.LngLatBounds(
+              coordinates[0],
+              coordinates[0]
+            );
+
+            for (const coord of coordinates) {
+              bounds.extend(coord);
+            }
 
             mapRef.current?.fitBounds(bounds, {
               padding: 60,
