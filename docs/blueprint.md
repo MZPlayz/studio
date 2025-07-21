@@ -2,9 +2,9 @@
 
 ## Core Features:
 
-- Basic Map Integration: Display a full-screen Google Map centered on Dhaka, Bangladesh.
+- Basic Map Integration: Display a full-screen Mapbox centered on Dhaka, Bangladesh.
 - API Key Management: Load the Ma using an environment variable for the API key.
-- UI Control Removal: Disable default Google Maps UI controls.
+- UI Control Removal: Disable default Mapbox UI controls.
 
 ## Style Guidelines:
 
