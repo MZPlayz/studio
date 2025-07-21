@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Map, Marker, Source, Layer, useMap } from 'react-map-gl';
+import { Map, Marker, Source, Layer, useMap, LngLatBounds } from 'react-map-gl';
 import type { MapRef } from 'react-map-gl';
 import { MapPin, Phone, MessageSquare, Star } from 'lucide-react';
 import type { TripDetails } from '@/app/find-trip/page';
@@ -169,7 +169,7 @@ const TripMap = ({ children, pickupCoords, dropoffCoords }: { children: React.Re
 
     useEffect(() => {
         if (mapRef.current && pickupCoords && dropoffCoords) {
-            const bounds = new (window as any).mapboxgl.LngLatBounds();
+            const bounds = new LngLatBounds();
             bounds.extend([pickupCoords.lng, pickupCoords.lat]);
             bounds.extend([dropoffCoords.lng, dropoffCoords.lat]);
             mapRef.current.fitBounds(bounds, { padding: 80, duration: 1000 });
