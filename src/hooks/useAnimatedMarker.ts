@@ -18,7 +18,8 @@ function useAnimatedValue(targetValue: number, duration = 2000) {
     startValueRef.current = currentValue;
 
     const animate = (currentTime: number) => {
-      const elapsedTime = currentTime - (startTimeRef.current ?? 0);
+      if (!startTimeRef.current) return;
+      const elapsedTime = currentTime - startTimeRef.current;
       const progress = Math.min(elapsedTime / duration, 1);
       
       // Simple linear interpolation

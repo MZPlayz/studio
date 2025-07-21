@@ -30,7 +30,7 @@ const vehicleClasses = {
 };
 
 interface TripDetailsPageProps {
-  onRequestTrip: (details: TripDetails) => void;
+  onRequestTrip: (details: Omit<TripDetails, 'driverStartLocation' | 'vehicle'>) => void;
 }
 
 export default function TripDetailsPage({ onRequestTrip }: TripDetailsPageProps) {
@@ -42,8 +42,8 @@ export default function TripDetailsPage({ onRequestTrip }: TripDetailsPageProps)
   const [vehicleClass, setVehicleClass] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [currentLocation, setCurrentLocation] = useState<{ address: string; coords: { lng: number; lat: number } | null }>({ address: '', coords: {lng: 90.4125, lat: 23.8103} });
-  const [destination, setDestination] = useState<{ address: string; coords: { lng: number; lat: number } | null }>({ address: '', coords: {lng: 91.8125, lat: 22.3569} });
+  const [currentLocation, setCurrentLocation] = useState<{ address: string; coords: { lng: number; lat: number } | null }>({ address: '', coords: null });
+  const [destination, setDestination] = useState<{ address: string; coords: { lng: number; lat: number } | null }>({ address: '', coords: null });
   const [travelDate, setTravelDate] = useState<Date | null>(new Date());
   const [travelTime, setTravelTime] = useState('');
   const [dayOrNight, setDayOrNight] = useState('day');
@@ -126,7 +126,7 @@ export default function TripDetailsPage({ onRequestTrip }: TripDetailsPageProps)
   
   const handleStartTrip = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const tripData: TripDetails = {
+    const tripData = {
         vehicleType,
         vehicleClass,
         name,

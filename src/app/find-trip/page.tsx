@@ -23,16 +23,27 @@ export type TripDetails = {
     numTravelers: string;
     driverMode: string;
     selectedDriver: any;
+    driverStartLocation: { lat: number; lng: number };
+    vehicle: { type: 'sedan' | 'suv' | 'bike'; model: string; };
 };
 
 export default function FindTripPage() {
     const [tripState, setTripState] = useState<'idle' | 'booking' | 'pickup' | 'in_progress' | 'completed'>('idle');
     const [tripDetails, setTripDetails] = useState<TripDetails | null>(null);
 
-    const handleRequestTrip = (details: TripDetails) => {
-        setTripDetails(details);
+    const handleRequestTrip = (details: Omit<TripDetails, 'driverStartLocation' | 'vehicle'>) => {
+        const fullTripDetails: TripDetails = {
+            ...details,
+            driverStartLocation: { lat: 23.795, lng: 90.385 }, // Simulated driver start
+            vehicle: {
+              type: 'sedan', // or 'suv', 'bike'
+              model: 'Toyota Prius'
+            }
+        };
+
+        setTripDetails(fullTripDetails);
         setTripState('booking');
-        console.log("Transitioning to booking state with details:", details);
+        console.log("Transitioning to booking state with details:", fullTripDetails);
     };
     
     const handleCancelBooking = () => {
@@ -60,7 +71,7 @@ export default function FindTripPage() {
             const timer = setTimeout(() => {
                 console.log("Mock System: Driver has arrived! Transitioning to IN_PROGRESS state.");
                 setTripState('in_progress');
-            }, 6000);
+            }, 12000); // Increased duration to allow for animation
             return () => clearTimeout(timer);
         }
         
@@ -68,7 +79,7 @@ export default function FindTripPage() {
             const timer = setTimeout(() => {
                 console.log("Mock System: Destination reached! Transitioning to COMPLETED state.");
                 setTripState('completed');
-            }, 8000);
+            }, 12000); // Increased duration to allow for animation
             return () => clearTimeout(timer);
         }
     }, [tripState]);
