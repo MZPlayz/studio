@@ -41,7 +41,7 @@ export default function MenuPage() {
     { icon: FileText, text: 'রুলস ও নির্দেশনা', href: '#' },
     { icon: HelpCircle, text: 'FAQ সাধারণ প্রশ্নের উত্তর', href: '#' },
     { icon: Shield, text: 'আইডেন্টি ভেরিফিকেশন', href: '/identity-verification' },
-    { icon: Award, text: 'মনিটাইজেশন', href: '#' },
+    { icon: Award, text: 'মনিটাইজেশন', href: '/monetization' },
     { icon: LogOut, text: 'লগ আউট', href: '#' },
   ];
 
