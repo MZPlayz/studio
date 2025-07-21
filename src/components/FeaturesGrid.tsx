@@ -9,7 +9,7 @@ const features = [
   { icon: Send, label: 'সেন্ড মানি', href: '/send-money' },
   { icon: Headphones, label: 'সাপোর্ট', href: '/support' },
   { icon: Wrench, label: 'রুলস', href: '#' },
-  { icon: Gift, label: 'রেফারেল', href: '#' },
+  { icon: Gift, label: 'রেফারেল', href: '/referrals' },
 ];
 
 export default function FeaturesGrid() {
