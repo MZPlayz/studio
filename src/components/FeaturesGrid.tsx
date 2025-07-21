@@ -3,7 +3,7 @@ import { Car, Clock, List, Plus, Send, Headphones, Wrench, Gift, History, Calend
 import Link from 'next/link';
 
 const baseFeatures = [
-  { icon: Car, label: 'গাড়ি বুকিং', href: '/trip-details' },
+  { icon: Car, label: 'গাড়ি বুকিং', href: '/find-trip' },
   { icon: Clock, label: 'বুকিং হিস্ট্রি', href: '/booking-history' },
   { icon: History, label: 'লেনদেন', href: '/transaction-history' },
   { icon: Plus, label: 'অ্যাড মানি', href: '/add-money' },
