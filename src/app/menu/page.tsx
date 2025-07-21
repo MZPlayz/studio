@@ -35,7 +35,7 @@ const MenuItem = ({ icon: Icon, text, href }: MenuItemProps) => (
 
 export default function MenuPage() {
   const menuItems = [
-    { icon: User, text: 'প্রোফাইল এডিট', href: '#' },
+    { icon: User, text: 'প্রোফাইল এডিট', href: '/edit-profile' },
     { icon: Lock, text: 'পিন পরিবর্তন', href: '#' },
     { icon: Globe, text: 'ভাষা পরিবর্তন', href: '#' },
     { icon: FileText, text: 'রুলস ও নির্দেশনা', href: '#' },
