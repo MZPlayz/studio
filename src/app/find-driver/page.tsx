@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { ArrowLeft, Search, ChevronDown, CheckCircle, Star } from 'lucide-react';
@@ -98,7 +98,7 @@ export default function FindDriverPage() {
   const handleBook = () => {
     if (selectedDriverId) {
       const selectedDriver = mockDrivers.find(d => d.id === selectedDriverId);
-      router.push(`/trip-details?driver=${encodeURIComponent(JSON.stringify(selectedDriver))}`);
+      router.push(`/find-trip?driver=${encodeURIComponent(JSON.stringify(selectedDriver))}`);
     }
   };
 
