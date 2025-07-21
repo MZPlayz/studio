@@ -1,95 +1,94 @@
 
 'use client';
 
-import 'mapbox-gl/dist/mapbox-gl.css';
+import { useState } from 'react';
 import Link from 'next/link';
+import { Phone, Lock } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 export default function LoginPage() {
-  if (!process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN) {
-    return (
-      <div className="flex h-screen w-screen items-center justify-center bg-background">
-        <div className="rounded-md bg-card p-4 text-center shadow-md">
-          <h1 className="mb-2 text-xl font-bold text-red-600">
-            Configuration Error
-          </h1>
-          <p className="text-foreground">Mapbox Access Token is not configured.</p>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Please add your token to the <code className="rounded bg-muted p-1">.env</code> file.
-          </p>
-        </div>
-      </div>
-    );
-  }
+  const [isCustomer, setIsCustomer] = useState(true);
 
   return (
-    <div className="h-screen w-screen font-sans">
-      <div className="absolute inset-0 z-0">
-         {/* The MapComponent can be placed here if a full-screen background map is desired */}
+    <div className="flex min-h-screen flex-col items-center bg-gray-50 px-4 pt-8 font-sans">
+      <div className="absolute top-4 right-4">
+        <Button variant="outline" className="rounded-full border-gray-300 bg-white">
+          বাংলা
+        </Button>
       </div>
-      <div className="relative z-10 flex h-full w-full items-center justify-center bg-black/20 p-4">
-        <div className="w-full max-w-sm rounded-lg bg-card p-8 shadow-2xl">
-          <h1 className="mb-2 text-center text-3xl font-bold text-primary">
-            Ridemap
-          </h1>
-          <p className="mb-8 text-center text-muted-foreground">
-            Welcome back! Please log in.
-          </p>
-          <form className="space-y-4">
-            <div>
-              <label
-                htmlFor="mobile"
-                className="block text-sm font-medium text-foreground"
-              >
-                Mobile Number
-              </label>
-              <input
-                id="mobile"
-                type="tel"
-                placeholder="+8801XXXXXXXXX"
-                className="mt-1 block w-full rounded-md border-border bg-background p-3 focus:border-primary focus:ring-primary"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="pin"
-                className="block text-sm font-medium text-foreground"
-              >
-                PIN
-              </label>
-              <input
-                id="pin"
-                type="password"
-                maxLength={5}
-                placeholder="•••••"
-                className="mt-1 block w-full rounded-md border-border bg-background p-3 focus:border-primary focus:ring-primary"
-              />
-            </div>
-            <Link href="/find-trip">
-              <button
-                type="button"
-                className="w-full rounded-md bg-primary py-3 font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-              >
-                Log In
-              </button>
-            </Link>
-          </form>
-          <div className="mt-6 text-center">
-            <Link
-              href="/register"
-              className="text-sm text-primary hover:underline"
-            >
-              Don't have an account? Register
+
+      <div className="mt-12 flex w-full max-w-sm flex-col items-center">
+        <div className="mb-8 rounded-lg bg-[#F3EFEA] p-6">
+          <Image
+            src="https://placehold.co/120x80.png"
+            data-ai-hint="company logo leaf"
+            alt="Company Logo"
+            width={120}
+            height={80}
+            className="h-20 w-32 object-contain"
+          />
+        </div>
+
+        <h1 className="text-2xl font-bold text-gray-800">আবারও স্বাগতম</h1>
+        <p className="text-gray-600">লগইন করতে আপনার বিবরণ লিখুন।</p>
+
+        <form className="mt-8 w-full space-y-4">
+          <div className="relative">
+            <Phone className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+            <Input
+              type="tel"
+              placeholder="+৮৮০XXXXXXXXXX"
+              className="w-full rounded-lg border-gray-300 bg-white py-6 pl-10"
+            />
+          </div>
+          <div className="relative">
+            <Lock className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+            <Input
+              type="password"
+              placeholder="৬ সংখ্যার পিন"
+              maxLength={6}
+              className="w-full rounded-lg border-gray-300 bg-white py-6 pl-10"
+            />
+          </div>
+          <div className="text-right">
+            <Link href="#" className="text-sm font-medium text-purple-600 hover:underline">
+              পিন ভুলে গেছেন?
             </Link>
           </div>
-           <div className="mt-4 text-center">
-            <Link
-              href="/agent-home"
-              className="text-sm text-muted-foreground hover:underline"
-            >
-              Log in as Agent
-            </Link>
+          
+          <Link href="/home" passHref>
+            <Button className="w-full h-14 bg-purple-600 text-lg font-bold text-white hover:bg-purple-700">
+                লগইন করুন
+            </Button>
+          </Link>
+
+        </form>
+
+        <div className="mt-8 text-center">
+          <p className="text-gray-600">এখানে নতুন? একটি অ্যাকাউন্ট তৈরি করুন</p>
+          <div className="mt-4 w-full space-y-3">
+             <Link href="/register" passHref>
+                <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-purple-700">
+                    গ্রাহক নিবন্ধন
+                </Button>
+             </Link>
+             <Link href="/register" passHref>
+                <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-purple-700">
+                    ড্রাইভার নিবন্ধন
+                </Button>
+             </Link>
+              <Link href="/agent-home" passHref>
+                <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-purple-700">
+                    এজেন্ট নিবন্ধন
+                </Button>
+              </Link>
           </div>
         </div>
+
+        <p className="mt-12 text-sm text-gray-500">ডাক বিভাগের ডিজিটাল লেনদেন</p>
       </div>
     </div>
   );
