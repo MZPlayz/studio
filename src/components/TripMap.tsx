@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Map, Marker, Source, Layer, NavigationControl } from 'react-map-gl';
-import type { MapRef } from 'react-map-gl';
+import type { MapRef, GeoJSONSource, LayerProps } from 'react-map-gl';
 import mapboxgl from 'mapbox-gl';
 import { MapPin } from 'lucide-react';
 
@@ -15,14 +15,22 @@ interface Coords {
 interface TripMapProps {
   pickupCoords: Coords | null;
   dropoffCoords: Coords | null;
+  children?: React.ReactNode;
+  routeGeoJSON?: any;
+  routeColor?: string;
 }
 
-export default function TripMap({ pickupCoords, dropoffCoords }: TripMapProps) {
+export default function TripMap({ pickupCoords, dropoffCoords, children, routeGeoJSON: externalRoute, routeColor = '#8A2BE2' }: TripMapProps) {
   const [route, setRoute] = useState(null);
   const mapRef = useRef<MapRef>(null);
 
   useEffect(() => {
     async function getRoute() {
+      if (externalRoute) {
+        setRoute(externalRoute);
+        return;
+      }
+
       if (pickupCoords && dropoffCoords) {
         const accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
         const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${pickupCoords.lng},${pickupCoords.lat};${dropoffCoords.lng},${dropoffCoords.lat}?geometries=geojson&access_token=${accessToken}`;
@@ -38,21 +46,6 @@ export default function TripMap({ pickupCoords, dropoffCoords }: TripMapProps) {
                 geometry: routeData.geometry
             };
             setRoute(routeGeoJSON);
-
-            const coordinates = routeData.geometry.coordinates;
-            const bounds = new mapboxgl.LngLatBounds(
-              coordinates[0],
-              coordinates[0]
-            );
-
-            for (const coord of coordinates) {
-              bounds.extend(coord);
-            }
-
-            mapRef.current?.fitBounds(bounds, {
-              padding: 60,
-              duration: 1000,
-            });
           }
         } catch (error) {
             console.error('Error fetching directions:', error);
@@ -61,7 +54,28 @@ export default function TripMap({ pickupCoords, dropoffCoords }: TripMapProps) {
     }
 
     getRoute();
-  }, [pickupCoords, dropoffCoords]);
+  }, [pickupCoords, dropoffCoords, externalRoute]);
+
+  useEffect(() => {
+    if (mapRef.current && route) {
+        const coordinates = route.geometry.coordinates;
+        if (coordinates.length > 0) {
+            const bounds = new mapboxgl.LngLatBounds(
+                coordinates[0],
+                coordinates[0]
+            );
+
+            for (const coord of coordinates) {
+                bounds.extend(coord);
+            }
+
+            mapRef.current?.fitBounds(bounds, {
+                padding: 60,
+                duration: 1000,
+            });
+        }
+    }
+  }, [route]);
 
   const initialViewState = {
     longitude: 90.4125, // Dhaka
@@ -69,16 +83,15 @@ export default function TripMap({ pickupCoords, dropoffCoords }: TripMapProps) {
     zoom: 12,
   };
 
-  const routeLayer: any = {
-    id: 'route',
+  const routeLayer: LayerProps = {
+    id: 'route-layer',
     type: 'line',
-    source: 'route',
     layout: {
       'line-join': 'round',
       'line-cap': 'round',
     },
     paint: {
-      'line-color': '#8A2BE2', // A nice purple
+      'line-color': routeColor,
       'line-width': 6,
     },
   };
@@ -106,10 +119,11 @@ export default function TripMap({ pickupCoords, dropoffCoords }: TripMapProps) {
       )}
 
       {route && (
-        <Source id="route" type="geojson" data={route}>
+        <Source id="route-source" type="geojson" data={route}>
             <Layer {...routeLayer} />
         </Source>
       )}
+      {children}
     </Map>
   );
 }
