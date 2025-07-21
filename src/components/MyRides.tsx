@@ -1,4 +1,5 @@
 import { Clock, Heart, MapPin, ChevronUp } from 'lucide-react';
+import Link from 'next/link';
 
 export default function MyRides() {
   return (
@@ -10,12 +11,12 @@ export default function MyRides() {
         </button>
       </div>
       <div className="flex justify-around items-center text-center">
-        <div className="flex flex-col items-center space-y-2">
+        <Link href="/booking-history" className="flex flex-col items-center space-y-2">
           <button className="bg-green-100 rounded-lg w-20 h-16 flex items-center justify-center">
             <Clock className="h-8 w-8 text-green-600" />
           </button>
           <p className="text-xs text-gray-600">রাইড হিস্টোরি</p>
-        </div>
+        </Link>
         <div className="flex flex-col items-center space-y-2">
           <button className="bg-pink-100 rounded-lg w-20 h-16 flex items-center justify-center">
             <Heart className="h-8 w-8 text-pink-500" />

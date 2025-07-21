@@ -1,10 +1,10 @@
-import { Car, Clock, List, Plus, Send, Headphones, Wrench, Gift } from 'lucide-react';
+import { Car, Clock, List, Plus, Send, Headphones, Wrench, Gift, History } from 'lucide-react';
 import Link from 'next/link';
 
 const features = [
   { icon: Car, label: 'গাড়ি বুকিং', href: '/trip-details' },
   { icon: Clock, label: 'বুকিং হিস্ট্রি', href: '/booking-history' },
-  { icon: List, label: 'রাইডার লিস্ট', href: '/find-driver' },
+  { icon: History, label: 'লেনদেন', href: '/transaction-history' },
   { icon: Plus, label: 'অ্যাড মানি', href: '/add-money' },
   { icon: Send, label: 'সেন্ড মানি', href: '/send-money' },
   { icon: Headphones, label: 'সাপোর্ট', href: '/support' },
