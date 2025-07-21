@@ -2,23 +2,24 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useMap, Source, Layer, Marker } from 'react-map-gl';
+import * as turf from '@turf/turf';
 import type { TripDetails } from '@/app/find-trip/page';
 import TripMap from './TripMap';
 import DriverInfoCard from './DriverInfoCard';
-import { Marker } from 'react-map-gl';
-import VehicleMarker from './VehicleMarker';
-import { MapPin } from 'lucide-react';
-import * as turf from '@turf/turf';
+import { VehicleAnimator } from '@/lib/Animator';
+import VehicleMarker from './VehicleMarker'; // We'll render this ourselves now
 
-const PICKUP_ANIMATION_DURATION = 10000; // 10 seconds
+const carIcon =
+  'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jYXIiPjxwYXRoIGQ9Ik0xNCAxNmwtNC00IDQtNE00IDE2YTggOCAwIDAgMCAxNiAwWiIvPjxwYXRoIGQ9Ik0xMiA0djhhNCA0IDAgMCAwIDQtNEg4Ii8+PC9zdmc+';
 
-export default function DriverAssignedView({ tripDetails }: DriverAssignedViewProps) {
-  const [pickupPath, setPickupPath] = useState<any>(null);
-  const [animatedProps, setAnimatedProps] = useState<{ position: { lng: number; lat: number; } | null; bearing: number; }>({ position: tripDetails.driver.startLocation, bearing: 0 });
-  const animationFrameRef = useRef<number>();
+
+export default function DriverAssignedView({ tripDetails }: { tripDetails: TripDetails }) {
+  const [route, setRoute] = useState<any>(null);
+  const { current: map } = useMap();
 
   useEffect(() => {
-    const fetchPickupPath = async () => {
+    async function fetchPickupPath() {
         if (!tripDetails.currentLocation.coords || !tripDetails.driver.startLocation) return;
 
         const accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
@@ -30,91 +31,96 @@ export default function DriverAssignedView({ tripDetails }: DriverAssignedViewPr
             const response = await fetch(url);
             const data = await response.json();
             if (data.routes && data.routes.length > 0) {
-                const routeGeoJSON = {
+                setRoute({
                     type: 'Feature' as const,
                     properties: {},
                     geometry: data.routes[0].geometry
-                };
-                setPickupPath(routeGeoJSON);
+                });
             }
         } catch (error) {
             console.error('Error fetching directions for pickup:', error);
         }
-    };
-
+    }
     fetchPickupPath();
   }, [tripDetails]);
 
   useEffect(() => {
-    if (!pickupPath) return;
+    if (!map || !route) return;
 
-    const routeLine = turf.lineString(pickupPath.geometry.coordinates);
-    const totalDistance = turf.length(routeLine, { units: 'kilometers' });
-    let startTime: number;
-
-    const frame = (currentTime: number) => {
-        if (!startTime) startTime = currentTime;
-        const elapsedTime = currentTime - startTime;
-        let animationPhase = elapsedTime / PICKUP_ANIMATION_DURATION;
-        const easedPhase = (1 - Math.cos(animationPhase * Math.PI)) / 2;
-
-        if (animationPhase > 1) {
-            const finalPosition = pickupPath.geometry.coordinates[pickupPath.geometry.coordinates.length - 1];
-            setAnimatedProps(prev => ({ ...prev, position: { lng: finalPosition[0], lat: finalPosition[1] } }));
-            return;
+    const vehicleSource = map.getSource('vehicle');
+    if (!vehicleSource) {
+      map.addSource('vehicle', {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: tripDetails.driver.startLocation ? [tripDetails.driver.startLocation.lng, tripDetails.driver.startLocation.lat] : []
+          },
+          properties: {}
         }
+      });
+    }
 
-        const pointOnLine = turf.along(routeLine, totalDistance * easedPhase, { units: 'kilometers' });
-        const currentPosition = pointOnLine.geometry.coordinates;
+    if (!map.getLayer('vehicle-layer')) {
+        map.loadImage(carIcon, (error, image) => {
+            if (error) {
+                console.error('Error loading car icon:', error);
+                return;
+            }
+            if (!image) {
+                 console.error('Image data is null');
+                 return;
+            }
+            if (!map.hasImage('car-icon')) {
+                map.addImage('car-icon', image, { sdf: true });
+            }
 
-        let bearing = animatedProps.bearing;
-        if (easedPhase < 1) {
-            const nextPoint = turf.along(routeLine, totalDistance * (easedPhase + 0.0001), { units: 'kilometers' });
-            bearing = turf.bearing(pointOnLine, nextPoint);
-        }
-
-        setAnimatedProps({
-            position: { lng: currentPosition[0], lat: currentPosition[1] },
-            bearing: bearing,
+            map.addLayer({
+                id: 'vehicle-layer',
+                type: 'symbol',
+                source: 'vehicle',
+                layout: {
+                    'icon-image': 'car-icon',
+                    'icon-size': 1.5,
+                    'icon-rotation-alignment': 'map',
+                    'icon-allow-overlap': true,
+                    'icon-ignore-placement': true,
+                    'icon-rotate': ['get', 'bearing']
+                },
+                paint: {
+                    'icon-color': '#2962FF'
+                }
+            });
         });
+    }
 
-        animationFrameRef.current = requestAnimationFrame(frame);
-    };
-    
-    animationFrameRef.current = requestAnimationFrame(frame);
+    const animator = new VehicleAnimator(map, route.geometry, 10000);
+    animator.start();
 
     return () => {
-        if(animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
-    }
-  }, [pickupPath]);
+      animator.stop();
+    };
+  }, [route, map, tripDetails.driver.startLocation]);
 
   return (
     <div className="relative h-screen w-screen">
       <TripMap
         pickupCoords={tripDetails.driver.startLocation}
         dropoffCoords={tripDetails.currentLocation.coords}
-        routeGeoJSON={pickupPath}
-        routeColor="#FF6B35"
       >
-        {animatedProps.position && (
-          <Marker
-              longitude={animatedProps.position.lng}
-              latitude={animatedProps.position.lat}
-              anchor="center"
-              rotationAlignment="map"
-              rotation={animatedProps.bearing}
-          >
-              <VehicleMarker type={tripDetails.vehicle.type} />
-          </Marker>
-        )}
-        {tripDetails.currentLocation.coords && (
-          <Marker
-            longitude={tripDetails.currentLocation.coords.lng}
-            latitude={tripDetails.currentLocation.coords.lat}
-            anchor="bottom"
-          >
-            <MapPin className="h-10 w-10 text-blue-500 fill-current" />
-          </Marker>
+         {route && (
+            <Source id="route-source" type="geojson" data={route}>
+                <Layer
+                    id="route-layer"
+                    type="line"
+                    paint={{
+                        'line-color': '#FF6B35',
+                        'line-width': 5,
+                        'line-opacity': 0.8
+                    }}
+                />
+            </Source>
         )}
       </TripMap>
       <div className="absolute top-0 left-0 right-0 p-4">

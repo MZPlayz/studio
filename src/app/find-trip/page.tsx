@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { MapProvider } from 'react-map-gl';
 import TripDetailsPage from '@/components/TripDetailsPage';
 import BookingInProgressView from '@/components/BookingInProgressView';
 import DriverAssignedView from '@/components/DriverAssignedView';
@@ -93,13 +94,26 @@ export default function FindTripPage() {
     }, [tripState]);
 
 
+    const renderContent = () => {
+        switch (tripState) {
+            case 'idle':
+                return <TripDetailsPage onRequestTrip={handleRequestTrip} />;
+            case 'booking':
+                return tripDetails ? <BookingInProgressView tripDetails={tripDetails} onCancel={handleCancelBooking}/> : null;
+            case 'pickup':
+                return tripDetails ? <DriverAssignedView tripDetails={tripDetails} /> : null;
+            case 'in_progress':
+                return tripDetails ? <InProgressView tripDetails={tripDetails} /> : null;
+            case 'completed':
+                return tripDetails ? <TripCompletedView tripDetails={tripDetails} onNextRide={handleNextRide} /> : null;
+            default:
+                return <TripDetailsPage onRequestTrip={handleRequestTrip} />;
+        }
+    }
+    
     return (
-        <div>
-            {tripState === 'idle' && <TripDetailsPage onRequestTrip={handleRequestTrip} />}
-            {tripState === 'booking' && tripDetails && <BookingInProgressView tripDetails={tripDetails} onCancel={handleCancelBooking}/>}
-            {tripState === 'pickup' && tripDetails && <DriverAssignedView tripDetails={tripDetails} />}
-            {tripState === 'in_progress' && tripDetails && <InProgressView tripDetails={tripDetails} />}
-            {tripState === 'completed' && tripDetails && <TripCompletedView tripDetails={tripDetails} onNextRide={handleNextRide} />}
-        </div>
+        <MapProvider>
+            {renderContent()}
+        </MapProvider>
     );
 }

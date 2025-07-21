@@ -2,22 +2,21 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import TripMap from './TripMap';
-import type { TripDetails } from '@/app/find-trip/page';
-import { Marker } from 'react-map-gl';
+import { useMap, Source, Layer, Marker } from 'react-map-gl';
 import * as turf from '@turf/turf';
-import VehicleMarker from './VehicleMarker';
-import { MapPin } from 'lucide-react';
+import type { TripDetails } from '@/app/find-trip/page';
+import TripMap from './TripMap';
+import { VehicleAnimator } from '@/lib/Animator';
 
-const TRIP_ANIMATION_DURATION = 10000; // 10 seconds
+const carIcon =
+  'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jYXIiPjxwYXRoIGQ9Ik0xNCAxNmwtNC00IDQtNE00IDE2YTggOCAwIDAgMCAxNiAwWiIvPjxwYXRoIGQ9Ik0xMiA0djhhNCA0IDAgMCAwIDQtNEg4Ii8+PC9zdmc+';
 
-export default function InProgressView({ tripDetails }: InProgressViewProps) {
-  const [tripPath, setTripPath] = useState<any>(null);
-  const [animatedProps, setAnimatedProps] = useState<{ position: { lng: number; lat: number; } | null; bearing: number; }>({ position: tripDetails.currentLocation.coords, bearing: 0 });
-  const animationFrameRef = useRef<number>();
+export default function InProgressView({ tripDetails }: { tripDetails: TripDetails }) {
+  const [route, setRoute] = useState<any>(null);
+  const { current: map } = useMap();
 
   useEffect(() => {
-    const fetchTripPath = async () => {
+    async function fetchTripPath() {
         if (!tripDetails.currentLocation.coords || !tripDetails.destination.coords) return;
 
         const accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
@@ -29,88 +28,87 @@ export default function InProgressView({ tripDetails }: InProgressViewProps) {
             const response = await fetch(url);
             const data = await response.json();
             if (data.routes && data.routes.length > 0) {
-                const routeGeoJSON = {
+                setRoute({
                     type: 'Feature' as const,
                     properties: {},
                     geometry: data.routes[0].geometry
-                };
-                setTripPath(routeGeoJSON);
+                });
             }
         } catch (error) {
             console.error('Error fetching directions for trip:', error);
         }
-    };
-
+    }
     fetchTripPath();
   }, [tripDetails]);
 
   useEffect(() => {
-    if (!tripPath) return;
+    if (!map || !route) return;
 
-    const routeLine = turf.lineString(tripPath.geometry.coordinates);
-    const totalDistance = turf.length(routeLine, { units: 'kilometers' });
-    let startTime: number;
-
-    const frame = (currentTime: number) => {
-        if (!startTime) startTime = currentTime;
-        const elapsedTime = currentTime - startTime;
-        const animationPhase = elapsedTime / TRIP_ANIMATION_DURATION;
-        const easedPhase = (1 - Math.cos(animationPhase * Math.PI)) / 2;
-
-        if (animationPhase > 1) {
-            const finalPosition = tripPath.geometry.coordinates[tripPath.geometry.coordinates.length - 1];
-            setAnimatedProps(prev => ({ ...prev, position: { lng: finalPosition[0], lat: finalPosition[1] } }));
-            return;
+    const vehicleSource = map.getSource('vehicle');
+    if (!vehicleSource) {
+      map.addSource('vehicle', {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: tripDetails.currentLocation.coords ? [tripDetails.currentLocation.coords.lng, tripDetails.currentLocation.coords.lat] : []
+          },
+          properties: {}
         }
-
-        const pointOnLine = turf.along(routeLine, totalDistance * easedPhase, { units: 'kilometers' });
-        const currentPosition = pointOnLine.geometry.coordinates;
-
-        let bearing = animatedProps.bearing;
-        if (easedPhase < 1) {
-            const nextPoint = turf.along(routeLine, totalDistance * (easedPhase + 0.0001), { units: 'kilometers' });
-            bearing = turf.bearing(pointOnLine, nextPoint);
-        }
-
-        setAnimatedProps({
-            position: { lng: currentPosition[0], lat: currentPosition[1] },
-            bearing: bearing,
-        });
-
-        animationFrameRef.current = requestAnimationFrame(frame);
-    };
-    
-    animationFrameRef.current = requestAnimationFrame(frame);
-
-    return () => {
-        if(animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+      });
     }
-  }, [tripPath]);
 
+    if (!map.getLayer('vehicle-layer')) {
+        map.loadImage(carIcon, (error, image) => {
+            if (error) throw error;
+            if (!image) return;
+            if (!map.hasImage('car-icon')) {
+                map.addImage('car-icon', image, { sdf: true });
+            }
+            map.addLayer({
+                id: 'vehicle-layer',
+                type: 'symbol',
+                source: 'vehicle',
+                layout: {
+                    'icon-image': 'car-icon',
+                    'icon-size': 1.5,
+                    'icon-rotation-alignment': 'map',
+                    'icon-allow-overlap': true,
+                    'icon-ignore-placement': true,
+                    'icon-rotate': ['get', 'bearing']
+                },
+                 paint: {
+                    'icon-color': '#2962FF'
+                }
+            });
+        });
+    }
+
+    const animator = new VehicleAnimator(map, route.geometry, 10000);
+    animator.start();
+
+    return () => animator.stop();
+  }, [route, map, tripDetails.currentLocation.coords]);
 
   return (
     <div className="relative h-screen w-screen">
       <TripMap
         pickupCoords={tripDetails.currentLocation.coords}
         dropoffCoords={tripDetails.destination.coords}
-        routeGeoJSON={tripPath}
-        routeColor="#4285F4"
       >
-        {animatedProps.position && (
-          <Marker
-              longitude={animatedProps.position.lng}
-              latitude={animatedProps.position.lat}
-              anchor="center"
-              rotationAlignment="map"
-              rotation={animatedProps.bearing}
-          >
-              <VehicleMarker type={tripDetails.vehicle.type} />
-          </Marker>
-        )}
-        {tripDetails.destination.coords && (
-             <Marker longitude={tripDetails.destination.coords.lng} latitude={tripDetails.destination.coords.lat} anchor="bottom">
-                <MapPin className="h-10 w-10 text-red-500 fill-current" />
-            </Marker>
+        {route && (
+            <Source id="route-source" type="geojson" data={route}>
+                <Layer
+                    id="route-layer"
+                    type="line"
+                    paint={{
+                        'line-color': '#4285F4',
+                        'line-width': 5,
+                        'line-opacity': 0.8
+                    }}
+                />
+            </Source>
         )}
       </TripMap>
       <div className="absolute bottom-0 left-0 right-0 bg-white p-6 rounded-t-2xl shadow-2xl">
