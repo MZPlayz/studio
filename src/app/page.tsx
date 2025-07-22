@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import '../lib/i18n';
-import AnimatedShinyText from '@/components/ui/animated-shiny-text';
+import AnimatedGradientText from '@/components/ui/animated-gradient-text';
 import { cn } from '@/lib/utils';
 
 export default function LoginPage() {
@@ -35,15 +35,15 @@ export default function LoginPage() {
       </div>
 
       <div className="z-10 flex w-full max-w-md flex-col items-center space-y-6 rounded-xl border bg-white/80 p-8 shadow-2xl backdrop-blur-sm dark:border-gray-700 dark:bg-black/80">
-        <div
-          className={cn(
-            "group rounded-full border border-black/5 bg-neutral-100 text-base text-white transition-all ease-in hover:cursor-pointer hover:bg-neutral-200 dark:border-white/5 dark:bg-neutral-900 dark:hover:bg-neutral-800",
-          )}
-        >
-          <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition-all ease-in-out_mode">
-             <span>✨ Real-time Cab Discovery</span>
-          </AnimatedShinyText>
-        </div>
+        <AnimatedGradientText>
+          <span
+            className={cn(
+              `inline animate-gradient bg-gradient-to-r from-[#ffaa40] via-[#9c40ff] to-[#ffaa40] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent`,
+            )}
+          >
+            ✨ Real-time Cab Discovery
+          </span>
+        </AnimatedGradientText>
         
         <div className="loader mb-2">
             <div className="truckWrapper">
