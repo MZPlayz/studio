@@ -1,4 +1,5 @@
 import { PiggyBank } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function SavingsBanner() {
   return (
@@ -12,9 +13,9 @@ export default function SavingsBanner() {
       <div>
         <p className="font-bold">সেভিংস-এ বাড়বে টাকা</p>
         <p className="text-xs mb-2">রাইড শেয়ারিং অ্যাপ থেকে আইডিএলসি-তে</p>
-        <button className="border border-white rounded-full px-4 py-1 text-xs">
+        <Button variant="secondary" className="border border-white rounded-full px-4 py-1 text-xs h-auto bg-purple-600 hover:bg-purple-500 text-white">
           ট্যাপ করুন
-        </button>
+        </Button>
       </div>
     </div>
   );

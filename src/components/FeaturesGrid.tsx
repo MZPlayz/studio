@@ -1,6 +1,7 @@
 
-import { Car, Clock, List, Plus, Send, Headphones, Wrench, Gift, History, CalendarCheck, TrendingUp, UserPlus, Clipboard, Youtube, Star, Users } from 'lucide-react';
+import { Car, Clock, Plus, Send, Headphones, Gift, History, CalendarCheck } from 'lucide-react';
 import Link from 'next/link';
+import { Card, CardContent } from '@/components/ui/card';
 
 const baseFeatures = [
   { icon: Car, label: 'গাড়ি বুকিং', href: '/find-trip' },
@@ -13,21 +14,15 @@ const baseFeatures = [
   { icon: Gift, label: 'রেফারেল', href: '/referrals' },
 ];
 
-const agentFeatures = [
-    { icon: TrendingUp, label: 'ইনকাম হিস্ট্রি', href: '/income-history' },
-    { icon: UserPlus, label: 'অ্যাকাউন্ট তৈরি', href: '/create-account' },
-    { icon: Users, label: 'প্রিয় কাস্টমার', href: '/favorite-passengers' },
-    { icon: Star, label: 'প্রিয় রাইডার', href: '/favorite-riders' },
-    { icon: Clipboard, label: 'তৈরি রেকর্ড', href: '#' },
-    { icon: Youtube, label: 'ট্রেনিং/গাইড', href: '/training-guide' },
-    ...baseFeatures.slice(0, 6)
-];
-
 const FeatureItem = ({ icon: Icon, label, href }: { icon: React.ElementType, label: string, href: string }) => (
-    <Link href={href} className="flex flex-col items-center justify-center space-y-2 bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-        <div className="bg-purple-100 rounded-lg p-3 w-16 h-16 flex items-center justify-center">
-            <Icon className="h-8 w-8 text-purple-600" />
-        </div>
+    <Link href={href} className="flex flex-col items-center justify-center space-y-2 group">
+        <Card className="w-full aspect-square flex items-center justify-center group-hover:shadow-md transition-shadow">
+            <CardContent className="p-0 flex flex-col items-center justify-center space-y-2">
+                 <div className="bg-purple-100 rounded-lg p-3 flex items-center justify-center">
+                    <Icon className="h-8 w-8 text-purple-600" />
+                </div>
+            </CardContent>
+        </Card>
         <p className="text-xs text-center text-gray-700 font-medium">{label}</p>
     </Link>
 );
@@ -38,7 +33,8 @@ interface FeaturesGridProps {
 }
 
 export default function FeaturesGrid({ userType = 'customer' }: FeaturesGridProps) {
-  const features = userType === 'agent' ? agentFeatures : baseFeatures;
+  // Agent features can be added here later if needed
+  const features = baseFeatures;
 
   return (
     <div className="grid grid-cols-4 gap-4">
