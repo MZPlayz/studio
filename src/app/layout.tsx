@@ -4,6 +4,7 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { LanguageProvider } from '@/context/LanguageContext';
+import DevToolsBlocker from '@/components/DevToolsBlocker';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
@@ -16,6 +17,7 @@ export default function RootLayout({
     <LanguageProvider>
       <html lang="en">
         <body className={`${inter.variable} font-sans`}>
+          <DevToolsBlocker />
           {children}
         </body>
       </html>
