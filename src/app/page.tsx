@@ -197,9 +197,11 @@ export default function LoginPage() {
             </Link>
           </div>
           
-          <Button className="w-full h-14 text-lg font-bold">
-            {isClient ? t('login_button') : '...'}
-          </Button>
+          <Link href="/home" className="w-full block">
+            <Button className="w-full h-14 text-lg font-bold">
+              {isClient ? t('login_button') : '...'}
+            </Button>
+          </Link>
         </form>
 
         <div className="mt-8 text-center">
