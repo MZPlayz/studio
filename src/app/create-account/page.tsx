@@ -76,12 +76,12 @@ export default function CreateAccountPage() {
             <RetroGrid className="absolute inset-0 w-full h-full" />
             
             {step === 'select_type' && (
-                <div className="z-10 flex w-full max-w-md flex-col items-center space-y-6 rounded-xl border bg-white/80 p-8 shadow-2xl backdrop-blur-sm dark:border-gray-700 dark:bg-black/80">
+                <div className="z-10 flex w-full max-w-md flex-col items-center space-y-6 rounded-xl border bg-white/80 p-8 shadow-2xl backdrop-blur-sm dark:border-gray-700 dark:bg-black/80 animate-in fade-in-50 duration-500 data-[state=closed]:animate-out data-[state=closed]:fade-out-50">
                      <HyperText className="text-2xl font-bold text-gray-800">
                        Choose Your Account Type
                     </HyperText>
                     <p className="text-gray-600">Select the type of account you would like to create.</p>
-                    <div className="w-full space-y-4 animate-in fade-in-50">
+                    <div className="w-full space-y-4">
                         <TypeSelectionCard 
                             icon={User} 
                             title="Customer" 
@@ -108,7 +108,7 @@ export default function CreateAccountPage() {
             )}
             
             {step === 'form' && accountType && (
-                <div className="w-full">
+                <div className="w-full animate-in fade-in-50 duration-500">
                     <RegistrationForm
                         onSuccess={handleFormSuccess}
                         onBack={handleBack}
@@ -118,7 +118,7 @@ export default function CreateAccountPage() {
             )}
 
             {step === 'photo' && (
-                 <div className="z-10 flex w-full max-w-md flex-col items-center space-y-6 rounded-xl border bg-white/80 p-8 shadow-2xl backdrop-blur-sm dark:border-gray-700 dark:bg-black/80">
+                 <div className="z-10 flex w-full max-w-md flex-col items-center space-y-6 rounded-xl border bg-white/80 p-8 shadow-2xl backdrop-blur-sm dark:border-gray-700 dark:bg-black/80 animate-in fade-in-50 duration-500">
                     <ProfileImageUpload onNext={handlePhotoNext} onSkip={handlePhotoSkip} onBack={handleBack}/>
                 </div>
             )}
