@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import '../lib/i18n';
 import AnimatedGradientText from '@/components/ui/animated-gradient-text';
 import { cn } from '@/lib/utils';
+import AnimatedGridPattern from '@/components/ui/animated-grid-pattern';
 
 export default function LoginPage() {
   const { t, i18n } = useTranslation();
@@ -27,7 +28,7 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-background">
-      
+      <AnimatedGridPattern className="absolute inset-0 w-full h-full" />
       <div className="absolute top-4 right-4 z-10">
         <Button variant="outline" className="rounded-full border-gray-300 bg-white" onClick={toggleLanguage}>
           {isClient ? t('language_toggle') : '...'}
