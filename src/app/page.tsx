@@ -12,6 +12,7 @@ import '../lib/i18n';
 import AnimatedGradientText from '@/components/ui/animated-gradient-text';
 import { cn } from '@/lib/utils';
 import RetroGrid from '@/components/ui/retro-grid';
+import HyperText from '@/components/ui/hyper-text';
 
 export default function LoginPage() {
   const { t, i18n } = useTranslation();
@@ -167,7 +168,9 @@ export default function LoginPage() {
             </div>
         </div>
 
-        <h1 className="text-2xl font-bold text-gray-800">{isClient ? t('welcome_back') : '...'}</h1>
+        <HyperText className="text-2xl font-bold text-gray-800">
+          {isClient ? t('welcome_back') : '...'}
+        </HyperText>
         <p className="text-gray-600">{isClient ? t('login_prompt') : '...'}</p>
 
         <form className="w-full space-y-4">
