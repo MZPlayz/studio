@@ -106,7 +106,7 @@ export default function LoginPage() {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 30 30"
-                    class="tiresvg"
+                    className="tiresvg"
                 >
                     <circle
                     strokeWidth="3"
@@ -122,7 +122,7 @@ export default function LoginPage() {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 30 30"
-                    class="tiresvg"
+                    className="tiresvg"
                 >
                     <circle
                     strokeWidth="3"
