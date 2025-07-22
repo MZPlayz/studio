@@ -7,10 +7,10 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 export default function HomeHeader() {
 
   return (
-    <header className="bg-purple-600 h-40 rounded-b-3xl px-6 py-8">
+    <header className="bg-purple-600 px-6 py-4 fixed top-0 left-0 right-0 z-10">
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-4">
-          <Avatar className="h-16 w-16">
+          <Avatar className="h-12 w-12">
             <AvatarImage src="https://placehold.co/64x64.png" alt="Profile Picture" data-ai-hint="woman portrait" />
             <AvatarFallback>AH</AvatarFallback>
           </Avatar>

@@ -14,9 +14,9 @@ export default function HomePage() {
   return (
     <div className="bg-gray-100 min-h-screen font-sans">
       <HomeHeader />
-      <main className="-mt-16 px-6 relative z-10 pb-24">
-        <BalanceCard />
-        <div className="space-y-6 mt-6">
+      <main className="relative z-0 pt-24 px-8 pb-24">
+        <div className="space-y-6">
+          <BalanceCard />
           <FeaturesGrid />
           <MyRides />
           <SavingsBanner />

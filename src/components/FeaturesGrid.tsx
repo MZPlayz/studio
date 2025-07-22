@@ -15,15 +15,15 @@ const baseFeatures = [
 ];
 
 const FeatureItem = ({ icon: Icon, label, href }: { icon: React.ElementType, label: string, href: string }) => (
-    <Link href={href} className="flex flex-col items-center justify-center space-y-2 group">
-        <Card className="w-full aspect-square flex items-center justify-center group-hover:shadow-md transition-shadow">
-            <CardContent className="p-0 flex flex-col items-center justify-center space-y-2">
-                 <div className="bg-purple-100 rounded-lg p-3 flex items-center justify-center">
-                    <Icon className="h-8 w-8 text-purple-600" />
+    <Link href={href} className="group">
+        <Card className="rounded-2xl shadow-sm h-48 hover:bg-accent transition-colors">
+            <CardContent className="flex flex-col items-center justify-between h-full p-4">
+                 <div className="flex-grow flex items-center justify-center">
+                    <Icon className="h-8 w-8 text-purple-300" />
                 </div>
+                <p className="text-xs text-muted-foreground text-center">{label}</p>
             </CardContent>
         </Card>
-        <p className="text-xs text-center text-gray-700 font-medium">{label}</p>
     </Link>
 );
 
@@ -33,11 +33,10 @@ interface FeaturesGridProps {
 }
 
 export default function FeaturesGrid({ userType = 'customer' }: FeaturesGridProps) {
-  // Agent features can be added here later if needed
   const features = baseFeatures;
 
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-4 gap-6">
       {features.map((feature, index) => (
         <FeatureItem key={index} icon={feature.icon} label={feature.label} href={feature.href} />
       ))}
