@@ -1,3 +1,4 @@
+
 import { Clock, Heart, Users, MapPin, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';

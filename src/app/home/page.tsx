@@ -1,3 +1,5 @@
+
+'use client';
 import HomeHeader from '@/components/HomeHeader';
 import FeaturesGrid from '@/components/FeaturesGrid';
 import MyRides from '@/components/MyRides';
@@ -5,8 +7,10 @@ import SavingsBanner from '@/components/SavingsBanner';
 import Suggestions from '@/components/Suggestions';
 import BottomNav from '@/components/BottomNav';
 import BalanceCard from '@/components/BalanceCard';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function HomePage() {
+  const { language } = useLanguage();
   return (
     <div className="bg-gray-100 min-h-screen font-sans">
       <HomeHeader />
