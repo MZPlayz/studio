@@ -175,7 +175,7 @@ export default function LoginPage() {
               className="w-full rounded-lg border-gray-300 bg-white py-6 pl-10"
             />
           </div>
-          <div className="text-right">
+          <div className="text-center">
             <Link href="#" className="text-sm font-medium text-accent hover:underline">
               {isClient ? t('forgot_pin') : '...'}
             </Link>
