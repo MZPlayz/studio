@@ -9,6 +9,8 @@ import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import '../lib/i18n';
+import { MagicBackground } from '@/components/MagicBackground';
+import ShinyButton from 'magic-ui-react/shiny-button';
 
 export default function LoginPage() {
   const { t, i18n } = useTranslation();
@@ -24,15 +26,20 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center bg-gray-50 px-4 pt-8 font-sans">
-      <div className="absolute top-4 right-4">
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-background">
+      {/* Layer 1: The Magic UI Background */}
+      <MagicBackground />
+      
+      <div className="absolute top-4 right-4 z-10">
         <Button variant="outline" className="rounded-full border-gray-300 bg-white" onClick={toggleLanguage}>
           {isClient ? t('language_toggle') : '...'}
         </Button>
       </div>
 
-      <div className="mt-12 flex w-full max-w-sm flex-col items-center">
-        <div className="loader mb-8">
+      {/* Layer 2: The Login Form (z-10 places it on top) */}
+      <div className="z-10 flex w-full max-w-md flex-col items-center space-y-6 rounded-xl border bg-white/80 p-8 shadow-2xl backdrop-blur-sm dark:border-gray-700 dark:bg-black/80">
+        
+        <div className="loader mb-2">
             <div className="truckWrapper">
                 <div className="truckBody">
                 <svg
@@ -153,11 +160,10 @@ export default function LoginPage() {
             </div>
         </div>
 
-
         <h1 className="text-2xl font-bold text-gray-800">{isClient ? t('welcome_back') : '...'}</h1>
         <p className="text-gray-600">{isClient ? t('login_prompt') : '...'}</p>
 
-        <form className="mt-8 w-full space-y-4">
+        <form className="w-full space-y-4">
           <div className="relative">
             <Phone className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
             <Input
@@ -181,12 +187,7 @@ export default function LoginPage() {
             </Link>
           </div>
           
-          <Link href="/home" passHref>
-            <Button className="w-full h-14 bg-primary text-lg font-bold text-primary-foreground hover:bg-primary/90">
-                {isClient ? t('login_button') : '...'}
-            </Button>
-          </Link>
-
+          <ShinyButton text={isClient ? t('login_button') : '...'} className="w-full h-14 text-lg font-bold" />
         </form>
 
         <div className="mt-8 text-center">
