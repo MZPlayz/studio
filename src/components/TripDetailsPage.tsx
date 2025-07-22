@@ -57,6 +57,7 @@ export default function TripDetailsPage({ onRequestTrip }: TripDetailsPageProps)
   const [destinationSuggestions, setDestinationSuggestions] = useState<any[]>([]);
 
   useEffect(() => {
+    // This effect should only run once on the client side to get the driver param.
     const driverParam = searchParams.get('driver');
     if (driverParam) {
       try {
@@ -67,7 +68,8 @@ export default function TripDetailsPage({ onRequestTrip }: TripDetailsPageProps)
         console.error("Failed to parse driver data:", error);
       }
     }
-  }, [searchParams]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   
   const handleGetCurrentLocation = () => {
     if (navigator.geolocation) {
