@@ -76,7 +76,7 @@ export default function CreateAccountPage() {
             <RetroGrid className="absolute inset-0 w-full h-full" />
             
             {step === 'select_type' && (
-                <div className="z-10 flex w-full max-w-md flex-col items-center space-y-6 rounded-xl border bg-white/80 p-8 shadow-2xl backdrop-blur-sm dark:border-gray-700 dark:bg-black/80 animate-in slide-in-from-bottom-1/2 duration-500 data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left-1/2">
+                <div className="z-10 flex w-full max-w-md flex-col items-center space-y-6 rounded-xl border bg-white/80 p-8 shadow-2xl backdrop-blur-sm dark:border-gray-700 dark:bg-black/80 animate-in fade-in-0 duration-500">
                      <HyperText className="text-2xl font-bold text-gray-800">
                        Choose Your Account Type
                     </HyperText>
