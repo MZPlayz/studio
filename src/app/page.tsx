@@ -10,7 +10,7 @@ import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import '../lib/i18n';
 import { MagicBackground } from '@/components/MagicBackground';
-import ShinyButton from 'magic-ui-react/shiny-button';
+import { ShinyButton } from 'magic-ui-react';
 
 export default function LoginPage() {
   const { t, i18n } = useTranslation();

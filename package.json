@@ -1,4 +1,3 @@
-
 {
   "name": "nextn",
   "version": "0.1.0",
@@ -50,7 +49,7 @@
     "i18next": "^23.12.2",
     "i18next-http-backend": "^2.5.2",
     "lucide-react": "^0.475.0",
-    "magic-ui-react": "latest",
+    "magic-ui-react": "^1.3.4",
     "mapbox-gl": "^3.5.1",
     "next": "15.3.3",
     "patch-package": "^8.0.0",
