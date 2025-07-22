@@ -1,7 +1,7 @@
 
 import { Car, Clock, Plus, Send, Headphones, Gift, List, FileText } from 'lucide-react';
 import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 const baseFeatures = [
   { icon: Car, label: 'গাড়ি বুকিং', href: '/find-trip' },
@@ -15,13 +15,11 @@ const baseFeatures = [
 ];
 
 const FeatureItem = ({ icon: Icon, label, href }: { icon: React.ElementType, label: string, href: string }) => (
-    <Link href={href} className="group">
-        <Card className="rounded-2xl shadow-sm hover:bg-accent/10 transition-colors bg-primary text-primary-foreground h-24">
-            <CardContent className="flex flex-col items-center justify-center h-full p-2">
-                 <Icon className="h-8 w-8 text-white mb-2" />
-                <p className="text-xs text-center font-medium">{label}</p>
-            </CardContent>
-        </Card>
+    <Link href={href} className="group flex flex-col items-center justify-start text-center">
+        <Button variant="ghost" className="h-20 w-20 rounded-2xl bg-primary/10 hover:bg-primary/20 flex flex-col items-center justify-center gap-1 p-2">
+            <Icon className="h-8 w-8 text-primary" />
+        </Button>
+        <p className="text-xs text-center font-medium mt-2 text-gray-700">{label}</p>
     </Link>
 );
 
