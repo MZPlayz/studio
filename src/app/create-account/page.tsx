@@ -75,7 +75,7 @@ export default function CreateAccountPage() {
                 <header className="sticky top-0 z-10 flex items-center border-b bg-white p-4">
                     <Button variant="ghost" size="icon" onClick={step === 'select_type' ? undefined : handleBack} asChild={step === 'select_type'}>
                        {step === 'select_type' ? (
-                            <Link href="/agent-home">
+                            <Link href="/">
                                 <ArrowLeft className="h-6 w-6" />
                             </Link>
                        ) : (

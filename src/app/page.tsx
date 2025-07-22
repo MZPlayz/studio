@@ -190,24 +190,7 @@ export default function LoginPage() {
         </form>
 
         <div className="mt-8 text-center">
-          <p className="text-gray-600">{isClient ? t('new_here') : '...'}</p>
-          <div className="mt-4 w-full space-y-3">
-             <Link href="/register" passHref>
-                <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-accent">
-                    {isClient ? t('customer_registration') : '...'}
-                </Button>
-             </Link>
-             <Link href="/register" passHref>
-                <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-accent">
-                    {isClient ? t('driver_registration') : '...'}
-                </Button>
-             </Link>
-              <Link href="/agent-home" passHref>
-                <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-accent">
-                    {isClient ? t('agent_registration') : '...'}
-                </Button>
-              </Link>
-          </div>
+          <p className="text-gray-600">{isClient ? t('new_here') : '...'} <Link href="/create-account" className="font-medium text-accent hover:underline">একটি অ্যাকাউন্ট তৈরি করুন</Link></p>
         </div>
 
         <p className="mt-12 text-sm text-gray-500">ডাক বিভাগের ডিজিটাল লেনদেন</p>
