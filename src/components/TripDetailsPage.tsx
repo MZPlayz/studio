@@ -57,16 +57,15 @@ export default function TripDetailsPage({ onRequestTrip }: TripDetailsPageProps)
   const [destinationSuggestions, setDestinationSuggestions] = useState<any[]>([]);
 
   useEffect(() => {
-    // This effect should only run once on the client side to get the driver param.
     const driverParam = searchParams.get('driver');
     if (driverParam) {
-      try {
-        const driverData = JSON.parse(decodeURIComponent(driverParam));
-        setSelectedDriver(driverData);
-        setDriverMode('manual');
-      } catch (error) {
-        console.error("Failed to parse driver data:", error);
-      }
+        try {
+            const driverData = JSON.parse(decodeURIComponent(driverParam));
+            setSelectedDriver(driverData);
+            setDriverMode('manual');
+        } catch (error) {
+            // Failed to parse driver data
+        }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -87,12 +86,10 @@ export default function TripDetailsPage({ onRequestTrip }: TripDetailsPageProps)
             const address = data.features[0]?.place_name || `${latitude}, ${longitude}`;
             setCurrentLocation({ address, coords });
           } catch (error) {
-            console.error("Error fetching address:", error);
             setCurrentLocation({ address: 'Unable to fetch address', coords });
           }
         },
         (error) => {
-          console.error("Error getting location:", error);
           alert("Could not retrieve your location. Please enable location services.");
         }
       );
@@ -110,7 +107,7 @@ export default function TripDetailsPage({ onRequestTrip }: TripDetailsPageProps)
         const data = await response.json();
         setDestinationSuggestions(data.features || []);
       } catch (error) {
-        console.error("Error fetching destination suggestions:", error);
+        // Error fetching destination suggestions
       }
     } else {
       setDestinationSuggestions([]);
