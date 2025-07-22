@@ -1,7 +1,7 @@
 
 'use client';
 
-import { RetroGrid } from 'magic-ui-react';
+import RetroGrid from 'magic-ui-react/retro-grid';
 
 export function MagicBackground() {
   return (
