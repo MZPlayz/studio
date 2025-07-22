@@ -76,7 +76,7 @@ const config = {
           },
         },
         grid: {
-          "0%": { transform: "translateY(-50%)" },
+          "0%": { transform: "translateY(10%)" },
           "100%": { transform: "translateY(0)" },
         },
       },
