@@ -13,7 +13,6 @@ import AnimatedGradientText from '@/components/ui/animated-gradient-text';
 import { cn } from '@/lib/utils';
 import RetroGrid from '@/components/ui/retro-grid';
 import HyperText from '@/components/ui/hyper-text';
-import Meteors from '@/components/ui/meteors';
 
 export default function LoginPage() {
   const { t, i18n } = useTranslation();
@@ -48,7 +47,6 @@ export default function LoginPage() {
       </AnimatedGradientText>
 
       <div className="z-10 flex w-full max-w-md flex-col items-center space-y-6 rounded-xl border bg-white/80 p-8 shadow-2xl backdrop-blur-sm dark:border-gray-700 dark:bg-black/80">
-        <Meteors number={20} />
         <div className="loader mb-2">
             <div className="truckWrapper">
                 <div className="truckBody">
