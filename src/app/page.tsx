@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Phone, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,6 +12,11 @@ import '../lib/i18n';
 
 export default function LoginPage() {
   const { t, i18n } = useTranslation();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const toggleLanguage = () => {
     const newLang = i18n.language === 'bn' ? 'en' : 'bn';
@@ -21,7 +27,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen flex-col items-center bg-gray-50 px-4 pt-8 font-sans">
       <div className="absolute top-4 right-4">
         <Button variant="outline" className="rounded-full border-gray-300 bg-white" onClick={toggleLanguage}>
-          {t('language_toggle')}
+          {isClient ? t('language_toggle') : '...'}
         </Button>
       </div>
 
@@ -37,15 +43,15 @@ export default function LoginPage() {
           />
         </div>
 
-        <h1 className="text-2xl font-bold text-gray-800">{t('welcome_back')}</h1>
-        <p className="text-gray-600">{t('login_prompt')}</p>
+        <h1 className="text-2xl font-bold text-gray-800">{isClient ? t('welcome_back') : '...'}</h1>
+        <p className="text-gray-600">{isClient ? t('login_prompt') : '...'}</p>
 
         <form className="mt-8 w-full space-y-4">
           <div className="relative">
             <Phone className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
             <Input
               type="tel"
-              placeholder={t('phone_placeholder')}
+              placeholder={isClient ? t('phone_placeholder') : ''}
               className="w-full rounded-lg border-gray-300 bg-white py-6 pl-10"
             />
           </div>
@@ -53,41 +59,41 @@ export default function LoginPage() {
             <Lock className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
             <Input
               type="password"
-              placeholder={t('pin_placeholder')}
+              placeholder={isClient ? t('pin_placeholder') : ''}
               maxLength={6}
               className="w-full rounded-lg border-gray-300 bg-white py-6 pl-10"
             />
           </div>
           <div className="text-right">
             <Link href="#" className="text-sm font-medium text-purple-600 hover:underline">
-              {t('forgot_pin')}
+              {isClient ? t('forgot_pin') : '...'}
             </Link>
           </div>
           
           <Link href="/home" passHref>
             <Button className="w-full h-14 bg-purple-600 text-lg font-bold text-white hover:bg-purple-700">
-                {t('login_button')}
+                {isClient ? t('login_button') : '...'}
             </Button>
           </Link>
 
         </form>
 
         <div className="mt-8 text-center">
-          <p className="text-gray-600">{t('new_here')}</p>
+          <p className="text-gray-600">{isClient ? t('new_here') : '...'}</p>
           <div className="mt-4 w-full space-y-3">
              <Link href="/register" passHref>
                 <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-purple-700">
-                    {t('customer_registration')}
+                    {isClient ? t('customer_registration') : '...'}
                 </Button>
              </Link>
              <Link href="/register" passHref>
                 <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-purple-700">
-                    {t('driver_registration')}
+                    {isClient ? t('driver_registration') : '...'}
                 </Button>
              </Link>
               <Link href="/agent-home" passHref>
                 <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-purple-700">
-                    {t('agent_registration')}
+                    {isClient ? t('agent_registration') : '...'}
                 </Button>
               </Link>
           </div>
