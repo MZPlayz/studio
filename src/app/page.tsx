@@ -9,8 +9,6 @@ import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import '../lib/i18n';
-import { MagicBackground } from '@/components/MagicBackground';
-import ShinyButton from 'magic-ui-react/shiny-button';
 
 export default function LoginPage() {
   const { t, i18n } = useTranslation();
@@ -27,8 +25,6 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-background">
-      {/* Layer 1: The Magic UI Background */}
-      <MagicBackground />
       
       <div className="absolute top-4 right-4 z-10">
         <Button variant="outline" className="rounded-full border-gray-300 bg-white" onClick={toggleLanguage}>
@@ -36,7 +32,6 @@ export default function LoginPage() {
         </Button>
       </div>
 
-      {/* Layer 2: The Login Form (z-10 places it on top) */}
       <div className="z-10 flex w-full max-w-md flex-col items-center space-y-6 rounded-xl border bg-white/80 p-8 shadow-2xl backdrop-blur-sm dark:border-gray-700 dark:bg-black/80">
         
         <div className="loader mb-2">
@@ -187,7 +182,9 @@ export default function LoginPage() {
             </Link>
           </div>
           
-          <ShinyButton text={isClient ? t('login_button') : '...'} className="w-full h-14 text-lg font-bold" />
+          <Button className="w-full h-14 text-lg font-bold">
+            {isClient ? t('login_button') : '...'}
+          </Button>
         </form>
 
         <div className="mt-8 text-center">
