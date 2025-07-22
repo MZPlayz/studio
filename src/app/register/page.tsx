@@ -24,13 +24,11 @@ export default function CustomerRegistrationPage() {
 
   const handlePhotoNext = () => {
     // Logic for the next step (e.g., payment) will go here
-    console.log('Proceeding to payment');
     router.push('/home');
   };
 
   const handlePhotoSkip = () => {
     // Logic for skipping and proceeding to the next step
-    console.log('Skipping photo, proceeding to payment');
     router.push('/home');
   };
 

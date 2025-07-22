@@ -69,10 +69,8 @@ export default function ReferralsPage() {
   const referralLink = 'ridego.app/ref/789456';
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(referralLink).then(() => {
-      // You can add a toast notification here to confirm copy
-      alert('Link copied to clipboard!');
-    });
+    navigator.clipboard.writeText(referralLink);
+    // You can add a toast notification here to confirm copy
   };
 
   const filteredFriends = mockReferredFriends.filter((friend) =>

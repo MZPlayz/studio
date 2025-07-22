@@ -52,14 +52,12 @@ export default function CreateAccountPage() {
     }
     
     const handlePhotoSkip = () => {
-        console.log(`Skipped photo for ${accountType}, redirecting to dashboard...`);
         // In a real app, you would probably redirect to a success page or dashboard.
         setStep('select_type');
         setAccountType(null);
     }
     
     const handlePhotoNext = () => {
-        console.log(`Finished account creation for ${accountType}, redirecting...`);
         setStep('select_type');
         setAccountType(null);
     }

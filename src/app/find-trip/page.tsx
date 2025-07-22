@@ -51,7 +51,6 @@ export default function FindTripPage() {
 
         setTripDetails(fullTripDetails);
         setTripState('booking');
-        console.log("Transitioning to booking state with details:", fullTripDetails);
     };
     
     const handleCancelBooking = () => {
@@ -60,17 +59,14 @@ export default function FindTripPage() {
     };
 
     const handleDriverArrived = () => {
-        console.log("DRIVER HAS ARRIVED. Transitioning to 'arrived' state.");
         setTripState('arrived');
     };
     
     const handleStartMainTrip = () => {
-        console.log("USER CONFIRMED. Transitioning to 'in_progress' state.");
         setTripState('in_progress');
     };
 
     const handleTripComplete = () => {
-        console.log("DESTINATION REACHED. Transitioning to 'completed' state.");
         setTripState('completed');
     };
     
@@ -84,7 +80,6 @@ export default function FindTripPage() {
 
         if (tripState === 'booking') {
             const timer = setTimeout(() => {
-                console.log("Mock System: Cab Booked! Transitioning to PICKUP state.");
                 setTripState('pickup');
             }, 4000); 
             return () => clearTimeout(timer);

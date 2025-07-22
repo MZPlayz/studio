@@ -34,7 +34,6 @@ export default function AddByPhoneModal({
     }
 
     // Simulate finding a passenger from an API
-    console.log(`Searching for ${personType} with phone:`, phone);
 
     // Simulate success by creating a new mock person
     const newPerson: Omit<Person, 'id'> = {

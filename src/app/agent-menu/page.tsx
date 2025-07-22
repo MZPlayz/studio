@@ -58,7 +58,6 @@ export default function AgentMenuPage() {
 
     const handleLogout = () => {
         // In a real app, you would clear session/token here
-        console.log("Logging out...");
         setIsLogoutAlertOpen(false);
         router.push('/'); // Redirect to login page
     };

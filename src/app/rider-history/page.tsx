@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -164,7 +165,6 @@ export default function RiderHistoryPage() {
 
   const handleReviewSubmit = (review: { rating: number; comment: string }) => {
     if (!selectedDriver) return;
-    console.log(`Review for ${selectedDriver.name}:`, review);
     setRiders((prevRiders) =>
       prevRiders.map((rider) =>
         rider.id === selectedDriver.id ? { ...rider, hasBeenReviewed: true } : rider

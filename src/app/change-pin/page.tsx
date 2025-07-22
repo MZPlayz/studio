@@ -49,7 +49,6 @@ export default function ChangePinPage() {
 
     // In a real app, you would have an API call here to verify the current PIN
     // and update it on the server.
-    console.log('Changing PIN...');
     toast({
       title: "Success!",
       description: "Your PIN has been changed successfully.",
