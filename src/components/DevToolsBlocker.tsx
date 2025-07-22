@@ -23,28 +23,12 @@ export default function DevToolsBlocker() {
       }
     };
     
-    const detectDevTools = () => {
-        const threshold = 160;
-        const widthThreshold = window.outerWidth - window.innerWidth > threshold;
-        const heightThreshold = window.outerHeight - window.innerHeight > threshold;
-
-        if (widthThreshold || heightThreshold) {
-            // A simple way to disrupt the dev tools is to enter a debugger loop
-            // which makes it difficult to inspect the page.
-            // eslint-disable-next-line no-debugger
-            debugger;
-        }
-    };
-
     document.addEventListener('contextmenu', handleContextMenu);
     document.addEventListener('keydown', handleKeyDown);
     
-    const interval = setInterval(detectDevTools, 1000);
-
     return () => {
       document.removeEventListener('contextmenu', handleContextMenu);
       document.removeEventListener('keydown', handleKeyDown);
-      clearInterval(interval);
     };
   }, []);
 
