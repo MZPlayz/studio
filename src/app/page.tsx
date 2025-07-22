@@ -35,17 +35,17 @@ export default function LoginPage() {
         </Button>
       </div>
 
+      <AnimatedGradientText className="mb-4">
+        <span
+          className={cn(
+            `inline animate-gradient bg-gradient-to-r from-[#ffaa40] via-[#9c40ff] to-[#ffaa40] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent`,
+          )}
+        >
+          ✨ Real-time Cab Discovery
+        </span>
+      </AnimatedGradientText>
+
       <div className="z-10 flex w-full max-w-md flex-col items-center space-y-6 rounded-xl border bg-white/80 p-8 shadow-2xl backdrop-blur-sm dark:border-gray-700 dark:bg-black/80">
-        <AnimatedGradientText>
-          <span
-            className={cn(
-              `inline animate-gradient bg-gradient-to-r from-[#ffaa40] via-[#9c40ff] to-[#ffaa40] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent`,
-            )}
-          >
-            ✨ Real-time Cab Discovery
-          </span>
-        </AnimatedGradientText>
-        
         <div className="loader mb-2">
             <div className="truckWrapper">
                 <div className="truckBody">
