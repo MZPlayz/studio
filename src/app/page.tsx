@@ -65,13 +65,13 @@ export default function LoginPage() {
             />
           </div>
           <div className="text-right">
-            <Link href="#" className="text-sm font-medium text-purple-600 hover:underline">
+            <Link href="#" className="text-sm font-medium text-accent hover:underline">
               {isClient ? t('forgot_pin') : '...'}
             </Link>
           </div>
           
           <Link href="/home" passHref>
-            <Button className="w-full h-14 bg-purple-600 text-lg font-bold text-white hover:bg-purple-700">
+            <Button className="w-full h-14 bg-primary text-lg font-bold text-primary-foreground hover:bg-primary/90">
                 {isClient ? t('login_button') : '...'}
             </Button>
           </Link>
@@ -82,17 +82,17 @@ export default function LoginPage() {
           <p className="text-gray-600">{isClient ? t('new_here') : '...'}</p>
           <div className="mt-4 w-full space-y-3">
              <Link href="/register" passHref>
-                <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-purple-700">
+                <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-accent">
                     {isClient ? t('customer_registration') : '...'}
                 </Button>
              </Link>
              <Link href="/register" passHref>
-                <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-purple-700">
+                <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-accent">
                     {isClient ? t('driver_registration') : '...'}
                 </Button>
              </Link>
               <Link href="/agent-home" passHref>
-                <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-purple-700">
+                <Button variant="outline" className="w-full h-12 bg-white border-gray-300 text-accent">
                     {isClient ? t('agent_registration') : '...'}
                 </Button>
               </Link>
