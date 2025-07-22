@@ -8,12 +8,15 @@ import { Button } from './ui/button';
 
 export default function BottomNav() {
   const pathname = usePathname();
-  const isAgent = pathname.includes('/agent-home');
+  const isAgent = pathname.includes('/agent-home') || pathname.includes('/agent-menu');
 
   const homeLink = isAgent ? '/agent-home' : '/home';
   const menuLink = isAgent ? '/agent-menu' : '/menu';
+  const inboxLink = '/support';
+
   const isHomeActive = pathname === homeLink;
   const isMenuActive = pathname === menuLink;
+  const isInboxActive = pathname === inboxLink;
 
 
   return (
@@ -23,7 +26,7 @@ export default function BottomNav() {
           <Home size={24} />
           <span className="text-xs font-medium">হোম</span>
         </Link>
-        <Link href="#" className="flex flex-col items-center text-gray-400">
+        <Link href={inboxLink} className={`flex flex-col items-center ${isInboxActive ? 'text-purple-500' : 'text-gray-400'}`}>
           <Inbox size={24} />
           <span className="text-xs font-medium">ইনবক্স</span>
         </Link>
