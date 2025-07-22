@@ -67,7 +67,8 @@ export default function TripDetailsPage({ onRequestTrip }: TripDetailsPageProps)
         console.error("Failed to parse driver data:", error);
       }
     }
-  }, [searchParams]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   
   const handleGetCurrentLocation = () => {
     if (navigator.geolocation) {
