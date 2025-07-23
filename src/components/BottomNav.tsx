@@ -6,10 +6,17 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
 import { cn } from '@/lib/utils';
+import { useState, useEffect } from 'react';
 
 export default function BottomNav() {
   const pathname = usePathname();
   const { t } = useLanguage();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const isAgent = pathname.includes('/agent-home') || pathname.includes('/agent-menu');
 
   const homeLink = isAgent ? '/agent-home' : '/home';
@@ -30,7 +37,9 @@ export default function BottomNav() {
           return (
             <Link key={item.href} href={item.href} className="flex flex-col items-center justify-center pt-1 group">
               <item.icon size={24} className={cn('transition-colors', isActive ? 'text-primary' : 'text-gray-400 group-hover:text-primary/70')} />
-              <span className={cn('text-xs font-medium transition-colors', isActive ? 'text-primary' : 'text-gray-500 group-hover:text-primary/70')}>{item.label}</span>
+              <span className={cn('text-xs font-medium transition-colors', isActive ? 'text-primary' : 'text-gray-500 group-hover:text-primary/70')}>
+                {isClient ? item.label : ''}
+              </span>
             </Link>
           )
         })}
