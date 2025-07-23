@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,12 @@ export default function ChangeLanguagePage() {
   const { language, setLanguage, t } = useLanguage();
   const [selectedLanguage, setSelectedLanguage] = useState(language);
   const { toast } = useToast();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    setSelectedLanguage(language);
+  }, [language]);
 
   const handleSaveChanges = () => {
     setLanguage(selectedLanguage);
@@ -43,31 +49,35 @@ export default function ChangeLanguagePage() {
                 <CardTitle>Select a Language</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Button
-                onClick={() => setSelectedLanguage('en')}
-                className={cn(
-                  "w-full h-16 text-lg justify-between",
-                  selectedLanguage === 'en' ? 'bg-primary text-primary-foreground' : 'bg-gray-100 text-gray-800'
-                )}
-                variant="outline"
-              >
-                <span>English</span>
-                {selectedLanguage === 'en' && <Check className="h-6 w-6" />}
-              </Button>
-              <Button
-                onClick={() => setSelectedLanguage('bn')}
-                className={cn(
-                  "w-full h-16 text-lg justify-between",
-                  selectedLanguage === 'bn' ? 'bg-primary text-primary-foreground' : 'bg-gray-100 text-gray-800'
-                )}
-                variant="outline"
-              >
-                <span>বাংলা</span>
-                {selectedLanguage === 'bn' && <Check className="h-6 w-6" />}
-              </Button>
+              {isClient && (
+                <>
+                  <Button
+                    onClick={() => setSelectedLanguage('en')}
+                    className={cn(
+                      "w-full h-16 text-lg justify-between",
+                      selectedLanguage === 'en' ? 'bg-primary text-primary-foreground' : 'bg-gray-100 text-gray-800'
+                    )}
+                    variant="outline"
+                  >
+                    <span>English</span>
+                    {selectedLanguage === 'en' && <Check className="h-6 w-6" />}
+                  </Button>
+                  <Button
+                    onClick={() => setSelectedLanguage('bn')}
+                    className={cn(
+                      "w-full h-16 text-lg justify-between",
+                      selectedLanguage === 'bn' ? 'bg-primary text-primary-foreground' : 'bg-gray-100 text-gray-800'
+                    )}
+                    variant="outline"
+                  >
+                    <span>বাংলা</span>
+                    {selectedLanguage === 'bn' && <Check className="h-6 w-6" />}
+                  </Button>
+                </>
+              )}
             </CardContent>
             <CardFooter>
-                 <Button onClick={handleSaveChanges} className="w-full h-12">
+                 <Button onClick={handleSaveChanges} className="w-full h-12" disabled={!isClient}>
                     Save Changes
                 </Button>
             </CardFooter>
