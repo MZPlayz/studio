@@ -1,10 +1,23 @@
 
+'use client';
+
 import { PiggyBank } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/context/LanguageContext';
+import { useState, useEffect } from 'react';
 
 export default function SavingsBanner() {
   const { t } = useLanguage();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
+
   return (
     <div className="bg-primary rounded-xl p-4 flex items-center space-x-4 text-white">
       <div className="flex-shrink-0 text-center">
