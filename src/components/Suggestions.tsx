@@ -1,6 +1,9 @@
 
+'use client';
+
 import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
+import { useState, useEffect } from 'react';
 
 const suggestions = [
   { img: 'https://placehold.co/120x90.png', hint: 'tennis player' },
@@ -11,6 +14,16 @@ const suggestions = [
 
 export default function Suggestions() {
   const { t } = useLanguage();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
+
   return (
     <div>
       <h2 className="font-bold text-gray-800 mb-2">{t('suggestions')}</h2>
