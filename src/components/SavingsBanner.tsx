@@ -1,8 +1,10 @@
 
 import { PiggyBank } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function SavingsBanner() {
+  const { t } = useLanguage();
   return (
     <div className="bg-primary rounded-2xl p-4 flex items-center space-x-4 text-white">
       <div className="flex-shrink-0 text-center">
@@ -12,10 +14,10 @@ export default function SavingsBanner() {
         <p className="text-xs font-bold text-white">সেভিংস</p>
       </div>
       <div>
-        <p className="font-bold">সেভিংস-এ বাড়বে টাকা</p>
-        <p className="text-xs mb-2">রাইড শেয়ারিং অ্যাপ থেকে আইডিএলসি-তে</p>
+        <p className="font-bold">{t('savings_banner_title')}</p>
+        <p className="text-xs mb-2">{t('savings_banner_subtitle')}</p>
         <Button variant="secondary" className="border border-white rounded-full px-4 py-1 text-xs h-auto bg-transparent hover:bg-white/20 text-white">
-          ট্যাপ করুন
+          {t('savings_banner_button')}
         </Button>
       </div>
     </div>

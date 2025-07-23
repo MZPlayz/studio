@@ -28,6 +28,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { useLanguage } from '@/context/LanguageContext';
 
 
 interface MenuItemProps {
@@ -56,23 +57,22 @@ const MenuItem = ({ icon: Icon, text, href, onClick }: MenuItemProps) => {
 export default function MenuPage() {
     const [isLogoutAlertOpen, setIsLogoutAlertOpen] = useState(false);
     const router = useRouter();
+    const { t } = useLanguage();
 
     const handleLogout = () => {
-        // In a real app, you would clear session/token here
-        console.log("Logging out...");
         setIsLogoutAlertOpen(false);
-        router.push('/'); // Redirect to login page
+        router.push('/');
     };
 
     const menuItems = [
-        { icon: User, text: 'প্রোফাইল এডিট', href: '/edit-profile' },
-        { icon: Lock, text: 'পিন পরিবর্তন', href: '/change-pin' },
-        { icon: Globe, text: 'ভাষা পরিবর্তন', href: '/change-language' },
-        { icon: FileText, text: 'রুলস ও নির্দেশনা', href: '/rules' },
-        { icon: HelpCircle, text: 'FAQ সাধারণ প্রশ্নের উত্তর', href: '/faq' },
-        { icon: Shield, text: 'আইডেন্টি ভেরিফিকেশন', href: '/identity-verification' },
-        { icon: Award, text: 'মনিটাইজেশন', href: '/monetization' },
-        { icon: LogOut, text: 'লগ আউট', onClick: () => setIsLogoutAlertOpen(true) },
+        { icon: User, text: t('edit_profile'), href: '/edit-profile' },
+        { icon: Lock, text: t('change_pin'), href: '/change-pin' },
+        { icon: Globe, text: t('change_language'), href: '/change-language' },
+        { icon: FileText, text: t('rules_and_instructions'), href: '/rules' },
+        { icon: HelpCircle, text: t('faq'), href: '/faq' },
+        { icon: Shield, text: t('identity_verification'), href: '/identity-verification' },
+        { icon: Award, text: t('monetization'), href: '/monetization' },
+        { icon: LogOut, text: t('logout'), onClick: () => setIsLogoutAlertOpen(true) },
     ];
 
     return (
@@ -84,7 +84,7 @@ export default function MenuPage() {
                     <ArrowLeft className="h-6 w-6" />
                 </Button>
                 </Link>
-                <h1 className="flex-1 text-center text-xl font-bold text-gray-800">মেনু</h1>
+                <h1 className="flex-1 text-center text-xl font-bold text-gray-800">{t('menu_title')}</h1>
                 <div className="w-10" />
             </header>
             <main className="py-2">
@@ -96,15 +96,15 @@ export default function MenuPage() {
             <AlertDialog open={isLogoutAlertOpen} onOpenChange={setIsLogoutAlertOpen}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Are you sure you want to log out?</AlertDialogTitle>
+                        <AlertDialogTitle>{t('logout_confirmation_title')}</AlertDialogTitle>
                         <AlertDialogDescription>
-                            You will be returned to the login screen.
+                            {t('logout_confirmation_description')}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
                         <AlertDialogAction onClick={handleLogout} className="bg-red-600 hover:bg-red-700">
-                            Log Out
+                            {t('log_out_action')}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

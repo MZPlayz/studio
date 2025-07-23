@@ -2,6 +2,7 @@
 'use client';
 
 import { ArrowLeft } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface RegistrationFormProps {
   onSuccess: () => void;
@@ -10,6 +11,8 @@ interface RegistrationFormProps {
 }
 
 export default function RegistrationForm({ onSuccess, onBack, referralCode }: RegistrationFormProps) {
+  const { t } = useLanguage();
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSuccess();
@@ -23,7 +26,7 @@ export default function RegistrationForm({ onSuccess, onBack, referralCode }: Re
             <button className="absolute left-0" onClick={onBack}>
               <ArrowLeft className="h-6 w-6" />
             </button>
-            <h1 className="text-xl font-bold">Register</h1>
+            <h1 className="text-xl font-bold">{t('register_title')}</h1>
           </header>
           <main className="flex-1">
             <form onSubmit={handleSubmit} className="flex h-full flex-col">
@@ -104,7 +107,7 @@ export default function RegistrationForm({ onSuccess, onBack, referralCode }: Re
                   type="submit"
                   className="w-full rounded-md bg-[#8A2BE2] py-3 font-semibold text-white transition-colors hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                 >
-                  Register
+                  {t('register_title')}
                 </button>
               </div>
             </form>

@@ -2,17 +2,7 @@
 import { Car, Clock, Plus, Send, Headphones, Gift, List, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-
-const baseFeatures = [
-  { icon: Car, label: 'গাড়ি বুকিং', href: '/find-trip' },
-  { icon: Clock, label: 'বুকিং হিস্ট্রি', href: '/booking-history' },
-  { icon: List, label: 'রাইডার লিস্ট', href: '/rider-history' },
-  { icon: Plus, label: 'অ্যাড মানি', href: '/add-money' },
-  { icon: Send, label: 'সেন্ড মানি', href: '/send-money' },
-  { icon: Headphones, label: 'সাপোর্ট', href: '/support' },
-  { icon: FileText, label: 'রুলস', href: '/rules' },
-  { icon: Gift, label: 'রেফারেল', href: '/referrals' },
-];
+import { useLanguage } from '@/context/LanguageContext';
 
 const FeatureItem = ({ icon: Icon, label, href }: { icon: React.ElementType, label: string, href: string }) => (
     <Link href={href} className="group flex flex-col items-center justify-start text-center">
@@ -29,6 +19,19 @@ interface FeaturesGridProps {
 }
 
 export default function FeaturesGrid({ userType = 'customer' }: FeaturesGridProps) {
+  const { t } = useLanguage();
+  
+  const baseFeatures = [
+    { icon: Car, label: t('features_car_booking'), href: '/find-trip' },
+    { icon: Clock, label: t('features_booking_history'), href: '/booking-history' },
+    { icon: List, label: t('features_rider_list'), href: '/rider-history' },
+    { icon: Plus, label: t('features_add_money'), href: '/add-money' },
+    { icon: Send, label: t('features_send_money'), href: '/send-money' },
+    { icon: Headphones, label: t('features_support'), href: '/support' },
+    { icon: FileText, label: t('features_rules'), href: '/rules' },
+    { icon: Gift, label: t('features_referrals'), href: '/referrals' },
+  ];
+
   const features = baseFeatures;
 
   return (

@@ -7,25 +7,19 @@ import { Phone, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
-import { useTranslation } from 'react-i18next';
-import '../lib/i18n';
+import { useLanguage } from '@/context/LanguageContext';
 import AnimatedGradientText from '@/components/ui/animated-gradient-text';
 import { cn } from '@/lib/utils';
 import RetroGrid from '@/components/ui/retro-grid';
 import HyperText from '@/components/ui/hyper-text';
 
 export default function LoginPage() {
-  const { t, i18n } = useTranslation();
+  const { t, toggleLanguage } = useLanguage();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
-
-  const toggleLanguage = () => {
-    const newLang = i18n.language === 'bn' ? 'en' : 'bn';
-    i18n.changeLanguage(newLang);
-  };
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-background">
@@ -205,7 +199,7 @@ export default function LoginPage() {
         </form>
 
         <div className="mt-8 text-center">
-          <p className="text-gray-600">{isClient ? t('new_here') : '...'} <Link href="/create-account" className="font-medium text-accent hover:underline">একটি অ্যাকাউন্ট তৈরি করুন</Link></p>
+          <p className="text-gray-600">{isClient ? t('new_here') : '...'} <Link href="/create-account" className="font-medium text-accent hover:underline">{isClient ? t('create_account_link') : '...'}</Link></p>
         </div>
 
         <p className="mt-12 text-sm text-gray-500">ডাক বিভাগের ডিজিটাল লেনদেন</p>
