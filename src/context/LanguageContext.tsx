@@ -30,14 +30,14 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     const storedLanguage = localStorage.getItem('language') as Language | null;
     if (storedLanguage) {
       setLanguageState(storedLanguage);
-      i18nInstance.changeLanguage(storedLanguage);
+      i18n.changeLanguage(storedLanguage);
     }
-  }, [i18nInstance]);
+  }, []);
 
   const setLanguage = (lang: Language) => {
     localStorage.setItem('language', lang);
     setLanguageState(lang);
-    i18nInstance.changeLanguage(lang);
+    i18n.changeLanguage(lang);
   };
 
   const toggleLanguage = () => {
