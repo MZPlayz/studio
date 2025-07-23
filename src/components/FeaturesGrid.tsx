@@ -1,8 +1,10 @@
 
+'use client';
+
 import { Car, Clock, Plus, Send, Headphones, Gift, List, FileText } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/context/LanguageContext';
+import { useEffect, useState } from 'react';
 
 const FeatureItem = ({ icon: Icon, label, href }: { icon: React.ElementType, label: string, href: string }) => (
     <Link href={href} className="group flex flex-col items-center justify-start text-center space-y-2">
@@ -19,6 +21,11 @@ interface FeaturesGridProps {
 
 export default function FeaturesGrid({ userType = 'customer' }: FeaturesGridProps) {
   const { t } = useLanguage();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   
   const features = [
     { icon: Car, label: t('features_car_booking'), href: '/find-trip' },
@@ -30,6 +37,11 @@ export default function FeaturesGrid({ userType = 'customer' }: FeaturesGridProp
     { icon: FileText, label: t('features_rules'), href: '/rules' },
     { icon: Gift, label: t('features_referrals'), href: '/referrals' },
   ];
+
+  if (!isClient) {
+    // Render a placeholder or null on the server and initial client render
+    return null;
+  }
 
   return (
     <div className="grid grid-cols-4 gap-x-2 gap-y-4">
