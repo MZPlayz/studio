@@ -1,8 +1,11 @@
 
+'use client';
+
 import { Clock, Heart, MapPin, ChevronUp } from 'lucide-react';
 import Link from 'next/link';
 import { Card } from '@/components/ui/card';
 import { useLanguage } from '@/context/LanguageContext';
+import { useState, useEffect } from 'react';
 
 const RideOption = ({ href, label, icon: Icon, color, textColor }: { href:string; label:string; icon: React.ElementType; color:string; textColor:string; }) => {
     return (
@@ -17,6 +20,11 @@ const RideOption = ({ href, label, icon: Icon, color, textColor }: { href:string
 
 export default function MyRides() {
     const { t } = useLanguage();
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
     
     const rideOptions = [
         { href: "/booking-history", label: t("ride_history"), icon: Clock, color: "bg-green-100", textColor: "text-green-600" },
@@ -27,16 +35,18 @@ export default function MyRides() {
   return (
     <Card className="p-4 rounded-xl shadow-sm border-gray-200">
         <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-bold text-gray-800">{t('my_rides')}</h2>
+            <h2 className="text-lg font-bold text-gray-800">{isClient ? t('my_rides') : 'My Rides'}</h2>
             <Link href="#">
                 <ChevronUp className="h-5 w-5 text-gray-500" />
             </Link>
         </div>
-        <div className="grid grid-cols-3 gap-4">
-            {rideOptions.map((option) => (
-                <RideOption key={option.label} {...option} />
-            ))}
-        </div>
+        {isClient && (
+            <div className="grid grid-cols-3 gap-4">
+                {rideOptions.map((option) => (
+                    <RideOption key={option.label} {...option} />
+                ))}
+            </div>
+        )}
     </Card>
   );
 }
