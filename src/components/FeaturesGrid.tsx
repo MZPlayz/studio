@@ -5,14 +5,13 @@ import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/context/LanguageContext';
 
 const FeatureItem = ({ icon: Icon, label, href }: { icon: React.ElementType, label: string, href: string }) => (
-    <Link href={href} className="group flex flex-col items-center justify-start text-center">
-        <Button variant="ghost" className="h-20 w-20 rounded-2xl bg-primary/10 hover:bg-primary/20 flex flex-col items-center justify-center gap-1 p-2">
+    <Link href={href} className="group flex flex-col items-center justify-start text-center space-y-2">
+        <div className="h-16 w-16 bg-primary/10 flex items-center justify-center rounded-xl group-hover:bg-primary/20 transition-colors">
             <Icon className="h-8 w-8 text-primary" />
-        </Button>
-        <p className="text-xs text-center font-medium mt-2 text-gray-700">{label}</p>
+        </div>
+        <p className="text-xs text-center font-medium text-gray-700 leading-tight">{label}</p>
     </Link>
 );
-
 
 interface FeaturesGridProps {
     userType?: 'customer' | 'agent';
@@ -21,7 +20,7 @@ interface FeaturesGridProps {
 export default function FeaturesGrid({ userType = 'customer' }: FeaturesGridProps) {
   const { t } = useLanguage();
   
-  const baseFeatures = [
+  const features = [
     { icon: Car, label: t('features_car_booking'), href: '/find-trip' },
     { icon: Clock, label: t('features_booking_history'), href: '/booking-history' },
     { icon: List, label: t('features_rider_list'), href: '/rider-history' },
@@ -32,10 +31,8 @@ export default function FeaturesGrid({ userType = 'customer' }: FeaturesGridProp
     { icon: Gift, label: t('features_referrals'), href: '/referrals' },
   ];
 
-  const features = baseFeatures;
-
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-4 gap-x-2 gap-y-4">
       {features.map((feature, index) => (
         <FeatureItem key={index} icon={feature.icon} label={feature.label} href={feature.href} />
       ))}

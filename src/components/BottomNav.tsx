@@ -4,8 +4,8 @@
 import { Home, Inbox, Menu } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Button } from './ui/button';
 import { useLanguage } from '@/context/LanguageContext';
+import { cn } from '@/lib/utils';
 
 export default function BottomNav() {
   const pathname = usePathname();
@@ -16,26 +16,24 @@ export default function BottomNav() {
   const menuLink = isAgent ? '/agent-menu' : '/menu';
   const inboxLink = '/support';
 
-  const isHomeActive = pathname === homeLink;
-  const isMenuActive = pathname === menuLink;
-  const isInboxActive = pathname === inboxLink;
-
+  const navItems = [
+    { href: homeLink, label: t('home_nav'), icon: Home },
+    { href: inboxLink, label: t('inbox_nav'), icon: Inbox },
+    { href: menuLink, label: t('menu_nav'), icon: Menu },
+  ];
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg">
-      <div className="grid grid-cols-3 items-center h-16 max-w-md mx-auto">
-        <Link href={homeLink} className={`flex flex-col items-center justify-center`}>
-            <Home size={24} className={`${isHomeActive ? 'text-primary' : 'text-gray-400'}`} />
-            <span className={`text-xs font-medium ${isHomeActive ? 'text-primary' : 'text-gray-400'}`}>{t('home_nav')}</span>
-        </Link>
-        <Link href={inboxLink} className={`flex flex-col items-center justify-center`}>
-            <Inbox size={24} className={`${isInboxActive ? 'text-primary' : 'text-gray-400'}`} />
-          <span className={`text-xs font-medium ${isInboxActive ? 'text-primary' : 'text-gray-400'}`}>{t('inbox_nav')}</span>
-        </Link>
-        <Link href={menuLink} className={`flex flex-col items-center justify-center`}>
-              <Menu size={24} className={`${isMenuActive ? 'text-primary' : 'text-gray-400'}`} />
-          <span className={`text-xs font-medium ${isMenuActive ? 'text-primary' : 'text-gray-400'}`}>{t('menu_nav')}</span>
-        </Link>
+    <div className="fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-sm border-t border-gray-200 shadow-t-lg">
+      <div className="grid grid-cols-3 h-16 max-w-md mx-auto">
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Link key={item.href} href={item.href} className="flex flex-col items-center justify-center pt-1 group">
+              <item.icon size={24} className={cn('transition-colors', isActive ? 'text-primary' : 'text-gray-400 group-hover:text-primary/70')} />
+              <span className={cn('text-xs font-medium transition-colors', isActive ? 'text-primary' : 'text-gray-500 group-hover:text-primary/70')}>{item.label}</span>
+            </Link>
+          )
+        })}
       </div>
     </div>
   );

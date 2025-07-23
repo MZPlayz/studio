@@ -11,20 +11,20 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 275 82% 54%; /* #9929EA - Vibrant Purple */
+    --primary: 262 84% 58%; /* #6A1B9A - Vibrant Purple from image */
     --primary-foreground: 210 40% 98%; /* White text for contrast on purple */
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 275 82% 54%; /* Using primary purple as accent */
+    --accent: 262 84% 58%; /* Using primary purple as accent */
     --accent-foreground: 210 40% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 275 82% 54%; /* Vibrant purple for focus rings */
-    --radius: 0.5rem;
+    --ring: 262 84% 58%; /* Vibrant purple for focus rings */
+    --radius: 0.75rem;
   }
 
   .dark {
@@ -34,19 +34,19 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 275 82% 54%;
+    --primary: 262 84% 58%;
     --primary-foreground: 210 40% 98%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: 275 82% 54%;
+    --accent: 262 84% 58%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 275 82% 54%;
+    --ring: 262 84% 58%;
   }
 }
 

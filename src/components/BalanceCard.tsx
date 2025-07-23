@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function BalanceCard() {
     const [isBalanceVisible, setIsBalanceVisible] = useState(true);
@@ -15,17 +15,17 @@ export default function BalanceCard() {
     };
 
     return (
-        <Card className="rounded-2xl shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">{t('balance')}</CardTitle>
-                <button className="text-muted-foreground" onClick={toggleBalanceVisibility}>
-                    {isBalanceVisible ? <Eye size={16} /> : <EyeOff size={16} />}
-                </button>
-            </CardHeader>
-            <CardContent>
-                <div className="text-3xl font-bold">
-                    {isBalanceVisible ? '৳7.00' : '৳•••••'}
+        <Card className="rounded-xl shadow-sm border-gray-200">
+            <CardContent className="p-4 flex items-center justify-between">
+                <div>
+                    <p className="text-sm font-medium text-gray-500">{t('balance')}</p>
+                    <div className="text-2xl font-bold text-gray-800">
+                        {isBalanceVisible ? '৳7.00' : '৳•••••'}
+                    </div>
                 </div>
+                <button className="text-gray-400 hover:text-gray-600" onClick={toggleBalanceVisibility}>
+                    {isBalanceVisible ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
             </CardContent>
         </Card>
     )
