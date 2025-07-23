@@ -12,7 +12,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function ChangeLanguagePage() {
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
   const [selectedLanguage, setSelectedLanguage] = useState(language);
   const { toast } = useToast();
 
@@ -33,7 +33,7 @@ export default function ChangeLanguagePage() {
               <ArrowLeft className="h-6 w-6" />
             </Button>
           </Link>
-          <h1 className="flex-1 text-center text-xl font-bold text-gray-800">{language === 'bn' ? 'ভাষা পরিবর্তন' : 'Change Language'}</h1>
+          <h1 className="flex-1 text-center text-xl font-bold text-gray-800">{t('change_language')}</h1>
           <div className="w-10" />
         </header>
 
