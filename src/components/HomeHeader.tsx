@@ -4,9 +4,16 @@
 import { Bell } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useLanguage } from '@/context/LanguageContext';
+import { useState, useEffect } from 'react';
 
 export default function HomeHeader() {
   const { t } = useLanguage();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <header className="bg-primary px-4 py-5 fixed top-0 left-0 right-0 z-10 rounded-b-3xl">
       <div className="flex justify-between items-center">
@@ -16,7 +23,7 @@ export default function HomeHeader() {
             <AvatarFallback>AH</AvatarFallback>
           </Avatar>
           <div>
-            <p className="font-bold text-lg text-white">{t('alif_hossain')}</p>
+            <p className="font-bold text-lg text-white">{isClient ? t('alif_hossain') : '...'}</p>
             <p className="text-sm text-purple-200">01234567890</p>
           </div>
         </div>
