@@ -75,6 +75,20 @@ export default function CreateAccountPage() {
         return t('register_title');
     }
 
+    if (step === 'form' && accountType) {
+        return (
+            <div className="flex min-h-screen w-full flex-col items-center justify-center bg-gray-100 p-4">
+                <div className="w-full max-w-md">
+                     <RegistrationForm
+                        onSuccess={handleFormSuccess}
+                        onBack={handleBack}
+                        referralCode={agentReferralCode}
+                    />
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-background">
             <RetroGrid className="absolute inset-0 w-full h-full" />
@@ -108,16 +122,6 @@ export default function CreateAccountPage() {
                      <div className="mt-8 text-center">
                         <p className="text-gray-600">{t('already_have_account')} <Link href="/" className="font-medium text-accent hover:underline">{t('login_button')}</Link></p>
                     </div>
-                </div>
-            )}
-            
-            {step === 'form' && accountType && (
-                <div className="w-full animate-in slide-in-from-right-1/2 duration-500">
-                    <RegistrationForm
-                        onSuccess={handleFormSuccess}
-                        onBack={handleBack}
-                        referralCode={agentReferralCode}
-                    />
                 </div>
             )}
 
