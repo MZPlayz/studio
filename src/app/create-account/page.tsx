@@ -18,8 +18,8 @@ type Step = 'select_type' | 'form' | 'photo';
 const TypeSelectionCard = ({ icon: Icon, title, description, onClick }: { icon: React.ElementType, title: string, description: string, onClick: () => void }) => (
     <Card onClick={onClick} className="cursor-pointer bg-white/50 hover:bg-white/80 transition-colors border-gray-300">
         <CardHeader className="flex flex-row items-center gap-4 space-y-0">
-            <div className="bg-blue-100 p-3 rounded-lg">
-                <Icon className="h-6 w-6 text-blue-600" />
+            <div className="bg-purple-100 p-3 rounded-lg">
+                <Icon className="h-6 w-6 text-purple-600" />
             </div>
             <CardTitle>{title}</CardTitle>
         </CardHeader>
