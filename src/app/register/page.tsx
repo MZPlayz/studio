@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import RegistrationForm from '@/components/RegistrationForm';
 import ProfileImageUpload from '@/components/ProfileImageUpload';
+import { Card } from '@/components/ui/card';
 
 export default function CustomerRegistrationPage() {
   const [step, setStep] = useState('form');
@@ -23,19 +24,25 @@ export default function CustomerRegistrationPage() {
   };
 
   const handlePhotoNext = () => {
-    // Logic for the next step (e.g., payment) will go here
     router.push('/home');
   };
 
   const handlePhotoSkip = () => {
-    // Logic for skipping and proceeding to the next step
     router.push('/home');
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {step === 'form' && <RegistrationForm onSuccess={handleFormSuccess} onBack={handleBack}/>}
-      {step === 'photo' && <ProfileImageUpload onNext={handlePhotoNext} onSkip={handlePhotoSkip} onBack={handleBack}/>}
+    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-gray-100 p-4">
+        {step === 'form' && (
+            <div className="w-full max-w-md">
+                <RegistrationForm onSuccess={handleFormSuccess} onBack={handleBack} />
+            </div>
+        )}
+        {step === 'photo' && (
+            <Card className="w-full max-w-md p-8">
+                <ProfileImageUpload onNext={handlePhotoNext} onSkip={handlePhotoSkip} onBack={handleBack}/>
+            </Card>
+        )}
     </div>
   );
 }
