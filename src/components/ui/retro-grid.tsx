@@ -17,10 +17,10 @@ const RetroGrid = ({ className }: { className?: string }) => {
           className={cn(
             "animate-grid",
             "[background-repeat:repeat] [background-size:60px_60px] [height:300vh] [inset:0%_0px] [margin-left:-50%] [transform-origin:100%_0_0] [width:600vw]",
-            // Light-mode
-            "[background-image:linear-gradient(to_right,rgba(0,0,0,0.3)_1px,transparent_0),linear-gradient(to_bottom,rgba(0,0,0,0.3)_1px,transparent_0)]",
-            // Dark-mode
-            "dark:[background-image:linear-gradient(to_right,rgba(255,255,255,0.3)_1px,transparent_0),linear-gradient(to_bottom,rgba(255,255,255,0.3)_1px,transparent_0)]",
+            // Light-mode: Increased opacity from 0.3 to 0.5
+            "[background-image:linear-gradient(to_right,rgba(0,0,0,0.5)_1px,transparent_0),linear-gradient(to_bottom,rgba(0,0,0,0.5)_1px,transparent_0)]",
+            // Dark-mode: Increased opacity from 0.3 to 0.5
+            "dark:[background-image:linear-gradient(to_right,rgba(255,255,255,0.5)_1px,transparent_0),linear-gradient(to_bottom,rgba(255,255,255,0.5)_1px,transparent_0)]",
           )}
         ></div>
       </div>
