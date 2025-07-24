@@ -27,6 +27,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 
 interface MenuItemProps {
@@ -82,7 +83,9 @@ export default function AgentMenuPage() {
                 </Button>
                 </Link>
                 <h1 className="flex-1 text-center text-xl font-bold text-gray-800">মেনু</h1>
-                <div className="w-10" />
+                <div className="w-10">
+                    <ThemeToggle />
+                </div>
             </header>
             <main className="py-2">
                 {menuItems.map((item, index) => (
