@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, User, Car, Briefcase } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -34,6 +34,11 @@ export default function CreateAccountPage() {
     const [accountType, setAccountType] = useState<AccountType>(null);
     const agentReferralCode = "AGENT789"; 
     const { t } = useLanguage();
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
 
     const handleTypeSelect = (type: AccountType) => {
         setAccountType(type);
@@ -74,7 +79,7 @@ export default function CreateAccountPage() {
         <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-background">
             <RetroGrid className="absolute inset-0 w-full h-full" />
             
-            {step === 'select_type' && (
+            {step === 'select_type' && isClient && (
                 <div className="z-10 flex w-full max-w-md flex-col items-center space-y-6 rounded-xl border bg-white/80 p-8 shadow-2xl backdrop-blur-sm dark:border-gray-700 dark:bg-black/80 animate-in fade-in-0 duration-500">
                      <HyperText className="text-2xl font-bold text-gray-800">
                        {t('choose_account_type')}
