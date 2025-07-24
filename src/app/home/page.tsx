@@ -1,12 +1,14 @@
 
 'use client';
 import HomeHeader from '@/components/HomeHeader';
-import FeaturesGrid from '@/components/FeaturesGrid';
-import MyRides from '@/components/MyRides';
-import SavingsBanner from '@/components/SavingsBanner';
-import Suggestions from '@/components/Suggestions';
 import BottomNav from '@/components/BottomNav';
 import BalanceCard from '@/components/BalanceCard';
+import dynamic from 'next/dynamic';
+
+const FeaturesGrid = dynamic(() => import('@/components/FeaturesGrid'));
+const MyRides = dynamic(() => import('@/components/MyRides'));
+const SavingsBanner = dynamic(() => import('@/components/SavingsBanner'));
+const Suggestions = dynamic(() => import('@/components/Suggestions'));
 
 export default function HomePage() {
   return (
