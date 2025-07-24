@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 import RetroGrid from '@/components/ui/retro-grid';
 import HyperText from '@/components/ui/hyper-text';
 import { supabase } from '@/lib/supabase-client';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function LoginPage() {
   const { t, toggleLanguage } = useLanguage();
@@ -47,13 +48,13 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-background">
-      <RetroGrid className="absolute inset-0 w-full h-full" />
-      <div className="absolute top-4 right-4 z-10">
-        <Button variant="outline" className="rounded-full border-gray-300 bg-white" onClick={toggleLanguage}>
+      <div className="absolute top-4 right-4 z-20 flex gap-2">
+        <Button variant="outline" className="rounded-full border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-700" onClick={toggleLanguage}>
           {isClient ? t('language_toggle') : '...'}
         </Button>
+        <ThemeToggle />
       </div>
-
+      <RetroGrid className="absolute inset-0 w-full h-full" />
       <AnimatedGradientText className="mb-4">
         <span
           className={cn(
@@ -65,10 +66,10 @@ export default function LoginPage() {
       </AnimatedGradientText>
 
       <div className="z-10 flex w-full max-w-md flex-col items-center space-y-6 rounded-xl border bg-white/80 p-8 shadow-2xl backdrop-blur-sm dark:border-gray-700 dark:bg-black/80">
-        <HyperText className="text-2xl font-bold text-gray-800">
+        <HyperText className="text-2xl font-bold text-gray-800 dark:text-gray-100">
           {isClient ? t('welcome_back') : '...'}
         </HyperText>
-        <p className="text-gray-600">{isClient ? t('login_prompt_email') : '...'}</p>
+        <p className="text-gray-600 dark:text-gray-400">{isClient ? t('login_prompt_email') : '...'}</p>
 
         <form onSubmit={handleLogin} className="w-full space-y-4">
           <div className="relative">
@@ -76,7 +77,7 @@ export default function LoginPage() {
             <Input
               type="email"
               placeholder={isClient ? t('email_placeholder') : ''}
-              className="w-full rounded-lg border-gray-300 bg-white py-6 pl-10"
+              className="w-full rounded-lg border-gray-300 bg-white py-6 pl-10 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -88,13 +89,13 @@ export default function LoginPage() {
           </Button>
         </form>
         
-        {message && <p className="text-center text-sm font-medium text-gray-700">{message}</p>}
+        {message && <p className="text-center text-sm font-medium text-gray-700 dark:text-gray-300">{message}</p>}
 
         <div className="mt-8 text-center">
-          <p className="text-gray-600">{isClient ? t('new_here') : '...'} <Link href="/create-account" className="font-medium text-accent hover:underline">{isClient ? t('create_account_link') : '...'}</Link></p>
+          <p className="text-gray-600 dark:text-gray-400">{isClient ? t('new_here') : '...'} <Link href="/create-account" className="font-medium text-accent hover:underline">{isClient ? t('create_account_link') : '...'}</Link></p>
         </div>
 
-        <p className="mt-12 text-sm text-gray-500">ডাক বিভাগের ডিজিটাল লেনদেন</p>
+        <p className="mt-12 text-sm text-gray-500 dark:text-gray-400">ডাক বিভাগের ডিজিটাল লেনদেন</p>
       </div>
     </div>
   );

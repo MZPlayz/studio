@@ -11,20 +11,21 @@ import ProfileImageUpload from '@/components/ProfileImageUpload';
 import RetroGrid from '@/components/ui/retro-grid';
 import HyperText from '@/components/ui/hyper-text';
 import { useLanguage } from '@/context/LanguageContext';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 type AccountType = 'customer' | 'driver' | 'agent' | null;
 type Step = 'select_type' | 'form' | 'photo';
 
 const TypeSelectionCard = ({ icon: Icon, title, description, onClick }: { icon: React.ElementType, title: string, description: string, onClick: () => void }) => (
-    <Card onClick={onClick} className="cursor-pointer bg-white/50 hover:bg-white/80 transition-colors border-gray-300">
+    <Card onClick={onClick} className="cursor-pointer bg-white/50 hover:bg-white/80 transition-colors border-gray-300 dark:bg-gray-900/50 dark:hover:bg-gray-900/80 dark:border-gray-700">
         <CardHeader className="flex flex-row items-center gap-4 space-y-0">
             <div className="bg-purple-100 p-3 rounded-lg">
                 <Icon className="h-6 w-6 text-purple-600" />
             </div>
-            <CardTitle>{title}</CardTitle>
+            <CardTitle className="text-gray-800 dark:text-gray-100">{title}</CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-sm text-gray-600">{description}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">{description}</p>
         </CardContent>
     </Card>
 );
@@ -79,6 +80,9 @@ export default function CreateAccountPage() {
         return (
             <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-background p-4">
                  <RetroGrid className="absolute inset-0 w-full h-full" />
+                 <div className="absolute top-4 right-4 z-20">
+                    <ThemeToggle />
+                 </div>
                 <div className="z-10 w-full max-w-md">
                      <RegistrationForm
                         onSuccess={handleFormSuccess}
@@ -92,14 +96,17 @@ export default function CreateAccountPage() {
 
     return (
         <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-background">
+             <div className="absolute top-4 right-4 z-20">
+                <ThemeToggle />
+             </div>
             <RetroGrid className="absolute inset-0 w-full h-full" />
             
             {step === 'select_type' && isClient && (
                 <div className="z-10 flex w-full max-w-md flex-col items-center space-y-6 rounded-xl border bg-white/80 p-8 shadow-2xl backdrop-blur-sm dark:border-gray-700 dark:bg-black/80 animate-in fade-in-0 duration-500">
-                     <HyperText className="text-2xl font-bold text-gray-800">
+                     <HyperText className="text-2xl font-bold text-gray-800 dark:text-gray-100">
                        {t('choose_account_type')}
                     </HyperText>
-                    <p className="text-gray-600">{t('select_account_type_prompt')}</p>
+                    <p className="text-gray-600 dark:text-gray-400">{t('select_account_type_prompt')}</p>
                     <div className="w-full space-y-4">
                         <TypeSelectionCard 
                             icon={User} 
@@ -121,7 +128,7 @@ export default function CreateAccountPage() {
                         />
                     </div>
                      <div className="mt-8 text-center">
-                        <p className="text-gray-600">{t('already_have_account')} <Link href="/" className="font-medium text-accent hover:underline">{t('login_button')}</Link></p>
+                        <p className="text-gray-600 dark:text-gray-400">{t('already_have_account')} <Link href="/" className="font-medium text-accent hover:underline">{t('login_button')}</Link></p>
                     </div>
                 </div>
             )}

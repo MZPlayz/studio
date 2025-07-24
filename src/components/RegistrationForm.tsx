@@ -19,42 +19,42 @@ export default function RegistrationForm({ onSuccess, onBack, referralCode }: Re
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50 md:items-center md:justify-center">
-      <div className="w-full bg-white md:max-w-md md:rounded-xl md:border md:shadow-lg">
+    <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900 md:items-center md:justify-center">
+      <div className="w-full bg-white dark:bg-black md:max-w-md md:rounded-xl md:border dark:border-gray-700 md:shadow-lg">
         <div className="flex flex-col p-4 md:p-8">
           <header className="relative flex items-center justify-center py-4">
             <button className="absolute left-0" onClick={onBack}>
-              <ArrowLeft className="h-6 w-6" />
+              <ArrowLeft className="h-6 w-6 text-gray-800 dark:text-gray-100" />
             </button>
-            <h1 className="text-xl font-bold">{t('register_title')}</h1>
+            <h1 className="text-xl font-bold text-gray-800 dark:text-gray-100">{t('register_title')}</h1>
           </header>
           <main className="flex-1">
             <form onSubmit={handleSubmit} className="flex h-full flex-col">
               <div className="flex-1 space-y-4">
                 <div>
-                  <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Full Name
                   </label>
                   <input
                     type="text"
                     id="fullName"
                     placeholder="Enter your full name"
-                    className="mt-1 block w-full rounded-md border-none bg-gray-100 p-3 shadow-sm focus:ring-purple-500"
+                    className="mt-1 block w-full rounded-md border-none bg-gray-100 p-3 shadow-sm focus:ring-purple-500 dark:bg-gray-800 dark:text-gray-100"
                   />
                 </div>
                 <div>
-                  <label htmlFor="mobileNumber" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="mobileNumber" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Mobile Number
                   </label>
                   <input
                     type="tel"
                     id="mobileNumber"
                     placeholder="Enter your mobile number"
-                    className="mt-1 block w-full rounded-md border-none bg-gray-100 p-3 shadow-sm focus:ring-purple-500"
+                    className="mt-1 block w-full rounded-md border-none bg-gray-100 p-3 shadow-sm focus:ring-purple-500 dark:bg-gray-800 dark:text-gray-100"
                   />
                 </div>
                 <div>
-                  <label htmlFor="pin" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="pin" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     5-digit PIN
                   </label>
                   <input
@@ -62,11 +62,11 @@ export default function RegistrationForm({ onSuccess, onBack, referralCode }: Re
                     id="pin"
                     maxLength={5}
                     placeholder="Enter 5-digit PIN"
-                    className="mt-1 block w-full rounded-md border-none bg-gray-100 p-3 shadow-sm focus:ring-purple-500"
+                    className="mt-1 block w-full rounded-md border-none bg-gray-100 p-3 shadow-sm focus:ring-purple-500 dark:bg-gray-800 dark:text-gray-100"
                   />
                 </div>
                 <div>
-                  <label htmlFor="confirmPin" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="confirmPin" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Confirm PIN
                   </label>
                   <input
@@ -74,22 +74,22 @@ export default function RegistrationForm({ onSuccess, onBack, referralCode }: Re
                     id="confirmPin"
                     maxLength={5}
                     placeholder="Confirm 5-digit PIN"
-                    className="mt-1 block w-full rounded-md border-none bg-gray-100 p-3 shadow-sm focus:ring-purple-500"
+                    className="mt-1 block w-full rounded-md border-none bg-gray-100 p-3 shadow-sm focus:ring-purple-500 dark:bg-gray-800 dark:text-gray-100"
                   />
                 </div>
                 <div>
-                  <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Current Address
                   </label>
                   <input
                     type="text"
                     id="address"
                     placeholder="Enter your current address"
-                    className="mt-1 block w-full rounded-md border-none bg-gray-100 p-3 shadow-sm focus:ring-purple-500"
+                    className="mt-1 block w-full rounded-md border-none bg-gray-100 p-3 shadow-sm focus:ring-purple-500 dark:bg-gray-800 dark:text-gray-100"
                   />
                 </div>
                 <div>
-                  <label htmlFor="referral" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="referral" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Referral Code (Optional)
                   </label>
                   <input
@@ -98,7 +98,7 @@ export default function RegistrationForm({ onSuccess, onBack, referralCode }: Re
                     placeholder="Enter referral code"
                     value={referralCode}
                     disabled={!!referralCode}
-                    className="mt-1 block w-full rounded-md border-none bg-gray-100 p-3 shadow-sm focus:ring-purple-500 disabled:bg-gray-200 disabled:text-gray-500"
+                    className="mt-1 block w-full rounded-md border-none bg-gray-100 p-3 shadow-sm focus:ring-purple-500 disabled:bg-gray-800 disabled:text-gray-500 dark:bg-gray-800 dark:text-gray-100"
                   />
                 </div>
               </div>
