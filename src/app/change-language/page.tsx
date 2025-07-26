@@ -32,21 +32,21 @@ export default function ChangeLanguagePage() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50 font-sans">
-        <header className="sticky top-0 z-10 flex items-center border-b bg-white p-4">
+      <div className="min-h-screen bg-gray-50 dark:bg-black font-sans">
+        <header className="sticky top-0 z-10 flex items-center border-b bg-white dark:bg-gray-900 dark:border-gray-800 p-4">
           <Link href="/menu">
             <Button variant="ghost" size="icon">
-              <ArrowLeft className="h-6 w-6" />
+              <ArrowLeft className="h-6 w-6 text-gray-800 dark:text-gray-100" />
             </Button>
           </Link>
-          <h1 className="flex-1 text-center text-xl font-bold text-gray-800">{t('change_language')}</h1>
+          <h1 className="flex-1 text-center text-xl font-bold text-gray-800 dark:text-gray-100">{t('change_language')}</h1>
           <div className="w-10" />
         </header>
 
         <main className="p-4">
-          <Card>
+          <Card className="bg-white dark:bg-gray-900 dark:border-gray-800">
             <CardHeader>
-                <CardTitle>Select a Language</CardTitle>
+                <CardTitle className="text-gray-800 dark:text-gray-100">Select a Language</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {isClient && (
@@ -55,7 +55,7 @@ export default function ChangeLanguagePage() {
                     onClick={() => setSelectedLanguage('en')}
                     className={cn(
                       "w-full h-16 text-lg justify-between",
-                      selectedLanguage === 'en' ? 'bg-primary text-primary-foreground' : 'bg-gray-100 text-gray-800'
+                      selectedLanguage === 'en' ? 'bg-primary text-primary-foreground' : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100'
                     )}
                     variant="outline"
                   >
@@ -66,7 +66,7 @@ export default function ChangeLanguagePage() {
                     onClick={() => setSelectedLanguage('bn')}
                     className={cn(
                       "w-full h-16 text-lg justify-between",
-                      selectedLanguage === 'bn' ? 'bg-primary text-primary-foreground' : 'bg-gray-100 text-gray-800'
+                      selectedLanguage === 'bn' ? 'bg-primary text-primary-foreground' : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100'
                     )}
                     variant="outline"
                   >
@@ -77,7 +77,7 @@ export default function ChangeLanguagePage() {
               )}
             </CardContent>
             <CardFooter>
-                 <Button onClick={handleSaveChanges} className="w-full h-12" disabled={!isClient}>
+                 <Button onClick={handleSaveChanges} className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/80" disabled={!isClient}>
                     Save Changes
                 </Button>
             </CardFooter>

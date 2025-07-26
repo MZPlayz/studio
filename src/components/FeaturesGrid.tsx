@@ -8,10 +8,10 @@ import { useEffect, useState } from 'react';
 
 const FeatureItem = ({ icon: Icon, label, href }: { icon: React.ElementType, label: string, href: string }) => (
     <Link href={href} className="group flex flex-col items-center justify-start text-center space-y-2">
-        <div className="h-16 w-16 bg-primary/10 flex items-center justify-center rounded-xl group-hover:bg-primary/20 transition-colors">
-            <Icon className="h-8 w-8 text-primary" />
+        <div className="h-16 w-16 bg-primary/10 flex items-center justify-center rounded-xl group-hover:bg-primary/20 transition-colors dark:bg-gray-800 dark:group-hover:bg-gray-700">
+            <Icon className="h-8 w-8 text-primary dark:text-primary-400" />
         </div>
-        <p className="text-xs text-center font-medium text-gray-700 leading-tight">{label}</p>
+        <p className="text-xs text-center font-medium text-gray-700 dark:text-gray-300 leading-tight">{label}</p>
     </Link>
 );
 
@@ -44,7 +44,7 @@ export default function FeaturesGrid({ userType = 'customer' }: FeaturesGridProp
   }
 
   return (
-    <div className="grid grid-cols-4 gap-x-2 gap-y-4">
+    <div className="grid grid-cols-4 gap-x-2 gap-y-4 bg-white dark:bg-gray-900 p-4 rounded-xl">
       {features.map((feature, index) => (
         <FeatureItem key={index} icon={feature.icon} label={feature.label} href={feature.href} />
       ))}

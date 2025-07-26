@@ -13,7 +13,7 @@ const RideOption = ({ href, label, icon: Icon, color, textColor }: { href:string
              <div className={`w-16 h-16 flex items-center justify-center rounded-xl ${color} group-hover:opacity-90 transition-opacity`}>
                 <Icon className={`h-8 w-8 ${textColor}`} />
             </div>
-            <span className="text-xs font-medium text-gray-700">{label}</span>
+            <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{label}</span>
         </Link>
     );
 }
@@ -33,11 +33,11 @@ export default function MyRides() {
     ];
 
   return (
-    <Card className="p-4 rounded-xl shadow-sm border-gray-200">
+    <Card className="p-4 rounded-xl shadow-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
         <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-bold text-gray-800">{isClient ? t('my_rides') : 'My Rides'}</h2>
+            <h2 className="text-lg font-bold text-gray-800 dark:text-white">{isClient ? t('my_rides') : 'My Rides'}</h2>
             <Link href="#">
-                <ChevronUp className="h-5 w-5 text-gray-500" />
+                <ChevronUp className="h-5 w-5 text-gray-500 dark:text-gray-400" />
             </Link>
         </div>
         {isClient && (

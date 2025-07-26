@@ -36,23 +36,23 @@ const faqItems = [
 
 export default function FAQPage() {
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
-      <header className="sticky top-0 z-10 flex items-center border-b bg-white p-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-black font-sans">
+      <header className="sticky top-0 z-10 flex items-center border-b bg-white dark:bg-gray-900 dark:border-gray-800 p-4">
         <Link href="/menu">
           <Button variant="ghost" size="icon">
-            <ArrowLeft className="h-6 w-6" />
+            <ArrowLeft className="h-6 w-6 text-gray-800 dark:text-gray-100" />
           </Button>
         </Link>
-        <h1 className="flex-1 text-center text-xl font-bold text-gray-800">FAQ</h1>
+        <h1 className="flex-1 text-center text-xl font-bold text-gray-800 dark:text-gray-100">FAQ</h1>
         <div className="w-10" />
       </header>
 
       <main className="p-4">
-        <Accordion type="single" collapsible className="w-full bg-white rounded-lg px-4">
+        <Accordion type="single" collapsible className="w-full bg-white dark:bg-gray-900 dark:border-gray-800 rounded-lg px-4">
             {faqItems.map((item, index) => (
-                 <AccordionItem key={index} value={`item-${index}`}>
-                    <AccordionTrigger className="text-left">{item.question}</AccordionTrigger>
-                    <AccordionContent>
+                 <AccordionItem key={index} value={`item-${index}`} className="border-b border-gray-200 dark:border-gray-700">
+                    <AccordionTrigger className="text-left text-gray-800 dark:text-gray-100">{item.question}</AccordionTrigger>
+                    <AccordionContent className="text-gray-700 dark:text-gray-300">
                         {item.answer}
                     </AccordionContent>
                 </AccordionItem>

@@ -30,7 +30,7 @@ const vehicleClasses = {
 };
 
 interface TripDetailsPageProps {
-  onRequestTrip: (details: Omit<TripDetails, 'driverStartLocation' | 'vehicle'>) => void;
+  onRequestTrip: (details: Omit<TripDetails, 'driver' | 'vehicle'>) => void;
 }
 
 export default function TripDetailsPage({ onRequestTrip }: TripDetailsPageProps) {
@@ -147,21 +147,21 @@ export default function TripDetailsPage({ onRequestTrip }: TripDetailsPageProps)
   const isFormValid = !!destination.coords && !!currentLocation.coords;
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
-      <div className="flex flex-col pb-24">
-        <header className="flex items-center justify-between p-4 bg-white shadow-sm">
-          <Button variant="ghost" size="icon" onClick={() => router.back()}>
-            <ArrowLeft className="h-6 w-6" />
-          </Button>
-          <h1 className="text-xl font-bold">Trip Details</h1>
-          <div className="w-10"></div>
-        </header>
+    <div className="min-h-screen bg-gray-50 dark:bg-black font-sans flex flex-col">
+      <header className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 dark:border-b dark:border-gray-800 shadow-sm">
+        <Button variant="ghost" size="icon" onClick={() => router.back()}>
+          <ArrowLeft className="h-6 w-6 text-gray-800 dark:text-gray-100" />
+        </Button>
+        <h1 className="text-xl font-bold text-gray-800 dark:text-gray-100">Trip Details</h1>
+        <div className="w-10"></div>
+      </header>
 
-        <main className="flex-1 space-y-4 p-4">
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <main className="flex-1 space-y-4 p-4 overflow-y-auto">
           <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-700">Select Vehicle Type</label>
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Select Vehicle Type</label>
             <Select onValueChange={setVehicleType} value={vehicleType}>
-              <SelectTrigger className="w-full bg-gray-100 border-none h-14">
+              <SelectTrigger className="w-full bg-gray-100 dark:bg-gray-800 border-none h-14 text-gray-800 dark:text-gray-100">
                 <SelectValue placeholder="Select vehicle type" />
               </SelectTrigger>
               <SelectContent>
@@ -188,9 +188,9 @@ export default function TripDetailsPage({ onRequestTrip }: TripDetailsPageProps)
           </div>
           
           <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-700">Select Vehicle Class</label>
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Select Vehicle Class</label>
             <Select onValueChange={setVehicleClass} value={vehicleClass}>
-              <SelectTrigger className="w-full bg-gray-100 border-none h-14">
+              <SelectTrigger className="w-full bg-gray-100 dark:bg-gray-800 border-none h-14 text-gray-800 dark:text-gray-100">
                 <SelectValue placeholder="Select vehicle class" />
               </SelectTrigger>
               <SelectContent>
@@ -207,29 +207,29 @@ export default function TripDetailsPage({ onRequestTrip }: TripDetailsPageProps)
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="name" className="text-sm font-medium text-gray-700">Name</label>
-            <Input id="name" placeholder="Enter your name" value={name} onChange={e => setName(e.target.value)} className="bg-gray-100 border-none" />
+            <label htmlFor="name" className="text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+            <Input id="name" placeholder="Enter your name" value={name} onChange={e => setName(e.target.value)} className="bg-gray-100 dark:bg-gray-800 border-none text-gray-800 dark:text-gray-100" />
           </div>
           <div className="space-y-1">
-            <label htmlFor="phone" className="text-sm font-medium text-gray-700">Phone Number</label>
-            <Input id="phone" type="tel" placeholder="Enter your phone number" value={phone} onChange={e => setPhone(e.target.value)} className="bg-gray-100 border-none" />
+            <label htmlFor="phone" className="text-sm font-medium text-gray-700 dark:text-gray-300">Phone Number</label>
+            <Input id="phone" type="tel" placeholder="Enter your phone number" value={phone} onChange={e => setPhone(e.target.value)} className="bg-gray-100 dark:bg-gray-800 border-none text-gray-800 dark:text-gray-100" />
           </div>
           <div className="space-y-1">
-            <label htmlFor="current-location" className="text-sm font-medium text-gray-700">Current Location</label>
+            <label htmlFor="current-location" className="text-sm font-medium text-gray-700 dark:text-gray-300">Current Location</label>
             <div className="relative">
-              <Input id="current-location" placeholder="Current location" value={currentLocation.address} onChange={e => setCurrentLocation({...currentLocation, address: e.target.value})} className="bg-gray-100 border-none pr-10" />
+              <Input id="current-location" placeholder="Current location" value={currentLocation.address} onChange={e => setCurrentLocation({...currentLocation, address: e.target.value})} className="bg-gray-100 dark:bg-gray-800 border-none pr-10 text-gray-800 dark:text-gray-100" />
               <Button size="icon" variant="ghost" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8" onClick={handleGetCurrentLocation}>
                 <MapPin className="h-5 w-5 text-gray-500" />
               </Button>
             </div>
           </div>
           <div className="space-y-1 relative">
-            <label htmlFor="destination" className="text-sm font-medium text-gray-700">Destination</label>
-            <Input id="destination" placeholder="Where to?" value={destination.address} onChange={e => handleDestinationSearch(e.target.value)} className="bg-gray-100 border-none" autoComplete="off"/>
+            <label htmlFor="destination" className="text-sm font-medium text-gray-700 dark:text-gray-300">Destination</label>
+            <Input id="destination" placeholder="Where to?" value={destination.address} onChange={e => handleDestinationSearch(e.target.value)} className="bg-gray-100 dark:bg-gray-800 border-none text-gray-800 dark:text-gray-100" autoComplete="off"/>
             {destinationSuggestions.length > 0 && (
-                <ul className="absolute z-20 w-full bg-white border border-gray-200 rounded-md mt-1 shadow-lg max-h-48 overflow-y-auto">
+                <ul className="absolute z-20 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md mt-1 shadow-lg max-h-48 overflow-y-auto">
                     {destinationSuggestions.map(s => (
-                        <li key={s.id} onClick={() => selectDestination(s)} className="p-2 hover:bg-gray-100 cursor-pointer text-sm">
+                        <li key={s.id} onClick={() => selectDestination(s)} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-sm text-gray-800 dark:text-gray-100">
                             {s.place_name}
                         </li>
                     ))}
@@ -237,25 +237,25 @@ export default function TripDetailsPage({ onRequestTrip }: TripDetailsPageProps)
             )}
           </div>
           <div className="space-y-1">
-            <label htmlFor="travel-date" className="text-sm font-medium text-gray-700">Travel Date</label>
+            <label htmlFor="travel-date" className="text-sm font-medium text-gray-700 dark:text-gray-300">Travel Date</label>
             <div className="relative">
-              <Input id="travel-date" type="date" value={travelDate ? travelDate.toISOString().split('T')[0] : ''} onChange={e => setTravelDate(new Date(e.target.value))} placeholder="Select date" className="bg-gray-100 border-none pr-10" />
+              <Input id="travel-date" type="date" value={travelDate ? travelDate.toISOString().split('T')[0] : ''} onChange={e => setTravelDate(new Date(e.target.value))} placeholder="Select date" className="bg-gray-100 dark:bg-gray-800 border-none pr-10 text-gray-800 dark:text-gray-100" />
               <Button size="icon" variant="ghost" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8">
                 <Calendar className="h-5 w-5 text-gray-500" />
               </Button>
             </div>
           </div>
           <div className="space-y-1">
-            <label htmlFor="travel-time" className="text-sm font-medium text-gray-700">Travel Time</label>
+            <label htmlFor="travel-time" className="text-sm font-medium text-gray-700 dark:text-gray-300">Travel Time</label>
             <div className="relative">
-              <Input id="travel-time" type="time" value={travelTime} onChange={e => setTravelTime(e.target.value)} placeholder="Select time" className="bg-gray-100 border-none pr-10" />
+              <Input id="travel-time" type="time" value={travelTime} onChange={e => setTravelTime(e.target.value)} placeholder="Select time" className="bg-gray-100 dark:bg-gray-800 border-none pr-10 text-gray-800 dark:text-gray-100" />
               <Button size="icon" variant="ghost" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8">
                 <Clock className="h-5 w-5 text-gray-500" />
               </Button>
             </div>
           </div>
           
-          <div className="flex rounded-md bg-gray-200 p-1">
+          <div className="flex rounded-md bg-gray-200 dark:bg-gray-800 p-1">
             <Button
               onClick={() => setDayOrNight('day')}
               className={`flex-1 ${dayOrNight === 'day' ? 'bg-white text-black shadow' : 'bg-transparent text-gray-500'}`}
@@ -271,26 +271,26 @@ export default function TripDetailsPage({ onRequestTrip }: TripDetailsPageProps)
           </div>
           
           <div className="flex items-center space-x-2">
-            <span className="text-sm font-medium text-gray-700">Luggage:</span>
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Luggage:</span>
             <Button onClick={() => setHasLuggage(true)} variant={hasLuggage ? "secondary" : "ghost"} className={`rounded-full ${hasLuggage ? 'bg-white text-black shadow' : 'bg-gray-200 text-gray-500'}`}>Yes</Button>
             <Button onClick={() => setHasLuggage(false)} variant={!hasLuggage ? "secondary" : "ghost"} className={`rounded-full ${!hasLuggage ? 'bg-white text-black shadow' : 'bg-gray-200 text-gray-500'}`}>No</Button>
           </div>
           
           <div className="space-y-1">
-            <label htmlFor="travelers" className="text-sm font-medium text-gray-700">Number of Travelers</label>
-            <Input id="travelers" type="number" min="1" value={numTravelers} onChange={e => setNumTravelers(e.target.value)} placeholder="1" className="bg-gray-100 border-none" />
+            <label htmlFor="travelers" className="text-sm font-medium text-gray-700 dark:text-gray-300">Number of Travelers</label>
+            <Input id="travelers" type="number" min="1" value={numTravelers} onChange={e => setNumTravelers(e.target.value)} placeholder="1" className="bg-gray-100 dark:bg-gray-800 border-none text-gray-800 dark:text-gray-100" />
           </div>
 
           {hasLuggage && (
             <div className="space-y-1 animate-in fade-in-0 zoom-in-95">
-              <label htmlFor="luggage-weight" className="text-sm font-medium text-gray-700">Luggage Weight (kg)</label>
-              <Input id="luggage-weight" type="number" value={luggageWeight} onChange={e => setLuggageWeight(e.target.value)} placeholder="e.g. 15" className="bg-gray-100 border-none" />
+              <label htmlFor="luggage-weight" className="text-sm font-medium text-gray-700 dark:text-gray-300">Luggage Weight (kg)</label>
+              <Input id="luggage-weight" type="number" value={luggageWeight} onChange={e => setLuggageWeight(e.target.value)} placeholder="e.g. 15" className="bg-gray-100 dark:bg-gray-800 border-none text-gray-800 dark:text-gray-100" />
             </div>
           )}
 
           <div className="space-y-2">
              <Select onValueChange={setDriverMode} value={driverMode}>
-                <SelectTrigger className="w-full bg-gray-100 border-none h-14">
+                <SelectTrigger className="w-full bg-gray-100 dark:bg-gray-800 border-none h-14 text-gray-800 dark:text-gray-100">
                     <SelectValue>
                       {driverMode === 'manual' && selectedDriver ? (
                          <div className="flex items-center gap-3">
@@ -362,18 +362,17 @@ export default function TripDetailsPage({ onRequestTrip }: TripDetailsPageProps)
               </CardContent>
             </Card>
           </div>
-          
         </main>
-      </div>
-      <footer className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-sm border-t border-gray-200">
+        <footer className="p-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-t border-gray-200 dark:border-gray-800">
         <Button 
-          className="w-full bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-lg disabled:bg-gray-300"
+          className="w-full bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-lg disabled:bg-gray-300 dark:disabled:bg-gray-700"
           disabled={!isFormValid}
           onClick={handleStartTrip}
         >
           Start Trip
         </Button>
       </footer>
+      </div>
     </div>
   );
 }

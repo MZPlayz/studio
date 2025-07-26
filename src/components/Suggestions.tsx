@@ -25,8 +25,8 @@ export default function Suggestions() {
   }
 
   return (
-    <div>
-      <h2 className="font-bold text-gray-800 mb-2">{t('suggestions')}</h2>
+    <div className="bg-white dark:bg-gray-900 p-4 rounded-xl">
+      <h2 className="font-bold text-gray-800 dark:text-white mb-2">{t('suggestions')}</h2>
       <div className="flex space-x-4 overflow-x-auto pb-2">
         {suggestions.map((item, index) => (
           <div key={index} className="flex-shrink-0">

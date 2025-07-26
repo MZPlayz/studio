@@ -21,15 +21,15 @@ export default function BalanceCard() {
     };
 
     return (
-        <Card className="rounded-xl shadow-sm border-gray-200">
+        <Card className="rounded-xl shadow-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
             <CardContent className="p-4 flex items-center justify-between">
                 <div>
-                    <p className="text-sm font-medium text-gray-500">{isClient ? t('balance') : 'Balance'}</p>
-                    <div className="text-2xl font-bold text-gray-800">
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{isClient ? t('balance') : 'Balance'}</p>
+                    <div className="text-2xl font-bold text-gray-800 dark:text-white">
                         {isBalanceVisible ? '৳7.00' : '৳•••••'}
                     </div>
                 </div>
-                <button className="text-gray-400 hover:text-gray-600" onClick={toggleBalanceVisibility}>
+                <button className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300" onClick={toggleBalanceVisibility}>
                     {isBalanceVisible ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
             </CardContent>

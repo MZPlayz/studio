@@ -7,6 +7,7 @@ import { ArrowLeft, User, Car, Briefcase } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import RegistrationForm from '@/components/RegistrationForm';
+import OtpVerification from '@/components/OtpVerification';
 import ProfileImageUpload from '@/components/ProfileImageUpload';
 import RetroGrid from '@/components/ui/retro-grid';
 import HyperText from '@/components/ui/hyper-text';
@@ -14,7 +15,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 type AccountType = 'customer' | 'driver' | 'agent' | null;
-type Step = 'select_type' | 'form' | 'photo';
+type Step = 'select_type' | 'form' | 'otp' | 'photo';
 
 const TypeSelectionCard = ({ icon: Icon, title, description, onClick }: { icon: React.ElementType, title: string, description: string, onClick: () => void }) => (
     <Card onClick={onClick} className="cursor-pointer bg-white/50 hover:bg-white/80 transition-colors border-gray-300 dark:bg-gray-900/50 dark:hover:bg-gray-900/80 dark:border-gray-700">
@@ -33,7 +34,8 @@ const TypeSelectionCard = ({ icon: Icon, title, description, onClick }: { icon: 
 export default function CreateAccountPage() {
     const [step, setStep] = useState<Step>('select_type');
     const [accountType, setAccountType] = useState<AccountType>(null);
-    const agentReferralCode = "AGENT789"; 
+    const [phone, setPhone] = useState('');
+    const agentReferralCode = "AGENT789";
     const { t } = useLanguage();
     const [isClient, setIsClient] = useState(false);
 
@@ -46,16 +48,23 @@ export default function CreateAccountPage() {
         setStep('form');
     };
     
-    const handleFormSuccess = () => {
-        setStep('photo');
+    const handleFormSuccess = (phone: string) => {
+        setPhone(phone);
+        setStep('otp');
     };
+
+    const handleOtpSuccess = () => {
+        setStep('photo');
+    }
 
     const handleBack = () => {
         if (step === 'form') {
             setStep('select_type');
             setAccountType(null);
-        } else if (step === 'photo') {
+        } else if (step === 'otp') {
             setStep('form');
+        } else if (step === 'photo') {
+            setStep('otp');
         }
     }
     
@@ -88,6 +97,24 @@ export default function CreateAccountPage() {
                         onSuccess={handleFormSuccess}
                         onBack={handleBack}
                         referralCode={agentReferralCode}
+                    />
+                </div>
+            </div>
+        )
+    }
+
+    if (step === 'otp') {
+        return (
+            <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-background p-4">
+                <RetroGrid className="absolute inset-0 w-full h-full" />
+                <div className="absolute top-4 right-4 z-20">
+                    <ThemeToggle />
+                </div>
+                <div className="z-10 w-full max-w-md">
+                    <OtpVerification
+                        phone={phone}
+                        onSuccess={handleOtpSuccess}
+                        onBack={handleBack}
                     />
                 </div>
             </div>

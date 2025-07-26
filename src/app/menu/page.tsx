@@ -41,9 +41,9 @@ interface MenuItemProps {
 
 const MenuItem = ({ icon: Icon, text, href, onClick }: MenuItemProps) => {
   const content = (
-    <div className="flex items-center p-4 border-b border-gray-200 bg-white cursor-pointer hover:bg-gray-50 transition-colors">
-      <Icon className="h-6 w-6 text-gray-600 mr-4" />
-      <span className="flex-1 text-gray-800 font-medium">{text}</span>
+    <div className="flex items-center p-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+      <Icon className="h-6 w-6 text-gray-600 dark:text-gray-400 mr-4" />
+      <span className="flex-1 text-gray-800 dark:text-gray-100 font-medium">{text}</span>
       <ChevronRight className="h-5 w-5 text-gray-400" />
     </div>
   );
@@ -78,14 +78,14 @@ export default function MenuPage() {
 
     return (
         <>
-            <div className="min-h-screen bg-gray-100 font-sans">
-            <header className="sticky top-0 z-10 flex items-center border-b bg-white p-4">
+            <div className="min-h-screen bg-gray-100 dark:bg-black font-sans">
+            <header className="sticky top-0 z-10 flex items-center border-b bg-white dark:bg-gray-900 dark:border-gray-800 p-4">
                 <Link href="/home">
                 <Button variant="ghost" size="icon">
-                    <ArrowLeft className="h-6 w-6" />
+                    <ArrowLeft className="h-6 w-6 text-gray-800 dark:text-gray-100" />
                 </Button>
                 </Link>
-                <h1 className="flex-1 text-center text-xl font-bold text-gray-800">{t('menu_title')}</h1>
+                <h1 className="flex-1 text-center text-xl font-bold text-gray-800 dark:text-gray-100">{t('menu_title')}</h1>
                 <div className="w-10">
                     <ThemeToggle />
                 </div>

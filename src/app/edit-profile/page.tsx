@@ -23,14 +23,14 @@ export default function ProfileEditPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
-      <header className="sticky top-0 z-10 flex items-center border-b bg-white p-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-black font-sans">
+      <header className="sticky top-0 z-10 flex items-center border-b bg-white dark:bg-gray-900 dark:border-gray-800 p-4">
         <Link href="/menu">
           <Button variant="ghost" size="icon">
-            <ArrowLeft className="h-6 w-6" />
+            <ArrowLeft className="h-6 w-6 text-gray-800 dark:text-gray-100" />
           </Button>
         </Link>
-        <h1 className="flex-1 text-center text-xl font-bold text-gray-800">প্রোফাইল এডিট</h1>
+        <h1 className="flex-1 text-center text-xl font-bold text-gray-800 dark:text-gray-100">প্রোফাইল এডিট</h1>
         <div className="w-10" />
       </header>
 
@@ -58,40 +58,40 @@ export default function ProfileEditPage() {
 
         <form className="space-y-4">
           <div>
-            <Label htmlFor="name">Name</Label>
-            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="bg-white mt-1" />
+            <Label htmlFor="name" className="text-gray-700 dark:text-gray-300">Name</Label>
+            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 mt-1" />
           </div>
           <div>
-            <Label htmlFor="phone">Mobile Number</Label>
-            <Input id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} className="bg-white mt-1" disabled />
+            <Label htmlFor="phone" className="text-gray-700 dark:text-gray-300">Mobile Number</Label>
+            <Input id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 mt-1" disabled />
           </div>
           <div>
-            <Label htmlFor="address">Address</Label>
-            <Input id="address" value={address} onChange={(e) => setAddress(e.target.value)} className="bg-white mt-1" />
+            <Label htmlFor="address" className="text-gray-700 dark:text-gray-300">Address</Label>
+            <Input id="address" value={address} onChange={(e) => setAddress(e.target.value)} className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 mt-1" />
           </div>
         </form>
 
         <section className="space-y-4">
-          <h2 className="text-lg font-bold text-gray-800">Documents</h2>
+          <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100">Documents</h2>
           <div className="space-y-4">
-            <div className="flex items-center justify-between rounded-lg bg-white p-4">
+            <div className="flex items-center justify-between rounded-lg bg-white dark:bg-gray-900 p-4">
               <div>
-                <p className="font-semibold text-gray-700">National ID</p>
-                <p className="text-sm text-gray-500">Update your NID photo</p>
+                <p className="font-semibold text-gray-700 dark:text-gray-300">National ID</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Update your NID photo</p>
               </div>
               <Image src="https://placehold.co/100x60.png" data-ai-hint="id card" alt="NID Thumbnail" width={100} height={60} className="rounded-md" />
-              <Button variant="outline" size="sm" onClick={() => handleImageUpload(nidImageRef)}>
+              <Button variant="outline" size="sm" onClick={() => handleImageUpload(nidImageRef)} className="dark:text-gray-100 dark:border-gray-700 dark:bg-gray-800">
                 <Edit className="mr-2 h-4 w-4" /> Update
               </Button>
               <input type="file" ref={nidImageRef} className="hidden" accept="image/*" />
             </div>
-            <div className="flex items-center justify-between rounded-lg bg-white p-4">
+            <div className="flex items-center justify-between rounded-lg bg-white dark:bg-gray-900 p-4">
               <div>
-                <p className="font-semibold text-gray-700">Car Image</p>
-                <p className="text-sm text-gray-500">Update your car's photo</p>
+                <p className="font-semibold text-gray-700 dark:text-gray-300">Car Image</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Update your car's photo</p>
               </div>
               <Image src="https://placehold.co/100x60.png" data-ai-hint="sedan car" alt="Car Thumbnail" width={100} height={60} className="rounded-md" />
-              <Button variant="outline" size="sm" onClick={() => handleImageUpload(carImageRef)}>
+              <Button variant="outline" size="sm" onClick={() => handleImageUpload(carImageRef)} className="dark:text-gray-100 dark:border-gray-700 dark:bg-gray-800">
                 <Edit className="mr-2 h-4 w-4" /> Update
               </Button>
               <input type="file" ref={carImageRef} className="hidden" accept="image/*" />
@@ -100,8 +100,8 @@ export default function ProfileEditPage() {
         </section>
       </main>
 
-      <footer className="fixed bottom-0 left-0 right-0 border-t bg-white p-4">
-        <Button className="w-full h-12 text-lg">Save Changes</Button>
+      <footer className="fixed bottom-0 left-0 right-0 border-t bg-white dark:bg-gray-900 dark:border-gray-800 p-4">
+        <Button className="w-full h-12 text-lg bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/80">Save Changes</Button>
       </footer>
     </div>
   );

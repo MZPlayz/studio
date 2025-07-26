@@ -1,9 +1,8 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Mail } from 'lucide-react';
+import { Phone, Key } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useLanguage } from '@/context/LanguageContext';
@@ -17,7 +16,8 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 export default function LoginPage() {
   const { t, toggleLanguage } = useLanguage();
   const [isClient, setIsClient] = useState(false);
-  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [pin, setPin] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -30,18 +30,15 @@ export default function LoginPage() {
     setLoading(true);
     setMessage('');
 
-    const { error } = await supabase.auth.signInWithOtp({
-      email: email,
-      options: {
-        // This is where the user will be redirected after clicking the magic link
-        emailRedirectTo: `${window.location.origin}/home`,
-      },
+    const { error } = await supabase.auth.signInWithPassword({
+      phone: `+88${phone}`,
+      password: pin,
     });
 
     if (error) {
-      setMessage(`Error: ${error.message}`);
+      setMessage(error.message);
     } else {
-      setMessage('Check your email for the magic link!');
+      window.location.href = '/home';
     }
     setLoading(false);
   };
@@ -69,23 +66,36 @@ export default function LoginPage() {
         <HyperText className="text-2xl font-bold text-gray-800 dark:text-gray-100">
           {isClient ? t('welcome_back') : '...'}
         </HyperText>
-        <p className="text-gray-600 dark:text-gray-400">{isClient ? t('login_prompt_email') : '...'}</p>
+        <p className="text-gray-600 dark:text-gray-400">Enter your mobile number and PIN to login.</p>
 
         <form onSubmit={handleLogin} className="w-full space-y-4">
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-400">+88</span>
             <Input
-              type="email"
-              placeholder={isClient ? t('email_placeholder') : ''}
+              type="tel"
+              placeholder="01xxxxxxxxx"
+              maxLength={11}
+              className="w-full rounded-lg border-gray-300 bg-white py-6 pl-14 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, ''))}
+              required
+            />
+          </div>
+          <div className="relative">
+            <Key className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+            <Input
+              type="password"
+              placeholder="6-Digit PIN"
+              maxLength={6}
               className="w-full rounded-lg border-gray-300 bg-white py-6 pl-10 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={pin}
+              onChange={(e) => setPin(e.target.value.replace(/[^0-9]/g, ''))}
               required
             />
           </div>
           
           <Button className="w-full h-14 text-lg font-bold" type="submit" disabled={loading}>
-            {loading ? (isClient ? t('sending_link') : '...') : (isClient ? t('send_magic_link') : '...')}
+            {loading ? 'Logging in...' : 'Login'}
           </Button>
         </form>
         

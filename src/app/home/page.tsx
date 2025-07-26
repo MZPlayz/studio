@@ -12,7 +12,7 @@ const Suggestions = dynamic(() => import('@/components/Suggestions'));
 
 export default function HomePage() {
   return (
-    <div className="bg-gray-100 min-h-screen font-sans">
+    <div className="bg-gray-50 dark:bg-black min-h-screen font-sans">
         <HomeHeader />
         <main className="relative z-0 pt-28 px-4 pb-24">
             <div className="space-y-6">

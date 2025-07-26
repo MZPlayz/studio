@@ -30,14 +30,14 @@ export default function BottomNav() {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-sm border-t border-gray-200 shadow-t-lg">
+    <div className="fixed bottom-0 left-0 w-full bg-white/95 dark:bg-gray-950/95 backdrop-blur-sm border-t border-gray-200 dark:border-gray-800 shadow-t-lg">
       <div className="grid grid-cols-3 h-16 max-w-md mx-auto">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link key={item.href} href={item.href} className="flex flex-col items-center justify-center pt-1 group">
-              <item.icon size={24} className={cn('transition-colors', isActive ? 'text-primary' : 'text-gray-400 group-hover:text-primary/70')} />
-              <span className={cn('text-xs font-medium transition-colors', isActive ? 'text-primary' : 'text-gray-500 group-hover:text-primary/70')}>
+              <item.icon size={24} className={cn('transition-colors', isActive ? 'text-primary' : 'text-gray-400 dark:text-gray-500 group-hover:text-primary/70 dark:group-hover:text-primary')} />
+              <span className={cn('text-xs font-medium transition-colors', isActive ? 'text-primary' : 'text-gray-500 dark:text-gray-400 group-hover:text-primary/70 dark:group-hover:text-primary')}>
                 {isClient ? item.label : ''}
               </span>
             </Link>
